@@ -11,8 +11,8 @@
   --s-border: rgba(0,0,0,0.08);
 
   --s-text-primary: #1E1B29;
-  --s-text-secondary: #4A4556;
-  --s-text-tertiary: #6E6880;
+  --s-text-secondary: #38334A;
+  --s-text-tertiary: #56506A;
 
   --s-gold: #8B6E24;
   --s-gold-muted: #A6883A;
@@ -37,8 +37,8 @@
   --s-border: rgba(255,255,255,0.06);
 
   --s-text-primary: #E8E4ED;
-  --s-text-secondary: #9B95A8;
-  --s-text-tertiary: #635E70;
+  --s-text-secondary: #B0AAC0;
+  --s-text-tertiary: #8A849A;
 
   --s-gold: #C9A84C;
   --s-gold-muted: #A68B3A;
@@ -79,17 +79,22 @@ body {
   color: var(--s-text-primary);
 }
 
-/* ── Theme flip transition ────────────────────────── */
-.theme-flipping {
-  animation: theme-flip 0.5s ease-in-out;
-  transform-origin: center center;
+/* ── Theme wipe (framer-motion diagonal bar) ─────── */
+.theme-wipe {
+  position: fixed;
+  inset: -60vh -60vw;
+  width: 220vw;
+  height: 220vh;
+  transform: rotate(-35deg);
+  z-index: 99999;
+  pointer-events: none;
 }
 
-@keyframes theme-flip {
-  0%    { transform: perspective(1200px) rotateY(0deg);    opacity: 1; }
-  45%   { transform: perspective(1200px) rotateY(90deg);   opacity: 0; }
-  55%   { transform: perspective(1200px) rotateY(-90deg);  opacity: 0; }
-  100%  { transform: perspective(1200px) rotateY(0deg);    opacity: 1; }
+.theme-wipe-inner {
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* ── Ambient background ─────────────────────────── */
@@ -237,7 +242,7 @@ input[type="range"]::-moz-range-thumb {
 .dashboard-grid {
   display: grid;
   grid-template-columns: 2fr 3fr 3fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto auto;
   gap: 1rem;
   grid-template-areas:
     "settings  hero     hero"

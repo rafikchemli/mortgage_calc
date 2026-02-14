@@ -2,19 +2,18 @@ import useAffordStore from '../../store/useAffordStore'
 import SelectInput from '../shared/SelectInput'
 import CompactValueInput from '../shared/CompactValueInput'
 import { formatCAD } from '../shared/CurrencyDisplay'
-import { DOWN_PAYMENT_OPTIONS, AMORTIZATION_OPTIONS } from '../../data/constants'
-
-const PAY_FREQUENCIES = [
-  { value: 'biweekly', label: 'Bi-weekly' },
-  { value: 'monthly', label: 'Monthly' },
-  { value: 'yearly', label: 'Yearly' },
-]
 
 const FREQ_CONFIG = {
   biweekly: { min: 500, max: 5000, step: 50 },
   monthly:  { min: 1000, max: 12000, step: 100 },
   yearly:   { min: 15000, max: 150000, step: 1000 },
 }
+
+const PAY_FREQUENCIES = [
+  { value: 'biweekly', label: 'Bi-weekly' },
+  { value: 'monthly', label: 'Monthly' },
+  { value: 'yearly', label: 'Yearly' },
+]
 
 function convertIncome(value, fromFreq, toFreq) {
   let monthly
@@ -37,8 +36,6 @@ export default function AffordInputs() {
     income1, setIncome1,
     income2, setIncome2,
     payFrequency, setPayFrequency,
-    housingPercent1, setHousingPercent1,
-    housingPercent2, setHousingPercent2,
     downPaymentPercent, setDownPaymentPercent,
     interestRate, setInterestRate,
     amortizationYears, setAmortizationYears,
@@ -46,21 +43,18 @@ export default function AffordInputs() {
 
   const config = FREQ_CONFIG[payFrequency]
 
-  const handleFrequencyChange = (newFreq) => {
-    const converted1 = convertIncome(income1, payFrequency, newFreq)
-    const converted2 = convertIncome(income2, payFrequency, newFreq)
-    setIncome1(converted1)
-    setIncome2(converted2)
-    setPayFrequency(newFreq)
-  }
-
   const frequencyLabel = payFrequency === 'biweekly' ? 'Bi-weekly'
     : payFrequency === 'monthly' ? 'Monthly' : 'Yearly'
 
+  const handleFrequencyChange = (newFreq) => {
+    setIncome1(convertIncome(income1, payFrequency, newFreq))
+    setIncome2(convertIncome(income2, payFrequency, newFreq))
+    setPayFrequency(newFreq)
+  }
+
   return (
-    <div className="enchanted-card p-5">
+    <div className="enchanted-card p-5 h-full">
       <span className="section-label">Income</span>
-      <div className="mt-3" />
 
       <SelectInput
         label="Pay Frequency"
@@ -70,9 +64,9 @@ export default function AffordInputs() {
         compact
       />
 
-      <div className="grid grid-cols-2 gap-3 mt-3">
+      <div className="space-y-2 mt-2">
         <CompactValueInput
-          label={`Your ${frequencyLabel} Pay`}
+          label="Your Pay"
           min={config.min}
           max={config.max}
           step={config.step}
@@ -81,7 +75,7 @@ export default function AffordInputs() {
           formatFn={formatCAD}
         />
         <CompactValueInput
-          label={`Partner's ${frequencyLabel} Pay`}
+          label="Partner's Pay"
           min={0}
           max={config.max}
           step={config.step}
@@ -92,49 +86,31 @@ export default function AffordInputs() {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mt-3">
-        <CompactValueInput
-          label="Your Housing %"
-          min={25}
-          max={60}
-          step={1}
-          value={housingPercent1}
-          onChange={setHousingPercent1}
-          formatFn={(v) => `${v}%`}
-          showSteppers
-          tooltip="25-35% recommended"
-        />
-        {income2 > 0 ? (
-          <CompactValueInput
-            label="Partner's Housing %"
-            min={25}
-            max={60}
-            step={1}
-            value={housingPercent2}
-            onChange={setHousingPercent2}
-            formatFn={(v) => `${v}%`}
-            showSteppers
-            tooltip="25-35% recommended"
-          />
-        ) : (
-          <div />
-        )}
-      </div>
-
-      <div className="mt-4 mb-3 pt-3 border-t border-ink-ghost">
+      <div className="mt-6 mb-3 pt-4 border-t border-ink-ghost">
         <span className="section-label">Mortgage Terms</span>
       </div>
 
-      <SelectInput
-        label="Down Payment"
-        options={DOWN_PAYMENT_OPTIONS.map((v) => ({ value: v, label: `${v}%` }))}
-        value={downPaymentPercent}
-        onChange={(v) => setDownPaymentPercent(Number(v))}
-      />
+      <div>
+        <div className="flex items-baseline justify-between mb-1.5">
+          <label className="text-[11px] font-medium text-ink-muted">Down Payment</label>
+          <span className="money text-[13px]">{downPaymentPercent}%</span>
+        </div>
+        <input
+          type="range"
+          min={5}
+          max={25}
+          step={5}
+          value={downPaymentPercent}
+          onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
+          className="w-full"
+        />
+      </div>
+
+      <div className="mt-3" />
 
       <SelectInput
         label="Amortization"
-        options={AMORTIZATION_OPTIONS.map((v) => ({ value: v, label: `${v} yr` }))}
+        options={[20,25,30].map((v) => ({ value: v, label: `${v} yr` }))}
         value={amortizationYears}
         onChange={(v) => setAmortizationYears(Number(v))}
       />
