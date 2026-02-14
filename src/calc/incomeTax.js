@@ -81,3 +81,19 @@ export function grossToNetAnnual(grossAnnual) {
   const totalDeductions = federalTax + quebecTax + qpp + ei + qpip
   return Math.max(0, grossAnnual - totalDeductions)
 }
+
+/**
+ * Estimate annual gross income from annual net income (inverse via binary search).
+ */
+export function netToGrossAnnual(netAnnual) {
+  if (netAnnual <= 0) return 0
+  let lo = netAnnual
+  let hi = netAnnual * 2.5
+  for (let i = 0; i < 50; i++) {
+    const mid = (lo + hi) / 2
+    const net = grossToNetAnnual(mid)
+    if (net < netAnnual) lo = mid
+    else hi = mid
+  }
+  return Math.round((lo + hi) / 2)
+}

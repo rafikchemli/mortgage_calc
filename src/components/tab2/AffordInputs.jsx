@@ -2,6 +2,7 @@ import useAffordStore from '../../store/useAffordStore'
 import SelectInput from '../shared/SelectInput'
 import CompactValueInput from '../shared/CompactValueInput'
 import { formatCAD } from '../shared/CurrencyDisplay'
+import { grossToNetAnnual, netToGrossAnnual } from '../../calc/incomeTax'
 
 const FREQ_CONFIG = {
   biweekly: { min: 500, max: 500000, step: 100 },
@@ -53,6 +54,35 @@ export default function AffordInputs() {
     setPayFrequency(newFreq)
   }
 
+  const toAnnual = (v) => {
+    switch (payFrequency) {
+      case 'biweekly': return v * 26
+      case 'monthly': return v * 12
+      case 'yearly': return v
+      default: return v * 26
+    }
+  }
+
+  const fromAnnual = (v) => {
+    switch (payFrequency) {
+      case 'biweekly': return Math.round(v / 26 / config.step) * config.step
+      case 'monthly': return Math.round(v / 12 / config.step) * config.step
+      case 'yearly': return Math.round(v / config.step) * config.step
+      default: return Math.round(v / 26 / config.step) * config.step
+    }
+  }
+
+  const handleIncomeTypeChange = (newType) => {
+    if (newType === incomeType) return
+    // Convert displayed values: gross→net or net→gross
+    const convert = newType === 'net'
+      ? (v) => fromAnnual(grossToNetAnnual(toAnnual(v)))
+      : (v) => fromAnnual(netToGrossAnnual(toAnnual(v)))
+    setIncome1(convert(income1))
+    if (income2 > 0) setIncome2(convert(income2))
+    setIncomeType(newType)
+  }
+
   return (
     <div className="enchanted-card p-5 h-full">
       <div className="flex items-center justify-between mb-2">
@@ -61,7 +91,7 @@ export default function AffordInputs() {
           {['net', 'gross'].map((type) => (
             <button
               key={type}
-              onClick={() => setIncomeType(type)}
+              onClick={() => handleIncomeTypeChange(type)}
               className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
                 incomeType === type
                   ? 'bg-gold/15 text-gold'
