@@ -88,25 +88,25 @@ export default function Dashboard() {
       </div>
 
       {/* Gauge */}
-      <div className="enchanted-card p-5 flex items-center justify-center" style={{ gridArea: 'gauge' }}>
+      <div className="enchanted-card p-4 sm:p-5 flex items-center justify-center" style={{ gridArea: 'gauge' }}>
         <AffordGauge housingPercent={housingPercent} />
       </div>
 
       {/* Hero */}
-      <div className="enchanted-card enchanted-card-accent p-6" style={{ gridArea: 'hero' }}>
-        <div className="flex items-start justify-between">
-          <div>
+      <div className="enchanted-card enchanted-card-accent p-4 sm:p-6" style={{ gridArea: 'hero' }}>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-[0.1em] text-ink-faint font-medium">You can afford</p>
-            <p className="display-number-glow text-5xl mt-1"><AnimatedNumber value={maxPrice} /></p>
+            <p className="display-number-glow text-3xl sm:text-5xl mt-1"><AnimatedNumber value={maxPrice} /></p>
           </div>
-          <div className="text-right">
+          <div className="text-right shrink-0">
             <p className="text-[10px] text-ink-faint uppercase tracking-wider">Down Payment</p>
-            <p className="display-number text-2xl mt-0.5"><AnimatedNumber value={downPaymentAmount} /></p>
+            <p className="display-number text-xl sm:text-2xl mt-0.5"><AnimatedNumber value={downPaymentAmount} /></p>
             <p className="text-[10px] text-ink-faint">{downPaymentPercent}%</p>
           </div>
         </div>
 
-        <div className={`grid ${hasPartner ? 'grid-cols-2' : 'grid-cols-1'} gap-3 mt-5`}>
+        <div className={`grid ${hasPartner ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'} gap-3 mt-5`}>
           <InteractiveContributionCard
             label="You"
             amount={contribution1}
@@ -125,7 +125,7 @@ export default function Dashboard() {
       </div>
 
       {/* Monthly costs */}
-      <div className="enchanted-card p-5" style={{ gridArea: 'monthly' }}>
+      <div className="enchanted-card p-4 sm:p-5" style={{ gridArea: 'monthly' }}>
         <span className="section-label">Monthly Breakdown</span>
         <div className="mt-3 space-y-2">
           {costBreakdown.items.map((item, i) => {
@@ -156,7 +156,7 @@ export default function Dashboard() {
       </div>
 
       {/* Upfront costs */}
-      <div className="enchanted-card p-5" style={{ gridArea: 'upfront' }}>
+      <div className="enchanted-card p-4 sm:p-5" style={{ gridArea: 'upfront' }}>
         <span className="section-label">Upfront Cash</span>
         <div className="mt-3 space-y-1.5">
           <div className="flex items-baseline justify-between py-1">
@@ -194,7 +194,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stress test */}
-      <div className="enchanted-card p-5" style={{ gridArea: 'stress' }}>
+      <div className="enchanted-card p-4 sm:p-5" style={{ gridArea: 'stress' }}>
         <div className="flex items-baseline gap-3 mb-3">
           <span className="section-label">Stress Test (+2%)</span>
           <span className="text-[11px] text-ink-faint">What if rates rise?</span>
@@ -211,7 +211,7 @@ export default function Dashboard() {
             <p className="text-[11px] text-ink-faint mt-0.5"><AnimatedNumber value={stressTest.stressedMonthly} />/mo</p>
           </div>
         </div>
-        <div className="flex gap-6 mt-2.5 pt-2.5 border-t border-ink-ghost text-[12px]">
+        <div className="flex flex-wrap gap-x-6 gap-y-1 mt-2.5 pt-2.5 border-t border-ink-ghost text-[12px]">
           <div className="flex gap-2">
             <span className="text-ink-faint">Power change</span>
             <AnimatedNumber value={stressedMaxPrice - maxPrice} className="money text-[12px] text-copper" />

@@ -19,7 +19,7 @@ export default function App() {
       </div>
       <div className="max-w-6xl mx-auto">
         <Header isDark={isDark} toggleDark={toggle} />
-        <main className="px-6 py-6">
+        <main className="px-4 sm:px-6 py-4 sm:py-6">
           <Dashboard />
         </main>
         <Footer />

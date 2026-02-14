@@ -250,6 +250,21 @@ input[type="range"]::-moz-range-thumb {
     "gauge     stress   stress";
 }
 
+@media (max-width: 767px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 0.75rem;
+    grid-template-areas:
+      "hero"
+      "settings"
+      "monthly"
+      "upfront"
+      "gauge"
+      "stress";
+  }
+}
+
 /* ── Scrollbar ──────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
