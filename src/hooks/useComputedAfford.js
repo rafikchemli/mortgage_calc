@@ -3,6 +3,7 @@ import useAffordStore from '../store/useAffordStore'
 import { calcMaxAffordablePrice, calcStressTest, calcCostBreakdownForPrice } from '../calc/affordability'
 import { calcCMHCInsurance } from '../calc/insurance'
 import { calcWelcomeTax } from '../calc/taxes'
+import { grossToNetAnnual } from '../calc/incomeTax'
 import { useDebounce } from './useDebounce'
 
 function toMonthly(value, frequency) {
@@ -14,18 +15,36 @@ function toMonthly(value, frequency) {
   }
 }
 
+function toAnnual(value, frequency) {
+  switch (frequency) {
+    case 'biweekly': return value * 26
+    case 'monthly': return value * 12
+    case 'yearly': return value
+    default: return value * 26
+  }
+}
+
 export function useComputedAfford() {
   const state = useAffordStore()
 
   const {
-    income1, income2, payFrequency, housingPercent1, housingPercent2,
+    income1, income2, payFrequency, incomeType, housingPercent1, housingPercent2,
     downPaymentPercent, interestRate, amortizationYears,
   } = state
 
   const annualRate = interestRate / 100
 
-  const monthlyIncome1 = toMonthly(income1, payFrequency)
-  const monthlyIncome2 = toMonthly(income2, payFrequency)
+  // If gross, convert to net monthly; if net, use directly
+  let monthlyIncome1, monthlyIncome2
+  if (incomeType === 'gross') {
+    const annualGross1 = toAnnual(income1, payFrequency)
+    const annualGross2 = toAnnual(income2, payFrequency)
+    monthlyIncome1 = grossToNetAnnual(annualGross1) / 12
+    monthlyIncome2 = grossToNetAnnual(annualGross2) / 12
+  } else {
+    monthlyIncome1 = toMonthly(income1, payFrequency)
+    monthlyIncome2 = toMonthly(income2, payFrequency)
+  }
   const totalMonthlyIncome = monthlyIncome1 + monthlyIncome2
 
   // Each person contributes their own chosen % of their income

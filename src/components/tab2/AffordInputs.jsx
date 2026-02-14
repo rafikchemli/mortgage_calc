@@ -4,7 +4,7 @@ import CompactValueInput from '../shared/CompactValueInput'
 import { formatCAD } from '../shared/CurrencyDisplay'
 
 const FREQ_CONFIG = {
-  biweekly: { min: 500, max: 500000, step: 50 },
+  biweekly: { min: 500, max: 500000, step: 100 },
   monthly:  { min: 1000, max: 1000000, step: 100 },
   yearly:   { min: 15000, max: 10000000, step: 1000 },
 }
@@ -36,6 +36,7 @@ export default function AffordInputs() {
     income1, setIncome1,
     income2, setIncome2,
     payFrequency, setPayFrequency,
+    incomeType, setIncomeType,
     downPaymentPercent, setDownPaymentPercent,
     interestRate, setInterestRate,
     amortizationYears, setAmortizationYears,
@@ -54,7 +55,24 @@ export default function AffordInputs() {
 
   return (
     <div className="enchanted-card p-5 h-full">
-      <span className="section-label">Income</span>
+      <div className="flex items-center justify-between mb-2">
+        <span className="section-label !mb-0">Income</span>
+        <div className="flex rounded-lg border border-ink-ghost overflow-hidden">
+          {['net', 'gross'].map((type) => (
+            <button
+              key={type}
+              onClick={() => setIncomeType(type)}
+              className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
+                incomeType === type
+                  ? 'bg-gold/15 text-gold'
+                  : 'bg-surface text-ink-faint hover:text-ink-muted'
+              }`}
+            >
+              {type === 'net' ? 'Net' : 'Gross'}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <SelectInput
         label="Pay Frequency"
@@ -73,6 +91,7 @@ export default function AffordInputs() {
           value={income1}
           onChange={setIncome1}
           formatFn={formatCAD}
+          showSteppers
         />
         <CompactValueInput
           label="Partner's Pay"
@@ -83,6 +102,7 @@ export default function AffordInputs() {
           onChange={setIncome2}
           formatFn={(v) => v === 0 ? 'None' : formatCAD(v)}
           tooltip="Set to $0 for solo buyer"
+          showSteppers
         />
       </div>
 
