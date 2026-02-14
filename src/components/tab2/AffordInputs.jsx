@@ -25,9 +25,9 @@ function convertIncome(value, fromFreq, toFreq) {
     default: monthly = value
   }
   switch (toFreq) {
-    case 'biweekly': return Math.round(monthly * 12 / 26 / 50) * 50
-    case 'monthly': return Math.round(monthly / 100) * 100
-    case 'yearly': return Math.round(monthly * 12 / 1000) * 1000
+    case 'biweekly': return Math.round(monthly * 12 / 26)
+    case 'monthly': return Math.round(monthly)
+    case 'yearly': return Math.round(monthly * 12)
     default: return Math.round(monthly)
   }
 }
