@@ -17,14 +17,9 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
   const handleInput = (e) => {
     const raw = e.target.value.replace(/[^0-9.]/g, '')
     setEditText(raw)
-    const v = Number(raw)
-    if (!isNaN(v) && v >= min && v <= max) {
-      setLocalValue(v)
-      onChange(v)
-    }
   }
 
-  const handleBlur = () => {
+  const commitEdit = () => {
     setIsEditing(false)
     const v = Number(editText)
     if (editText !== '' && !isNaN(v)) {
@@ -35,6 +30,10 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
     } else {
       setLocalValue(value)
     }
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') e.target.blur()
   }
 
   const increment = () => {
@@ -80,10 +79,12 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
         )}
         <input
           type="text"
+          inputMode="decimal"
           value={displayValue}
           onFocus={handleFocus}
           onChange={handleInput}
-          onBlur={handleBlur}
+          onBlur={commitEdit}
+          onKeyDown={handleKeyDown}
           aria-label={`${label} value`}
           className="money flex-1 min-w-0 text-center bg-surface border-ink-ghost border rounded-lg px-2 py-1.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-violet/20 transition-colors"
         />

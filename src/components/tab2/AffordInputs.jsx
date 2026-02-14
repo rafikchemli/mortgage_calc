@@ -4,9 +4,9 @@ import CompactValueInput from '../shared/CompactValueInput'
 import { formatCAD } from '../shared/CurrencyDisplay'
 
 const FREQ_CONFIG = {
-  biweekly: { min: 500, max: 5000, step: 50 },
-  monthly:  { min: 1000, max: 12000, step: 100 },
-  yearly:   { min: 15000, max: 150000, step: 1000 },
+  biweekly: { min: 500, max: 500000, step: 50 },
+  monthly:  { min: 1000, max: 1000000, step: 100 },
+  yearly:   { min: 15000, max: 10000000, step: 1000 },
 }
 
 const PAY_FREQUENCIES = [
