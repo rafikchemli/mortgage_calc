@@ -15,17 +15,21 @@ function formatPrice(num) {
 export async function onRequest(context) {
   const url = new URL(context.request.url)
   const price = Number(url.searchParams.get('p')) || 0
-  const formatted = formatPrice(price)
 
   if (!wasmInitialized) {
     await initWasm(resvgWasm)
     wasmInitialized = true
   }
 
-  // Fetch the Outfit font for the price display
-  const fontRes = await fetch(
-    'https://fonts.gstatic.com/s/outfit/v11/QGYyz_MVcBeNP4NjuGObqx1XmO1I4TC1O4a0EwItq6fNIg.ttf'
+  // Fetch font via Google Fonts CSS API (more reliable)
+  const cssRes = await fetch(
+    'https://fonts.googleapis.com/css2?family=Outfit:wght@700',
+    { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' } }
   )
+  const css = await cssRes.text()
+  const fontUrl = css.match(/url\(([^)]+)\)/)?.[1]
+  if (!fontUrl) throw new Error('Could not find font URL')
+  const fontRes = await fetch(fontUrl)
   const fontData = await fontRes.arrayBuffer()
 
   const svg = await satori(
@@ -37,9 +41,9 @@ export async function onRequest(context) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%)',
+          width: '1200px',
+          height: '630px',
+          background: '#0E0C15',
           fontFamily: 'Outfit',
         },
         children: [
@@ -47,38 +51,39 @@ export async function onRequest(context) {
             type: 'div',
             props: {
               style: {
-                fontSize: 28,
-                color: '#9ca3af',
+                fontSize: 40,
+                color: '#8A849A',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
                 marginBottom: 16,
               },
-              children: 'You can afford',
+              children: 'YOU CAN AFFORD',
             },
           },
           {
             type: 'div',
             props: {
               style: {
-                fontSize: 96,
+                fontSize: 168,
                 fontWeight: 700,
-                color: '#d4a843',
-                letterSpacing: '-0.02em',
+                color: '#C9A84C',
+                letterSpacing: '-0.025em',
+                lineHeight: 1,
               },
-              children: formatted,
+              children: formatPrice(price),
             },
           },
           {
             type: 'div',
             props: {
               style: {
-                fontSize: 22,
-                color: '#6b7280',
+                fontSize: 32,
+                color: '#56506A',
                 marginTop: 24,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
               },
-              children: 'Montreal, Quebec, Canada',
+              children: 'MONTREAL, QUEBEC, CANADA',
             },
           },
         ],
