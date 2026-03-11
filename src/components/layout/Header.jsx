@@ -17,10 +17,10 @@ export default function Header({ isDark, toggleDark, maxPrice }) {
   return (
     <header className="flex items-center justify-between px-4 sm:px-6 pt-6 sm:pt-8 pb-2">
       <div className="min-w-0">
-        <h1 className="display-number text-xl sm:text-3xl truncate">
+        <h1 className="display-number text-xl sm:text-3xl truncate text-balance">
           House Affordability for Couples
         </h1>
-        <p className="text-[10px] sm:text-[11px] text-ink-faint mt-1 tracking-[0.12em] uppercase font-medium">Montreal, Quebec, Canada</p>
+        <p className="text-[10px] sm:text-[11px] text-ink-faint mt-1 tracking-[0.12em] uppercase font-medium text-pretty">Montreal, Quebec, Canada</p>
       </div>
       <div className="flex items-center gap-2">
         <button
