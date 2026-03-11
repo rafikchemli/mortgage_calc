@@ -23,6 +23,18 @@ const useAffordStore = create(
       setDownPaymentPercent: (v) => set({ downPaymentPercent: v }),
       setInterestRate: (v) => set({ interestRate: v }),
       setAmortizationYears: (v) => set({ amortizationYears: v }),
+
+      hydrateFromShare: (values) => set({
+        income1: values.income1,
+        income2: values.income2,
+        payFrequency: values.payFrequency,
+        incomeType: values.incomeType,
+        housingPercent1: values.housingPercent1,
+        housingPercent2: values.housingPercent2,
+        downPaymentPercent: values.downPaymentPercent,
+        interestRate: values.interestRate,
+        amortizationYears: values.amortizationYears,
+      }),
     }),
     {
       name: 'house-afford-income',
