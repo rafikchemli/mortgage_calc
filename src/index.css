@@ -45,7 +45,7 @@
   --s-gold: #C9A84C;
   --s-gold-muted: #A68B3A;
   --s-gold-glow: rgba(201,168,76,0.15);
-  --s-gold-shadow: 0 0 24px rgba(201,168,76,0.3), 0 0 48px rgba(201,168,76,0.1);
+  --s-gold-shadow: 0 0 20px rgba(201,168,76,0.35), 0 0 50px rgba(201,168,76,0.15), 0 0 80px rgba(201,168,76,0.05);
 
   --s-violet: #8B7EC8;
   --s-violet-muted: #6E63A8;
@@ -138,6 +138,12 @@ html.theme-transition *::after {
   letter-spacing: -0.025em;
   color: var(--s-gold);
   text-shadow: var(--s-gold-shadow);
+  animation: gold-breathe 4s ease-in-out infinite;
+}
+
+@keyframes gold-breathe {
+  0%, 100% { filter: brightness(1); text-shadow: var(--s-gold-shadow); }
+  50% { filter: brightness(1.15); text-shadow: var(--s-gold-shadow), 0 0 12px rgba(201,168,76,0.25); }
 }
 
 /* ── Monospace dollar amounts ───────────────────── */
