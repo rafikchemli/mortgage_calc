@@ -70,46 +70,96 @@ async function generateOgImage(price) {
           justifyContent: 'center',
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%)',
+          background: '#0E0C15',
           fontFamily: 'Outfit',
+          position: 'relative',
         },
         children: [
+          // Subtle radial glow behind content
           {
             type: 'div',
             props: {
               style: {
-                fontSize: 28,
-                color: '#9ca3af',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                marginBottom: 16,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'radial-gradient(ellipse 70% 60% at 50% 45%, rgba(201,168,76,0.08), transparent)',
               },
-              children: 'You can afford',
             },
           },
+          // Card container
           {
             type: 'div',
             props: {
               style: {
-                fontSize: 96,
-                fontWeight: 700,
-                color: '#d4a843',
-                letterSpacing: '-0.02em',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#16141F',
+                borderRadius: 32,
+                padding: '60px 80px',
+                border: '1px solid rgba(255,255,255,0.06)',
+                position: 'relative',
               },
-              children: formatPrice(price),
-            },
-          },
-          {
-            type: 'div',
-            props: {
-              style: {
-                fontSize: 22,
-                color: '#6b7280',
-                marginTop: 24,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-              },
-              children: 'Montreal, Quebec, Canada',
+              children: [
+                // Gold accent top border
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      position: 'absolute',
+                      top: 0,
+                      left: 60,
+                      right: 60,
+                      height: 3,
+                      background: 'linear-gradient(90deg, transparent, #C9A84C, #8B7EC8, transparent)',
+                      borderRadius: 2,
+                    },
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      fontSize: 36,
+                      color: '#8A849A',
+                      letterSpacing: '0.2em',
+                      textTransform: 'uppercase',
+                      marginBottom: 12,
+                    },
+                    children: 'YOU CAN AFFORD',
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      fontSize: 148,
+                      fontWeight: 700,
+                      color: '#C9A84C',
+                      letterSpacing: '-0.025em',
+                      lineHeight: 1,
+                    },
+                    children: formatPrice(price),
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      fontSize: 30,
+                      color: '#56506A',
+                      marginTop: 20,
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                    },
+                    children: 'MONTREAL, QUEBEC, CANADA',
+                  },
+                },
+              ],
             },
           },
         ],
@@ -167,9 +217,8 @@ export default {
 
     // Try static assets first, fall back to index.html for SPA routing
     const assetResponse = await env.ASSETS.fetch(request)
-    if (assetResponse.status === 404) {
-      return env.ASSETS.fetch(new URL('/', request.url))
-    }
-    return assetResponse
+    if (assetResponse.ok) return assetResponse
+    // SPA fallback: serve index.html for any non-asset path
+    return env.ASSETS.fetch(new URL('/index.html', request.url))
   },
 }
