@@ -48,9 +48,15 @@ async function generateOgImage(price) {
     wasmInitialized = true
   }
 
-  const fontRes = await fetch(
-    'https://fonts.gstatic.com/s/outfit/v11/QGYyz_MVcBeNP4NjuGObqx1XmO1I4TC1O4a0EwItq6fNIg.ttf'
+  // Fetch font via Google Fonts CSS API (more reliable from Workers)
+  const cssRes = await fetch(
+    'https://fonts.googleapis.com/css2?family=Outfit:wght@700',
+    { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' } }
   )
+  const css = await cssRes.text()
+  const fontUrl = css.match(/url\(([^)]+)\)/)?.[1]
+  if (!fontUrl) throw new Error('Could not find font URL')
+  const fontRes = await fetch(fontUrl)
   const fontData = await fontRes.arrayBuffer()
 
   const svg = await satori(
