@@ -68,98 +68,49 @@ async function generateOgImage(price) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '100%',
-          height: '100%',
+          width: '1200px',
+          height: '630px',
           background: '#0E0C15',
           fontFamily: 'Outfit',
-          position: 'relative',
         },
         children: [
-          // Subtle radial glow behind content
           {
             type: 'div',
             props: {
               style: {
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'radial-gradient(ellipse 70% 60% at 50% 45%, rgba(201,168,76,0.08), transparent)',
+                fontSize: 40,
+                color: '#8A849A',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                marginBottom: 16,
               },
+              children: 'YOU CAN AFFORD',
             },
           },
-          // Card container
           {
             type: 'div',
             props: {
               style: {
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: '#16141F',
-                borderRadius: 32,
-                padding: '60px 80px',
-                border: '1px solid rgba(255,255,255,0.06)',
-                position: 'relative',
+                fontSize: 168,
+                fontWeight: 700,
+                color: '#C9A84C',
+                letterSpacing: '-0.025em',
+                lineHeight: 1,
               },
-              children: [
-                // Gold accent top border
-                {
-                  type: 'div',
-                  props: {
-                    style: {
-                      position: 'absolute',
-                      top: 0,
-                      left: 60,
-                      right: 60,
-                      height: 3,
-                      background: 'linear-gradient(90deg, transparent, #C9A84C, #8B7EC8, transparent)',
-                      borderRadius: 2,
-                    },
-                  },
-                },
-                {
-                  type: 'div',
-                  props: {
-                    style: {
-                      fontSize: 36,
-                      color: '#8A849A',
-                      letterSpacing: '0.2em',
-                      textTransform: 'uppercase',
-                      marginBottom: 12,
-                    },
-                    children: 'YOU CAN AFFORD',
-                  },
-                },
-                {
-                  type: 'div',
-                  props: {
-                    style: {
-                      fontSize: 148,
-                      fontWeight: 700,
-                      color: '#C9A84C',
-                      letterSpacing: '-0.025em',
-                      lineHeight: 1,
-                    },
-                    children: formatPrice(price),
-                  },
-                },
-                {
-                  type: 'div',
-                  props: {
-                    style: {
-                      fontSize: 30,
-                      color: '#56506A',
-                      marginTop: 20,
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                    },
-                    children: 'MONTREAL, QUEBEC, CANADA',
-                  },
-                },
-              ],
+              children: formatPrice(price),
+            },
+          },
+          {
+            type: 'div',
+            props: {
+              style: {
+                fontSize: 32,
+                color: '#56506A',
+                marginTop: 24,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              },
+              children: 'MONTREAL, QUEBEC, CANADA',
             },
           },
         ],
