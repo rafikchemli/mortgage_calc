@@ -13,7 +13,7 @@ export default function InteractiveContributionCard({ label, amount, percent, on
         <button
           onClick={() => onPercentChange(Math.max(25, percent - 1))}
           disabled={percent <= 25}
-          className="w-7 h-7 rounded-md bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          className="size-10 rounded-lg bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-base font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           aria-label={`Decrease ${label} housing %`}
         >
           -
@@ -34,7 +34,7 @@ export default function InteractiveContributionCard({ label, amount, percent, on
         <button
           onClick={() => onPercentChange(Math.min(60, percent + 1))}
           disabled={percent >= 60}
-          className="w-7 h-7 rounded-md bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          className="size-10 rounded-lg bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-base font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           aria-label={`Increase ${label} housing %`}
         >
           +

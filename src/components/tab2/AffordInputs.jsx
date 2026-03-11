@@ -140,21 +140,12 @@ export default function AffordInputs() {
         <span className="section-label">Mortgage Terms</span>
       </div>
 
-      <div>
-        <div className="flex items-baseline justify-between mb-1.5">
-          <label className="text-[11px] font-medium text-ink-muted">Down Payment</label>
-          <span className="money text-[13px]">{downPaymentPercent}%</span>
-        </div>
-        <input
-          type="range"
-          min={5}
-          max={25}
-          step={5}
-          value={downPaymentPercent}
-          onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
-          className="w-full"
-        />
-      </div>
+      <SelectInput
+        label="Down Payment"
+        options={[5, 10, 15, 20, 25].map((v) => ({ value: v, label: `${v}%` }))}
+        value={downPaymentPercent}
+        onChange={(v) => setDownPaymentPercent(Number(v))}
+      />
 
       <SelectInput
         label="Amortization"

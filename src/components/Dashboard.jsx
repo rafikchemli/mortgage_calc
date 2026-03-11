@@ -39,8 +39,8 @@ export default function Dashboard() {
         <AffordInputs />
       </div>
 
-      {/* Gauge */}
-      <div className="enchanted-card p-4 sm:p-5 flex items-center justify-center" style={{ gridArea: 'gauge' }}>
+      {/* Gauge — hidden on mobile (housing % already visible in contribution cards) */}
+      <div className="enchanted-card p-4 sm:p-5 hidden sm:flex items-center justify-center" style={{ gridArea: 'gauge' }}>
         <AffordGauge housingPercent={housingPercent} />
       </div>
 
@@ -116,7 +116,16 @@ export default function Dashboard() {
             <AnimatedNumber value={downPaymentAmount} className="money text-[12px]" />
           </div>
           <div className="flex items-baseline justify-between py-1">
-            <span className="text-[12px] text-ink-muted">Welcome Tax</span>
+            <span className="text-[12px] text-ink-muted flex items-center gap-1">
+              Welcome Tax
+              <span
+                className="inline-flex items-center justify-center w-3.5 h-3.5 text-[8px] rounded-full bg-surface-3 text-ink-faint cursor-help"
+                title="Quebec transfer tax (droits de mutation) paid when purchasing a property. Based on Montreal brackets."
+                aria-label="Welcome tax explanation"
+              >
+                ?
+              </span>
+            </span>
             <AnimatedNumber value={welcomeTax.total} className="money text-[12px]" />
           </div>
           {cmhc.isRequired && !cmhc.exceedsMax && (
