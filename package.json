@@ -10,10 +10,12 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2",
     "framer-motion": "^12.34.0",
     "lz-string": "^1.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "satori": "^0.25.0",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
