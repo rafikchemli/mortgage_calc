@@ -18,7 +18,7 @@ export default function SelectInput({ label, options, value, onChange, compact }
               aria-checked={isActive}
               className={`px-2.5 py-1 rounded-lg text-[12px] font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-violet/30 ${
                 isActive
-                  ? 'bg-gold/15 text-gold border-gold/40 shadow-[0_0_8px_rgba(240,200,80,0.15)] chip-active'
+                  ? 'bg-gold/15 text-gold border-gold/40 shadow-[0_0_8px_var(--s-gold-glow)] chip-active'
                   : 'bg-surface text-ink-muted border-ink-ghost hover:border-violet/30 hover:text-ink'
               }`}
             >

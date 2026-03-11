@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 export function useDarkMode() {
   const [isDark, setIsDark] = useState(() => {
@@ -8,21 +8,33 @@ export function useDarkMode() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
 
+  // Sync on mount only (not on toggle — toggle handles DOM directly)
+  const didMount = useRef(false)
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark)
-    localStorage.setItem('darkMode', isDark)
+    if (!didMount.current) {
+      document.documentElement.classList.toggle('dark', isDark)
+      didMount.current = true
+    }
   }, [isDark])
 
   const toggle = useCallback(() => {
-    // Enable transitions for the theme switch
-    document.documentElement.classList.add('theme-transition')
-    setIsDark((prev) => !prev)
+    const goingDark = !isDark
 
-    // Remove transition class after animation completes
+    // 1. Enable transitions BEFORE the class change
+    document.documentElement.classList.add('theme-transition')
+
+    // 2. Toggle .dark synchronously in the same frame
+    document.documentElement.classList.toggle('dark', goingDark)
+    localStorage.setItem('darkMode', String(goingDark))
+
+    // 3. Sync React state (silent — DOM already updated)
+    setIsDark(goingDark)
+
+    // 4. Remove transition class after animation completes
     setTimeout(() => {
       document.documentElement.classList.remove('theme-transition')
-    }, 350)
-  }, [])
+    }, 650)
+  }, [isDark])
 
   return { isDark, toggle }
 }

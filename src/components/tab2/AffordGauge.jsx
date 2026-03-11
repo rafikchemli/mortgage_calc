@@ -2,7 +2,7 @@ const SEGMENTS = [
   { label: 'Conservative', maxAngle: 72, color: 'var(--s-teal)' },
   { label: 'Moderate', maxAngle: 48, color: 'var(--s-gold)' },
   { label: 'Stretched', maxAngle: 48, color: 'var(--s-copper)' },
-  { label: 'Risky', maxAngle: 12, color: '#F87171' },
+  { label: 'Risky', maxAngle: 12, color: 'var(--s-danger)' },
 ]
 
 export default function AffordGauge({ housingPercent }) {
@@ -87,7 +87,7 @@ export default function AffordGauge({ housingPercent }) {
           fill="var(--s-gold)"
           fontSize="15"
           fontWeight="700"
-          style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+          style={{ fontFamily: 'var(--font-display)' }}
         >
           {housingPercent}%
         </text>

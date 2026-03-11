@@ -33,7 +33,7 @@ export default function CurrencyDisplay({ value, className = '', size = 'md' }) 
   }
 
   return (
-    <span className={`${sizes[size]} text-gray-900 dark:text-white ${className}`}>
+    <span className={`${sizes[size]} text-ink ${className}`}>
       {formatCAD(value)}
     </span>
   )

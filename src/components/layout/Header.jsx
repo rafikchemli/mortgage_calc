@@ -20,7 +20,7 @@ export default function Header({ isDark, toggleDark, maxPrice }) {
         <h1 className="display-number text-xl sm:text-3xl truncate">
           House Affordability for Couples
         </h1>
-        <p className="text-[10px] sm:text-[11px] text-ink-faint mt-1 tracking-widest uppercase font-medium">Montreal, Quebec, Canada</p>
+        <p className="text-[10px] sm:text-[11px] text-ink-faint mt-1 tracking-[0.12em] uppercase font-medium">Montreal, Quebec, Canada</p>
       </div>
       <div className="flex items-center gap-2">
         <button
@@ -50,10 +50,11 @@ export default function Header({ isDark, toggleDark, maxPrice }) {
         >
           {/* Sun icon */}
           <svg
-            className="absolute inset-0 m-auto w-[18px] h-[18px] transition-all duration-300 ease-in-out"
+            className="absolute inset-0 m-auto w-[18px] h-[18px]"
             style={{
+              transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
               opacity: isDark ? 1 : 0,
-              transform: isDark ? 'rotate(0deg) scale(1)' : 'rotate(-90deg) scale(0.5)',
+              transform: isDark ? 'rotate(0deg) translateY(0) scale(1)' : 'rotate(90deg) translateY(-6px) scale(0.8)',
             }}
             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
           >
@@ -61,10 +62,11 @@ export default function Header({ isDark, toggleDark, maxPrice }) {
           </svg>
           {/* Moon icon */}
           <svg
-            className="absolute inset-0 m-auto w-[18px] h-[18px] transition-all duration-300 ease-in-out"
+            className="absolute inset-0 m-auto w-[18px] h-[18px]"
             style={{
+              transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
               opacity: isDark ? 0 : 1,
-              transform: isDark ? 'rotate(90deg) scale(0.5)' : 'rotate(0deg) scale(1)',
+              transform: isDark ? 'rotate(-90deg) translateY(-6px) scale(0.8)' : 'rotate(0deg) translateY(0) scale(1)',
             }}
             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
           >

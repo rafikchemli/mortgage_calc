@@ -86,12 +86,14 @@ export default function AffordInputs() {
   return (
     <div className="enchanted-card p-5 h-full">
       <div className="flex items-center justify-between mb-2">
-        <span className="section-label !mb-0">Income</span>
-        <div className="flex rounded-lg border border-ink-ghost overflow-hidden">
+        <span className="section-label">Income</span>
+        <div className="flex rounded-lg border border-ink-ghost overflow-hidden" role="radiogroup" aria-label="Income type">
           {['net', 'gross'].map((type) => (
             <button
               key={type}
               onClick={() => handleIncomeTypeChange(type)}
+              role="radio"
+              aria-checked={incomeType === type}
               className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
                 incomeType === type
                   ? 'bg-gold/15 text-gold'

@@ -2,6 +2,27 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ── Register color variables for smooth interpolation ── */
+@property --s-base { syntax: '<color>'; inherits: true; initial-value: #F5F2ED; }
+@property --s-surface-1 { syntax: '<color>'; inherits: true; initial-value: #EDEAE4; }
+@property --s-surface-2 { syntax: '<color>'; inherits: true; initial-value: #E5E1DA; }
+@property --s-surface-3 { syntax: '<color>'; inherits: true; initial-value: #DBD7CF; }
+@property --s-border { syntax: '<color>'; inherits: true; initial-value: rgba(0,0,0,0.08); }
+@property --s-text-primary { syntax: '<color>'; inherits: true; initial-value: #1E1B29; }
+@property --s-text-secondary { syntax: '<color>'; inherits: true; initial-value: #38334A; }
+@property --s-text-tertiary { syntax: '<color>'; inherits: true; initial-value: #56506A; }
+@property --s-gold { syntax: '<color>'; inherits: true; initial-value: #8B6E24; }
+@property --s-gold-muted { syntax: '<color>'; inherits: true; initial-value: #A6883A; }
+@property --s-gold-glow { syntax: '<color>'; inherits: true; initial-value: rgba(139,110,36,0.08); }
+@property --s-violet { syntax: '<color>'; inherits: true; initial-value: #5E4FA0; }
+@property --s-violet-muted { syntax: '<color>'; inherits: true; initial-value: #7668B5; }
+@property --s-violet-glow { syntax: '<color>'; inherits: true; initial-value: rgba(94,79,160,0.06); }
+@property --s-copper { syntax: '<color>'; inherits: true; initial-value: #8B5E3A; }
+@property --s-rose { syntax: '<color>'; inherits: true; initial-value: #7A4858; }
+@property --s-teal { syntax: '<color>'; inherits: true; initial-value: #3D7A66; }
+@property --s-slate { syntax: '<color>'; inherits: true; initial-value: #5A6070; }
+@property --s-danger { syntax: '<color>'; inherits: true; initial-value: #C53030; }
+
 /* ── Semantic tokens — light / dark ─────────────── */
 :root {
   color-scheme: light;
@@ -28,6 +49,7 @@
   --s-rose: #7A4858;
   --s-teal: #3D7A66;
   --s-slate: #5A6070;
+  --s-danger: #C53030;
 }
 
 .dark {
@@ -55,6 +77,7 @@
   --s-rose: #9E7080;
   --s-teal: #6B9B8A;
   --s-slate: #7A8090;
+  --s-danger: #F87171;
 }
 
 @theme {
@@ -82,13 +105,37 @@ body {
 }
 
 /* ── Smooth theme transition ──────────────────────── */
-html.theme-transition,
+html.theme-transition {
+  transition:
+    --s-base 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-surface-1 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-surface-2 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-surface-3 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-border 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-text-primary 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-text-secondary 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-text-tertiary 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-gold 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-gold-muted 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-gold-glow 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-violet 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-violet-muted 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-violet-glow 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-copper 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-rose 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-teal 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-slate 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-danger 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 html.theme-transition *,
 html.theme-transition *::before,
 html.theme-transition *::after {
-  transition: color 0.3s ease, background-color 0.3s ease, background 0.3s ease,
-    border-color 0.3s ease, box-shadow 0.3s ease, text-shadow 0.3s ease,
-    fill 0.3s ease, stroke 0.3s ease !important;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    fill 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Ambient background ─────────────────────────── */

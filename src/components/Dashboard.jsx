@@ -10,7 +10,7 @@ const COST_COLORS = ['var(--s-violet)', 'var(--s-teal)', 'var(--s-gold)', 'var(-
 
 
 function InteractiveContributionCard({ label, amount, percent, onPercentChange }) {
-  const color = percent <= 35 ? 'var(--s-teal)' : percent <= 40 ? 'var(--s-gold)' : '#F87171'
+  const color = percent <= 35 ? 'var(--s-teal)' : percent <= 40 ? 'var(--s-gold)' : 'var(--s-danger)'
   const r = 26
   const circumference = 2 * Math.PI * r
   const progress = Math.min(percent, 60) / 60
@@ -36,7 +36,7 @@ function InteractiveContributionCard({ label, amount, percent, onPercentChange }
             transform="rotate(-90 32 32)"
             style={{ transition: 'stroke-dashoffset 0.4s ease' }}
           />
-          <text x="32" y="34" textAnchor="middle" fill={color} fontSize="13" fontWeight="700" style={{ fontFamily: "'Outfit', sans-serif" }}>
+          <text x="32" y="34" textAnchor="middle" fill={color} fontSize="13" fontWeight="700" style={{ fontFamily: 'var(--font-display)' }}>
             {percent}%
           </text>
         </svg>
@@ -50,7 +50,7 @@ function InteractiveContributionCard({ label, amount, percent, onPercentChange }
         </button>
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] text-ink-faint uppercase tracking-wider">{label}</p>
+        <p className="text-[10px] text-ink-faint uppercase tracking-[0.12em]">{label}</p>
         <p className="display-number text-2xl mt-0.5 whitespace-nowrap"><AnimatedNumber value={amount} /><span className="text-[10px] text-ink-faint font-normal">/mo</span></p>
       </div>
     </div>
@@ -96,11 +96,11 @@ export default function Dashboard() {
       <div className="enchanted-card enchanted-card-accent p-4 sm:p-6" style={{ gridArea: 'hero' }}>
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-[0.1em] text-ink-faint font-medium">You can afford</p>
+            <p className="text-[11px] uppercase tracking-[0.12em] text-ink-faint font-medium">You can afford</p>
             <p className="display-number-glow text-3xl sm:text-5xl mt-1"><AnimatedNumber value={maxPrice} /></p>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-[10px] text-ink-faint uppercase tracking-wider">Down Payment</p>
+            <p className="text-[10px] text-ink-faint uppercase tracking-[0.12em]">Down Payment</p>
             <p className="display-number text-xl sm:text-2xl mt-0.5"><AnimatedNumber value={downPaymentAmount} /></p>
             <p className="text-[10px] text-ink-faint">{downPaymentPercent}%</p>
           </div>
