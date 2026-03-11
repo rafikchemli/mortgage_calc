@@ -2,17 +2,17 @@ import { useState, useCallback } from 'react'
 import useAffordStore from '../../store/useAffordStore'
 import { buildShareUrl } from '../../utils/shareUrl'
 
-export default function Header({ isDark, toggleDark }) {
+export default function Header({ isDark, toggleDark, maxPrice }) {
   const [copied, setCopied] = useState(false)
 
   const handleShare = useCallback(() => {
     const state = useAffordStore.getState()
-    const url = buildShareUrl(state)
+    const url = buildShareUrl(state, maxPrice)
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     })
-  }, [])
+  }, [maxPrice])
 
   return (
     <header className="flex items-center justify-between px-4 sm:px-6 pt-6 sm:pt-8 pb-2">

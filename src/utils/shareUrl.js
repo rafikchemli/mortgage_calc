@@ -11,9 +11,12 @@ export function encodeState(store) {
   return compressToEncodedURIComponent(JSON.stringify(arr))
 }
 
-export function decodeHash(hash) {
+export function decodeShareParams() {
+  const params = new URLSearchParams(window.location.search)
+  const s = params.get('s')
+  if (!s) return null
   try {
-    const raw = decompressFromEncodedURIComponent(hash)
+    const raw = decompressFromEncodedURIComponent(s)
     if (!raw) return null
     const arr = JSON.parse(raw)
     if (!Array.isArray(arr) || arr.length !== FIELD_ORDER.length) return null
@@ -25,7 +28,9 @@ export function decodeHash(hash) {
   }
 }
 
-export function buildShareUrl(store) {
-  const hash = encodeState(store)
-  return `${window.location.origin}${window.location.pathname}#${hash}`
+export function buildShareUrl(store, maxPrice) {
+  const s = encodeState(store)
+  const base = `${window.location.origin}${window.location.pathname}`
+  const price = Math.round(maxPrice)
+  return `${base}?s=${s}&p=${price}`
 }
