@@ -71,7 +71,7 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
           <button
             onClick={decrement}
             disabled={localValue <= min}
-            className="w-7 h-7 rounded-md bg-surface text-ink-muted hover:text-ink text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-7 h-7 rounded-md bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             aria-label={`Decrease ${label}`}
           >
             -
@@ -92,7 +92,7 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
           <button
             onClick={increment}
             disabled={localValue >= max}
-            className="w-7 h-7 rounded-md bg-surface text-ink-muted hover:text-ink text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-7 h-7 rounded-md bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             aria-label={`Increase ${label}`}
           >
             +

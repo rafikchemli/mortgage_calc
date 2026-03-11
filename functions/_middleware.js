@@ -38,6 +38,11 @@ export async function onRequest(context) {
   const ua = request.headers.get('user-agent') || ''
   const price = url.searchParams.get('p')
 
+  // Skip middleware for API routes (e.g. /api/og image generation)
+  if (url.pathname.startsWith('/api/')) {
+    return next()
+  }
+
   if (price && CRAWLER_UA.test(ua)) {
     const html = buildOgHtml(Number(price), url.toString(), url.origin)
     return new Response(html, {

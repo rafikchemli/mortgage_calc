@@ -127,14 +127,14 @@ html.theme-transition *::after {
 /* ── Display number ─────────────────────────────── */
 .display-number {
   font-family: var(--font-display);
-
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.025em;
   color: var(--s-gold);
 }
 
 .display-number-glow {
   font-family: var(--font-display);
-
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.025em;
   color: var(--s-gold);
   text-shadow: var(--s-gold-shadow);
@@ -149,6 +149,7 @@ html.theme-transition *::after {
 /* ── Monospace dollar amounts ───────────────────── */
 .money {
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -229,8 +230,8 @@ input[type="range"]::-moz-range-thumb {
 }
 .shimmer { animation: shimmer 3s ease-in-out infinite; }
 
-@keyframes bar-grow { from { width: 0; } }
-.bar-animate { animation: bar-grow 0.6s ease-out forwards; }
+@keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.bar-animate { transform-origin: left; animation: bar-grow 0.6s ease-out forwards; }
 
 @keyframes chip-bloom {
   0% { transform: scale(0.95); opacity: 0.7; }
@@ -262,6 +263,21 @@ input[type="range"]::-moz-range-thumb {
       "upfront"
       "gauge"
       "stress";
+  }
+}
+
+/* ── Reduced motion ────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .display-number-glow { animation: none; }
+  .shimmer { animation: none; opacity: 1; }
+  .bar-animate { animation: none; transform: scaleX(1); }
+  .chip-active { animation: none; }
+
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: none !important;
   }
 }
 

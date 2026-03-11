@@ -86,7 +86,7 @@ export default function AffordInputs() {
   return (
     <div className="enchanted-card p-5 h-full">
       <div className="flex items-center justify-between mb-2">
-        <span className="section-label !mb-0">Income</span>
+        <span className="section-label">Income</span>
         <div className="flex rounded-lg border border-ink-ghost overflow-hidden">
           {['net', 'gross'].map((type) => (
             <button
@@ -155,8 +155,6 @@ export default function AffordInputs() {
           className="w-full"
         />
       </div>
-
-      <div className="mt-3" />
 
       <SelectInput
         label="Amortization"
