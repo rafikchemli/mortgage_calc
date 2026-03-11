@@ -159,7 +159,11 @@ export default {
       })
     }
 
-    // Fall through to static assets
-    return env.ASSETS.fetch(request)
+    // Try static assets first, fall back to index.html for SPA routing
+    const assetResponse = await env.ASSETS.fetch(request)
+    if (assetResponse.status === 404) {
+      return env.ASSETS.fetch(new URL('/', request.url))
+    }
+    return assetResponse
   },
 }
