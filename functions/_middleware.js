@@ -5,10 +5,16 @@ function formatPrice(num) {
 }
 
 function buildOgHtml(price, url, origin) {
-  const formatted = formatPrice(price)
-  const title = `We can afford ${formatted} in Montreal`
-  const description = 'House Affordability Calculator for Couples — Montreal, Quebec, Canada'
-  const ogImage = `${origin}/api/og?p=${price}`
+  const hasPrice = price != null
+  const title = hasPrice
+    ? `We can afford ${formatPrice(price)} in Montreal`
+    : 'House Affordability Calculator for Couples'
+  const description = hasPrice
+    ? 'House Affordability Calculator for Couples — Montreal, Quebec, Canada'
+    : 'Find out what you can afford together in Montreal, Quebec'
+  const ogImage = hasPrice
+    ? `${origin}/api/og?p=${price}`
+    : `${origin}/og.png`
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -43,8 +49,8 @@ export async function onRequest(context) {
     return next()
   }
 
-  if (price && CRAWLER_UA.test(ua)) {
-    const html = buildOgHtml(Number(price), url.toString(), url.origin)
+  if (CRAWLER_UA.test(ua)) {
+    const html = buildOgHtml(price ? Number(price) : null, url.toString(), url.origin)
     return new Response(html, {
       headers: { 'Content-Type': 'text/html;charset=UTF-8' },
     })
