@@ -1,9 +1,9 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
 
 const FIELD_ORDER = [
-  'income1', 'income2', 'payFrequency', 'incomeType',
-  'housingPercent1', 'housingPercent2', 'downPaymentPercent',
-  'interestRate', 'amortizationYears', 'locationId',
+  'income1', 'income2', 'payFrequency1', 'payFrequency2', 'incomeType', 'savings',
+  'priceOverride', 'condoFeesMonthly',
+  'interestRate', 'amortizationYears', 'downPaymentPercent', 'locationId',
 ]
 
 export function encodeState(store) {
@@ -19,20 +19,40 @@ export function decodeShareParams() {
     const raw = decompressFromEncodedURIComponent(s)
     if (!raw) return null
     const arr = JSON.parse(raw)
-    if (!Array.isArray(arr) || arr.length < FIELD_ORDER.length - 1) return null
-    // Backward compat: old URLs have 9 fields (no locationId)
-    if (arr.length === FIELD_ORDER.length - 1) arr.push('rosemont-la-petite-patrie')
-    const result = {}
-    FIELD_ORDER.forEach((key, i) => { result[key] = arr[i] })
-    return result
+    if (!Array.isArray(arr)) return null
+
+    // v3 format (11 fields)
+    if (arr.length === FIELD_ORDER.length) {
+      const result = {}
+      FIELD_ORDER.forEach((key, i) => { result[key] = arr[i] })
+      return result
+    }
+
+    // v1/v2 backward compat — use defaults for missing fields
+    if (arr.length >= 9) {
+      return {
+        income1: arr[0],
+        income2: arr[1],
+        payFrequency: arr[2] || 'biweekly',
+        incomeType: arr[3] || 'net',
+        savings: 100000,
+        priceOverride: 0,
+        condoFeesMonthly: 0,
+        interestRate: arr[7] || 5.0,
+        amortizationYears: arr[8] || 25,
+        downPaymentPercent: 20,
+        locationId: arr[9] || 'rosemont-la-petite-patrie',
+      }
+    }
+
+    return null
   } catch {
     return null
   }
 }
 
-export function buildShareUrl(store, maxPrice) {
+export function buildShareUrl(store) {
   const s = encodeState(store)
   const base = `${window.location.origin}${window.location.pathname}`
-  const price = Math.round(maxPrice)
-  return `${base}?s=${s}&p=${price}`
+  return `${base}?s=${s}`
 }

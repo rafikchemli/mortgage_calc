@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function CompactValueInput({ label, min, max, step, value, onChange, formatFn, tooltip, showSteppers }) {
+export default function CompactValueInput({ label, min, max, step, value, onChange, formatFn, tooltip, showSteppers, slider, sliderMin, sliderMax, sliderStep }) {
   const [localValue, setLocalValue] = useState(value)
   const [isEditing, setIsEditing] = useState(false)
   const [editText, setEditText] = useState('')
@@ -54,11 +54,12 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
 
   return (
     <div>
-      <label className="flex items-center gap-1 text-[11px] font-medium text-ink-muted mb-1.5">
+      <label className="flex items-center gap-1 text-[11px] font-medium text-ink-faint mb-1.5">
         {label}
         {tooltip && (
           <span
-            className="inline-flex items-center justify-center w-3.5 h-3.5 text-[8px] rounded-full bg-surface-3 text-ink-faint cursor-help"
+            className="inline-flex items-center justify-center w-3.5 h-3.5 text-[8px] rounded-full text-ink-faint cursor-help"
+            style={{ background: 'var(--s-surface-3)' }}
             title={tooltip}
             aria-label={tooltip}
           >
@@ -71,7 +72,7 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
           <button
             onClick={decrement}
             disabled={localValue <= min}
-            className="size-9 rounded-lg bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] text-sm font-medium transition-all active:scale-95 disabled:opacity-25 disabled:cursor-not-allowed"
             aria-label={`Decrease ${label}`}
           >
             -
@@ -86,19 +87,36 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
           onBlur={commitEdit}
           onKeyDown={handleKeyDown}
           aria-label={`${label} value`}
-          className="money flex-1 min-w-0 text-center bg-surface border-ink-ghost border rounded-lg px-2 py-1.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-violet/20 transition-colors"
+          className="money flex-1 min-w-0 text-center rounded-lg px-2 py-1.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-violet/20 transition-colors border"
+          style={{ background: 'var(--s-surface-2)', borderColor: 'var(--s-border)' }}
         />
         {showSteppers && (
           <button
             onClick={increment}
             disabled={localValue >= max}
-            className="size-9 rounded-lg bg-surface text-ink-muted hover:text-ink active:scale-95 active:bg-surface-3 text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] text-sm font-medium transition-all active:scale-95 disabled:opacity-25 disabled:cursor-not-allowed"
             aria-label={`Increase ${label}`}
           >
             +
           </button>
         )}
       </div>
+      {slider && (
+        <input
+          type="range"
+          min={sliderMin ?? min}
+          max={sliderMax ?? max}
+          step={sliderStep ?? step}
+          value={localValue}
+          onChange={(e) => {
+            const v = Number(e.target.value)
+            setLocalValue(v)
+            onChange(v)
+          }}
+          className="w-full mt-2"
+          aria-label={`${label} slider`}
+        />
+      )}
     </div>
   )
 }

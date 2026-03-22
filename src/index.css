@@ -3,94 +3,93 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ── Register color variables for smooth interpolation ── */
-@property --s-base { syntax: '<color>'; inherits: true; initial-value: #F5F2ED; }
-@property --s-surface-1 { syntax: '<color>'; inherits: true; initial-value: #EDEAE4; }
-@property --s-surface-2 { syntax: '<color>'; inherits: true; initial-value: #E5E1DA; }
-@property --s-surface-3 { syntax: '<color>'; inherits: true; initial-value: #DBD7CF; }
-@property --s-border { syntax: '<color>'; inherits: true; initial-value: rgba(0,0,0,0.08); }
-@property --s-text-primary { syntax: '<color>'; inherits: true; initial-value: #1E1B29; }
-@property --s-text-secondary { syntax: '<color>'; inherits: true; initial-value: #38334A; }
-@property --s-text-tertiary { syntax: '<color>'; inherits: true; initial-value: #56506A; }
-@property --s-gold { syntax: '<color>'; inherits: true; initial-value: #8B6E24; }
+@property --s-base { syntax: '<color>'; inherits: true; initial-value: #FAFAF9; }
+@property --s-surface-1 { syntax: '<color>'; inherits: true; initial-value: #FFFFFF; }
+@property --s-surface-2 { syntax: '<color>'; inherits: true; initial-value: #F5F5F4; }
+@property --s-surface-3 { syntax: '<color>'; inherits: true; initial-value: #E7E5E4; }
+@property --s-border { syntax: '<color>'; inherits: true; initial-value: rgba(0,0,0,0.06); }
+@property --s-text-primary { syntax: '<color>'; inherits: true; initial-value: #1C1917; }
+@property --s-text-secondary { syntax: '<color>'; inherits: true; initial-value: #44403C; }
+@property --s-text-tertiary { syntax: '<color>'; inherits: true; initial-value: #78716C; }
+@property --s-gold { syntax: '<color>'; inherits: true; initial-value: #92710A; }
 @property --s-gold-muted { syntax: '<color>'; inherits: true; initial-value: #A6883A; }
-@property --s-gold-glow { syntax: '<color>'; inherits: true; initial-value: rgba(139,110,36,0.08); }
-@property --s-violet { syntax: '<color>'; inherits: true; initial-value: #5E4FA0; }
-@property --s-violet-muted { syntax: '<color>'; inherits: true; initial-value: #7668B5; }
-@property --s-violet-glow { syntax: '<color>'; inherits: true; initial-value: rgba(94,79,160,0.06); }
-@property --s-copper { syntax: '<color>'; inherits: true; initial-value: #8B5E3A; }
-@property --s-rose { syntax: '<color>'; inherits: true; initial-value: #7A4858; }
-@property --s-teal { syntax: '<color>'; inherits: true; initial-value: #3D7A66; }
-@property --s-slate { syntax: '<color>'; inherits: true; initial-value: #5A6070; }
-@property --s-danger { syntax: '<color>'; inherits: true; initial-value: #C53030; }
+@property --s-gold-glow { syntax: '<color>'; inherits: true; initial-value: rgba(146,113,10,0.06); }
+@property --s-violet { syntax: '<color>'; inherits: true; initial-value: #6D28D9; }
+@property --s-violet-muted { syntax: '<color>'; inherits: true; initial-value: #7C3AED; }
+@property --s-violet-glow { syntax: '<color>'; inherits: true; initial-value: rgba(109,40,217,0.04); }
+@property --s-copper { syntax: '<color>'; inherits: true; initial-value: #92400E; }
+@property --s-rose { syntax: '<color>'; inherits: true; initial-value: #9F1239; }
+@property --s-teal { syntax: '<color>'; inherits: true; initial-value: #0F766E; }
+@property --s-slate { syntax: '<color>'; inherits: true; initial-value: #64748B; }
+@property --s-danger { syntax: '<color>'; inherits: true; initial-value: #DC2626; }
 
-/* ── Semantic tokens — light / dark ─────────────── */
+/* ── Semantic tokens — light ─────────────── */
 :root {
   color-scheme: light;
-  --s-base: #F5F2ED;
-  --s-surface-1: #EDEAE4;
-  --s-surface-2: #E5E1DA;
-  --s-surface-3: #DBD7CF;
-  --s-border: rgba(0,0,0,0.08);
+  --s-base: #FAFAF9;
+  --s-surface-1: #FFFFFF;
+  --s-surface-2: #F5F5F4;
+  --s-surface-3: #E7E5E4;
+  --s-border: rgba(0,0,0,0.06);
 
-  --s-text-primary: #1E1B29;
-  --s-text-secondary: #38334A;
-  --s-text-tertiary: #56506A;
+  --s-text-primary: #1C1917;
+  --s-text-secondary: #44403C;
+  --s-text-tertiary: #78716C;
 
-  --s-gold: #8B6E24;
+  --s-gold: #92710A;
   --s-gold-muted: #A6883A;
-  --s-gold-glow: rgba(139,110,36,0.08);
+  --s-gold-glow: rgba(146,113,10,0.06);
   --s-gold-shadow: none;
 
-  --s-violet: #5E4FA0;
-  --s-violet-muted: #7668B5;
-  --s-violet-glow: rgba(94,79,160,0.06);
+  --s-violet: #6D28D9;
+  --s-violet-muted: #7C3AED;
+  --s-violet-glow: rgba(109,40,217,0.04);
 
-  --s-copper: #8B5E3A;
-  --s-rose: #7A4858;
-  --s-teal: #3D7A66;
-  --s-slate: #5A6070;
-  --s-danger: #C53030;
+  --s-copper: #92400E;
+  --s-rose: #9F1239;
+  --s-teal: #0F766E;
+  --s-slate: #64748B;
+  --s-danger: #DC2626;
 }
 
+/* ── Dark mode ─────────────── */
 .dark {
   color-scheme: dark;
-  --s-base: #0E0C15;
-  --s-surface-1: #16141F;
-  --s-surface-2: #1E1B29;
-  --s-surface-3: #272433;
+  --s-base: #0C0A09;
+  --s-surface-1: #1C1917;
+  --s-surface-2: #292524;
+  --s-surface-3: #44403C;
   --s-border: rgba(255,255,255,0.06);
 
-  --s-text-primary: #E8E4ED;
-  --s-text-secondary: #B0AAC0;
-  --s-text-tertiary: #8A849A;
+  --s-text-primary: #FAFAF9;
+  --s-text-secondary: #D6D3D1;
+  --s-text-tertiary: #A8A29E;
 
-  --s-gold: #C9A84C;
-  --s-gold-muted: #A68B3A;
-  --s-gold-glow: rgba(201,168,76,0.15);
-  --s-gold-shadow: 0 0 20px rgba(201,168,76,0.35), 0 0 50px rgba(201,168,76,0.15), 0 0 80px rgba(201,168,76,0.05);
+  --s-gold: #D4A017;
+  --s-gold-muted: #B8962E;
+  --s-gold-glow: rgba(212,160,23,0.12);
+  --s-gold-shadow: 0 0 24px rgba(212,160,23,0.2), 0 0 60px rgba(212,160,23,0.08);
 
-  --s-violet: #8B7EC8;
-  --s-violet-muted: #6E63A8;
-  --s-violet-glow: rgba(139,126,200,0.10);
+  --s-violet: #A78BFA;
+  --s-violet-muted: #8B5CF6;
+  --s-violet-glow: rgba(167,139,250,0.08);
 
-  --s-copper: #B8835F;
-  --s-rose: #9E7080;
-  --s-teal: #6B9B8A;
-  --s-slate: #7A8090;
+  --s-copper: #D97706;
+  --s-rose: #F43F5E;
+  --s-teal: #2DD4BF;
+  --s-slate: #94A3B8;
   --s-danger: #F87171;
 }
 
 @theme {
-  /* Accent colors for Tailwind opacity modifiers (bg-gold/10 etc.) */
-  --color-gold: #C9A84C;
-  --color-violet: #8B7EC8;
-  --color-copper: #B8835F;
-  --color-teal: #6B9B8A;
-  --color-rose: #9E7080;
+  --color-gold: #D4A017;
+  --color-violet: #A78BFA;
+  --color-copper: #D97706;
+  --color-teal: #2DD4BF;
+  --color-rose: #F43F5E;
   --color-danger: #F87171;
   --color-warning: #FBBF24;
 
-  /* Typography */
   --font-display: 'Outfit', system-ui, sans-serif;
   --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
@@ -107,48 +106,45 @@ body {
 /* ── Smooth theme transition ──────────────────────── */
 html.theme-transition {
   transition:
-    --s-base 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-surface-1 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-surface-2 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-surface-3 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-border 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-text-primary 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-text-secondary 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-text-tertiary 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-gold 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-gold-muted 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-gold-glow 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-violet 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-violet-muted 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-violet-glow 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-copper 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-rose 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-teal 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-slate 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-danger 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --s-base 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-surface-1 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-surface-2 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-surface-3 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-border 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-text-primary 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-text-secondary 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-text-tertiary 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-gold 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-gold-muted 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-gold-glow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-violet 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-violet-muted 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-violet-glow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-copper 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-rose 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-teal 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-slate 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-danger 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html.theme-transition *,
 html.theme-transition *::before,
 html.theme-transition *::after {
-  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    fill 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    stroke 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    fill 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Ambient background ─────────────────────────── */
-.enchanted-bg {
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, var(--s-violet-glow), transparent),
-    radial-gradient(ellipse 60% 50% at 80% 100%, var(--s-gold-glow), transparent),
-    var(--s-base);
+/* ── Background ─────────────────────────── */
+.app-bg {
+  background: var(--s-base);
   min-height: 100vh;
 }
 
-/* ── Card surface ───────────────────────────────── */
-.enchanted-card {
+/* ── Card ───────────────────────────────── */
+.card {
   background: var(--s-surface-1);
   border: 1px solid var(--s-border);
   border-radius: 1rem;
@@ -156,44 +152,23 @@ html.theme-transition *::after {
   min-width: 0;
 }
 
-.enchanted-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(ellipse 80% 50% at 50% 0%, var(--s-gold-glow), transparent);
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.enchanted-card-accent {
-  border-top: 2px solid transparent;
-  border-image: linear-gradient(90deg, transparent, var(--s-gold), var(--s-violet), transparent) 1;
-}
-
-/* ── Display number ─────────────────────────────── */
+/* ── Display number (hero prices) ─────── */
 .display-number {
   font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.035em;
   color: var(--s-gold);
 }
 
-.display-number-glow {
+.display-number-hero {
   font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.04em;
   color: var(--s-gold);
   text-shadow: var(--s-gold-shadow);
-  animation: gold-breathe 4s ease-in-out infinite;
 }
 
-@keyframes gold-breathe {
-  0%, 100% { filter: brightness(1); text-shadow: var(--s-gold-shadow); }
-  50% { filter: brightness(1.15); text-shadow: var(--s-gold-shadow), 0 0 12px rgba(201,168,76,0.25); }
-}
-
-/* ── Monospace dollar amounts ───────────────────── */
+/* ── Monospace dollar amounts ───────────── */
 .money {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -203,16 +178,16 @@ html.theme-transition *::after {
   color: var(--s-text-primary);
 }
 
-/* ── Section label ──────────────────────────────── */
+/* ── Section label ──────────────────────── */
 .section-label {
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--s-gold-muted);
+  letter-spacing: 0.1em;
+  color: var(--s-text-tertiary);
 }
 
-/* ── Semantic text/bg helpers ───────────────────── */
+/* ── Semantic text/bg helpers ───────────── */
 .text-ink { color: var(--s-text-primary); }
 .text-ink-muted { color: var(--s-text-secondary); }
 .text-ink-faint { color: var(--s-text-tertiary); }
@@ -221,103 +196,52 @@ html.theme-transition *::after {
 .bg-surface { background: var(--s-surface-2); }
 .bg-surface-3 { background: var(--s-surface-3); }
 
-/* ── Slider ─────────────────────────────────────── */
+/* ── Slider ─────────────────────────────── */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 3px;
+  height: 4px;
   border-radius: 999px;
   outline: none;
-  background: var(--s-border);
+  background: var(--s-surface-3);
   cursor: pointer;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: var(--s-violet);
+  background: var(--s-text-primary);
   cursor: pointer;
-  border: 2px solid var(--s-base);
-  box-shadow:
-    0 0 8px var(--s-violet-glow),
-    0 1px 3px rgba(0, 0, 0, 0.15);
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  border: 3px solid var(--s-surface-1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  box-shadow:
-    0 0 14px var(--s-violet-glow),
-    0 1px 3px rgba(0, 0, 0, 0.15);
-  transform: scale(1.12);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transform: scale(1.1);
 }
 
 input[type="range"]::-webkit-slider-thumb:active {
   transform: scale(0.95);
-  background: var(--s-gold);
-  box-shadow: 0 0 12px var(--s-gold-glow);
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: var(--s-violet);
+  background: var(--s-text-primary);
   cursor: pointer;
-  border: 2px solid var(--s-base);
-  box-shadow: 0 0 8px var(--s-violet-glow);
+  border: 3px solid var(--s-surface-1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-/* ── Animations ─────────────────────────────────── */
-@keyframes shimmer {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-.shimmer { animation: shimmer 3s ease-in-out infinite; }
-
-@keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.bar-animate { transform-origin: left; animation: bar-grow 0.6s ease-out forwards; }
-
-@keyframes chip-bloom {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  100% { transform: scale(1); opacity: 1; }
-}
-.chip-active { animation: chip-bloom 0.2s ease-out; }
-
-/* ── Dashboard grid ────────────────────────────── */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 2fr 3fr 3fr;
-  grid-template-rows: auto auto auto;
-  gap: 1rem;
-  grid-template-areas:
-    "settings  hero     hero"
-    "settings  monthly  upfront"
-    "gauge     stress   stress";
-}
-
-@media (max-width: 767px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 0.75rem;
-    grid-template-areas:
-      "hero"
-      "settings"
-      "monthly"
-      "upfront"
-      "stress";
-  }
-}
-
-/* ── Reduced motion ────────────────────────────── */
+/* ── Reduced motion ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .display-number-glow { animation: none; }
-  .shimmer { animation: none; opacity: 1; }
-  .bar-animate { animation: none; transform: scaleX(1); }
-  .chip-active { animation: none; }
+  .display-number-hero { animation: none; text-shadow: none; }
 
   html.theme-transition,
   html.theme-transition *,
@@ -327,13 +251,13 @@ input[type="range"]::-moz-range-thumb {
   }
 }
 
-/* ── Scrollbar ──────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
+/* ── Scrollbar ──────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--s-surface-3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--s-text-tertiary); }
 
-/* ── Privacy notice ───────────────────────────── */
+/* ── Privacy notice ───────────────────── */
 @keyframes privacy-in {
   from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.96); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
@@ -342,3 +266,7 @@ input[type="range"]::-moz-range-thumb {
   from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
   to   { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.98); }
 }
+
+/* ── Percentage bar animation ─────────── */
+@keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.bar-animate { transform-origin: left; animation: bar-grow 0.6s ease-out forwards; }

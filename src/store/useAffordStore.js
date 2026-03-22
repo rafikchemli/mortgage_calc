@@ -4,53 +4,56 @@ import { persist } from 'zustand/middleware'
 const useAffordStore = create(
   persist(
     (set) => ({
+      // Your finances
       income1: 2500,
       income2: 2000,
-      payFrequency: 'biweekly',
+      payFrequency1: 'biweekly',
+      payFrequency2: 'biweekly',
       incomeType: 'net',
-      housingPercent1: 35,
-      housingPercent2: 35,
-      downPaymentPercent: 20,
+      savings: 100000,
+
+      // Optional: check a specific property
+      priceOverride: 0, // 0 = use calculated max
+
+      // Condo fees (only relevant when checking a property)
+      condoFeesMonthly: 0,
+
+      // Mortgage terms
       interestRate: 5.0,
       amortizationYears: 25,
+      downPaymentPercent: 20,
       locationId: 'rosemont-la-petite-patrie',
 
+      // Setters
       setIncome1: (v) => set({ income1: v }),
       setIncome2: (v) => set({ income2: v }),
-      setPayFrequency: (v) => set({ payFrequency: v }),
+      setPayFrequency1: (v) => set({ payFrequency1: v }),
+      setPayFrequency2: (v) => set({ payFrequency2: v }),
       setIncomeType: (v) => set({ incomeType: v }),
-      setHousingPercent1: (v) => set({ housingPercent1: v }),
-      setHousingPercent2: (v) => set({ housingPercent2: v }),
-      setDownPaymentPercent: (v) => set({ downPaymentPercent: v }),
+      setSavings: (v) => set({ savings: v }),
+      setPriceOverride: (v) => set({ priceOverride: v }),
+      setCondoFeesMonthly: (v) => set({ condoFeesMonthly: v }),
       setInterestRate: (v) => set({ interestRate: v }),
       setAmortizationYears: (v) => set({ amortizationYears: v }),
+      setDownPaymentPercent: (v) => set({ downPaymentPercent: v }),
       setLocationId: (v) => set({ locationId: v }),
 
-      hydrateFromShare: (values) => set({
-        income1: values.income1,
-        income2: values.income2,
-        payFrequency: values.payFrequency,
-        incomeType: values.incomeType,
-        housingPercent1: values.housingPercent1,
-        housingPercent2: values.housingPercent2,
-        downPaymentPercent: values.downPaymentPercent,
-        interestRate: values.interestRate,
-        amortizationYears: values.amortizationYears,
-        ...(values.locationId && { locationId: values.locationId }),
-      }),
+      hydrateFromShare: (values) => set(values),
     }),
     {
-      name: 'house-afford-income',
+      name: 'house-afford-v3',
       partialize: (state) => ({
         income1: state.income1,
         income2: state.income2,
-        payFrequency: state.payFrequency,
+        payFrequency1: state.payFrequency1,
+        payFrequency2: state.payFrequency2,
         incomeType: state.incomeType,
-        housingPercent1: state.housingPercent1,
-        housingPercent2: state.housingPercent2,
-        downPaymentPercent: state.downPaymentPercent,
+        savings: state.savings,
+        priceOverride: state.priceOverride,
+        condoFeesMonthly: state.condoFeesMonthly,
         interestRate: state.interestRate,
         amortizationYears: state.amortizationYears,
+        downPaymentPercent: state.downPaymentPercent,
         locationId: state.locationId,
       }),
     }
