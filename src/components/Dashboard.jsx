@@ -6,8 +6,17 @@ import AnimatedNumber from './shared/AnimatedNumber'
 import InteractiveContributionCard from './shared/InteractiveContributionCard'
 import { formatCAD } from './shared/CurrencyDisplay'
 import { CLOSING_COSTS } from '../data/constants'
+import InfoTip from './shared/InfoTip'
 
 const COST_COLORS = ['var(--s-violet)', 'var(--s-teal)', 'var(--s-gold)', 'var(--s-copper)', 'var(--s-rose)']
+
+const MONTHLY_TIPS = {
+  'Mortgage (P+I)': 'Principal and interest payment on your mortgage. Based on your interest rate and amortization period.',
+  'Property Tax': 'Annual municipal tax plus Quebec school tax ($0.08/$100, $25K exemption). Rates vary by borough. Source: Ville de Montréal 2025, CGTSIM.',
+  'Maintenance': 'Estimated at 1% of home value per year. Covers repairs, upkeep, and eventual replacements (roof, furnace, etc.).',
+  'Home Insurance': 'Estimated at $1,200/year. Actual cost varies by property type, location, and coverage.',
+  'Utilities': 'Estimated monthly cost for electricity, heating, water, and internet.',
+}
 
 export default function Dashboard() {
   const {
@@ -88,6 +97,7 @@ export default function Dashboard() {
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: COST_COLORS[i] }} />
                     <span className="text-ink-muted">{item.name}</span>
+                    {MONTHLY_TIPS[item.name] && <InfoTip text={MONTHLY_TIPS[item.name]} />}
                   </div>
                   <AnimatedNumber value={item.value} className="money text-[12px]" />
                 </div>
@@ -112,34 +122,40 @@ export default function Dashboard() {
         <span className="section-label">Upfront Cash</span>
         <div className="mt-3 space-y-1.5">
           <div className="flex items-baseline justify-between py-1">
-            <span className="text-[12px] text-ink-muted">Down Payment</span>
+            <span className="text-[12px] text-ink-muted flex items-center gap-1">
+              Down Payment
+              <InfoTip text="Cash paid upfront. Below 20%, CMHC mortgage insurance is required. Minimum 5% for homes under $500K." />
+            </span>
             <AnimatedNumber value={downPaymentAmount} className="money text-[12px]" />
           </div>
           <div className="flex items-baseline justify-between py-1">
             <span className="text-[12px] text-ink-muted flex items-center gap-1">
               Welcome Tax
-              <span
-                className="inline-flex items-center justify-center w-3.5 h-3.5 text-[8px] rounded-full bg-surface-3 text-ink-faint cursor-help"
-                title="Quebec transfer tax (droits de mutation) paid when purchasing a property. Based on Montreal brackets."
-                aria-label="Welcome tax explanation"
-              >
-                ?
-              </span>
+              <InfoTip text="Quebec property transfer tax (droits de mutation). Progressive brackets from 0.5% to 4%. Paid once at purchase. Source: montreal.ca." />
             </span>
             <AnimatedNumber value={welcomeTax.total} className="money text-[12px]" />
           </div>
           {cmhc.isRequired && !cmhc.exceedsMax && (
             <div className="flex items-baseline justify-between py-1">
-              <span className="text-[12px] text-ink-muted">Tax on insurance</span>
+              <span className="text-[12px] text-ink-muted flex items-center gap-1">
+                Tax on insurance
+                <InfoTip text="Quebec sales tax (QST 9.975%) on CMHC insurance premium. Must be paid in cash — cannot be added to mortgage." />
+              </span>
               <AnimatedNumber value={cmhc.qst} className="money text-[12px]" />
             </div>
           )}
           <div className="flex items-baseline justify-between py-1">
-            <span className="text-[12px] text-ink-muted">Notary</span>
+            <span className="text-[12px] text-ink-muted flex items-center gap-1">
+              Notary
+              <InfoTip text="Legal fees for title search, deed registration, and mortgage setup. Estimated at $1,800." />
+            </span>
             <span className="money text-[12px]">{formatCAD(CLOSING_COSTS.notary)}</span>
           </div>
           <div className="flex items-baseline justify-between py-1">
-            <span className="text-[12px] text-ink-muted">Home Inspection</span>
+            <span className="text-[12px] text-ink-muted flex items-center gap-1">
+              Home Inspection
+              <InfoTip text="Pre-purchase inspection of the property's structure, systems, and condition. Estimated at $550." />
+            </span>
             <span className="money text-[12px]">{formatCAD(CLOSING_COSTS.homeInspection)}</span>
           </div>
           {cmhc.exceedsMax && (

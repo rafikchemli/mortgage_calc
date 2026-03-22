@@ -154,7 +154,6 @@ html.theme-transition *::after {
   border-radius: 1rem;
   position: relative;
   min-width: 0;
-  overflow: hidden;
 }
 
 .enchanted-card::before {
@@ -164,6 +163,7 @@ html.theme-transition *::after {
   border-radius: inherit;
   background: radial-gradient(ellipse 80% 50% at 50% 0%, var(--s-gold-glow), transparent);
   pointer-events: none;
+  overflow: hidden;
 }
 
 .enchanted-card-accent {

@@ -13,6 +13,7 @@ const useAffordStore = create(
       downPaymentPercent: 20,
       interestRate: 5.0,
       amortizationYears: 25,
+      locationId: 'rosemont-la-petite-patrie',
 
       setIncome1: (v) => set({ income1: v }),
       setIncome2: (v) => set({ income2: v }),
@@ -23,6 +24,7 @@ const useAffordStore = create(
       setDownPaymentPercent: (v) => set({ downPaymentPercent: v }),
       setInterestRate: (v) => set({ interestRate: v }),
       setAmortizationYears: (v) => set({ amortizationYears: v }),
+      setLocationId: (v) => set({ locationId: v }),
 
       hydrateFromShare: (values) => set({
         income1: values.income1,
@@ -34,6 +36,7 @@ const useAffordStore = create(
         downPaymentPercent: values.downPaymentPercent,
         interestRate: values.interestRate,
         amortizationYears: values.amortizationYears,
+        ...(values.locationId && { locationId: values.locationId }),
       }),
     }),
     {
@@ -48,6 +51,7 @@ const useAffordStore = create(
         downPaymentPercent: state.downPaymentPercent,
         interestRate: state.interestRate,
         amortizationYears: state.amortizationYears,
+        locationId: state.locationId,
       }),
     }
   )

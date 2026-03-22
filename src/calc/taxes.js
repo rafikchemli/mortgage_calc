@@ -3,6 +3,7 @@ import {
   WELCOME_TAX_BRACKETS_QUEBEC,
   MUNICIPAL_TAX_RATES,
   SCHOOL_TAX_RATE,
+  SCHOOL_TAX_EXEMPTION,
 } from '../data/constants'
 
 /**
@@ -10,7 +11,7 @@ import {
  * Montreal has additional higher brackets.
  */
 export function calcWelcomeTax(housePrice, locationId) {
-  const isMontreal = locationId === 'montreal-rosemont'
+  const isMontreal = locationId !== 'laval' && locationId !== 'quebec-city' && locationId !== 'other-quebec'
   const brackets = isMontreal ? WELCOME_TAX_BRACKETS_MONTREAL : WELCOME_TAX_BRACKETS_QUEBEC
 
   let total = 0
@@ -44,7 +45,7 @@ export function calcWelcomeTax(housePrice, locationId) {
 export function calcPropertyTax(assessedValue, locationId) {
   const municipalRate = MUNICIPAL_TAX_RATES[locationId] || MUNICIPAL_TAX_RATES['other-quebec']
   const municipal = assessedValue * municipalRate
-  const school = assessedValue * SCHOOL_TAX_RATE
+  const school = Math.max(0, assessedValue - SCHOOL_TAX_EXEMPTION) * SCHOOL_TAX_RATE
   const total = municipal + school
 
   return {

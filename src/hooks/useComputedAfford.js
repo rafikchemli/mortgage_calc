@@ -29,7 +29,7 @@ export function useComputedAfford() {
 
   const {
     income1, income2, payFrequency, incomeType, housingPercent1, housingPercent2,
-    downPaymentPercent, interestRate, amortizationYears,
+    downPaymentPercent, interestRate, amortizationYears, locationId,
   } = state
 
   const annualRate = interestRate / 100
@@ -64,26 +64,26 @@ export function useComputedAfford() {
   const dYears = useDebounce(amortizationYears, 200)
 
   const maxPrice = useMemo(
-    () => calcMaxAffordablePrice(dBudget, dDown, dRate, dYears, 'montreal-rosemont'),
-    [dBudget, dDown, dRate, dYears]
+    () => calcMaxAffordablePrice(dBudget, dDown, dRate, dYears, locationId),
+    [dBudget, dDown, dRate, dYears, locationId]
   )
 
   const stressTest = useMemo(
-    () => calcStressTest(maxPrice, downPaymentPercent, annualRate, 0.02, amortizationYears, 'montreal-rosemont'),
-    [maxPrice, downPaymentPercent, annualRate, amortizationYears]
+    () => calcStressTest(maxPrice, downPaymentPercent, annualRate, 0.02, amortizationYears, locationId),
+    [maxPrice, downPaymentPercent, annualRate, amortizationYears, locationId]
   )
 
   const stressedMaxPrice = useMemo(
-    () => calcMaxAffordablePrice(dBudget, dDown, dRate + 0.02, dYears, 'montreal-rosemont'),
-    [dBudget, dDown, dRate, dYears]
+    () => calcMaxAffordablePrice(dBudget, dDown, dRate + 0.02, dYears, locationId),
+    [dBudget, dDown, dRate, dYears, locationId]
   )
 
   const downPaymentAmount = maxPrice * (downPaymentPercent / 100)
 
   // Cost breakdown for the max affordable price
   const costBreakdown = useMemo(
-    () => calcCostBreakdownForPrice(maxPrice, downPaymentPercent, annualRate, amortizationYears, 'montreal-rosemont'),
-    [maxPrice, downPaymentPercent, annualRate, amortizationYears]
+    () => calcCostBreakdownForPrice(maxPrice, downPaymentPercent, annualRate, amortizationYears, locationId),
+    [maxPrice, downPaymentPercent, annualRate, amortizationYears, locationId]
   )
 
   // Upfront costs for the max affordable price
@@ -93,8 +93,8 @@ export function useComputedAfford() {
   )
 
   const welcomeTax = useMemo(
-    () => calcWelcomeTax(maxPrice, 'montreal-rosemont'),
-    [maxPrice]
+    () => calcWelcomeTax(maxPrice, locationId),
+    [maxPrice, locationId]
   )
 
   return {
@@ -116,5 +116,6 @@ export function useComputedAfford() {
     welcomeTax,
     interestRate,
     downPaymentPercent,
+    locationId,
   }
 }

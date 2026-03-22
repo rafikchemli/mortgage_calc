@@ -3,6 +3,7 @@ import SelectInput from '../shared/SelectInput'
 import CompactValueInput from '../shared/CompactValueInput'
 import { formatCAD } from '../shared/CurrencyDisplay'
 import { grossToNetAnnual, netToGrossAnnual } from '../../calc/incomeTax'
+import { LOCATIONS } from '../../data/constants'
 
 const FREQ_CONFIG = {
   biweekly: { min: 500, max: 500000, step: 100 },
@@ -41,6 +42,7 @@ export default function AffordInputs() {
     downPaymentPercent, setDownPaymentPercent,
     interestRate, setInterestRate,
     amortizationYears, setAmortizationYears,
+    locationId, setLocationId,
   } = useAffordStore()
 
   const config = FREQ_CONFIG[payFrequency]
@@ -155,6 +157,27 @@ export default function AffordInputs() {
         value={amortizationYears}
         onChange={(v) => setAmortizationYears(Number(v))}
       />
+
+      <div className="mb-3">
+        <label className="block text-[11px] font-medium text-ink-muted mb-1.5">Borough</label>
+        <select
+          value={locationId}
+          onChange={(e) => setLocationId(e.target.value)}
+          className="w-full px-2.5 py-1.5 rounded-lg text-[12px] font-medium bg-surface border border-ink-ghost text-ink focus:outline-none focus:ring-2 focus:ring-violet/30 appearance-none cursor-pointer"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A849A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 8px center' }}
+        >
+          <optgroup label="Montreal">
+            {LOCATIONS.filter((l) => l.group === 'Montreal').map((l) => (
+              <option key={l.id} value={l.id}>{l.label}</option>
+            ))}
+          </optgroup>
+          <optgroup label="Other">
+            {LOCATIONS.filter((l) => l.group === 'Other').map((l) => (
+              <option key={l.id} value={l.id}>{l.label}</option>
+            ))}
+          </optgroup>
+        </select>
+      </div>
 
       <div className="mt-1">
         <CompactValueInput
