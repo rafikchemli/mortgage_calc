@@ -44,8 +44,8 @@ export async function onRequest(context) {
   const ua = request.headers.get('user-agent') || ''
   const price = url.searchParams.get('p')
 
-  // Skip middleware for API routes (e.g. /api/og image generation)
-  if (url.pathname.startsWith('/api/')) {
+  // Skip middleware for API routes and static assets
+  if (url.pathname.startsWith('/api/') || url.pathname.match(/\.\w+$/)) {
     return next()
   }
 
