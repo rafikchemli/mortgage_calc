@@ -332,3 +332,13 @@ input[type="range"]::-moz-range-thumb {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--s-surface-3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--s-text-tertiary); }
+
+/* ── Privacy notice ───────────────────────────── */
+@keyframes privacy-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+@keyframes privacy-out {
+  from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.98); }
+}

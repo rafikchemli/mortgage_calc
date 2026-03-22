@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDarkMode } from './hooks/useDarkMode'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
+import PrivacyNotice from './components/layout/PrivacyNotice'
 import Dashboard from './components/Dashboard'
 import useAffordStore from './store/useAffordStore'
 import { useComputedAfford } from './hooks/useComputedAfford'
@@ -27,6 +28,7 @@ export default function App() {
           <Dashboard />
         </main>
         <Footer />
+        <PrivacyNotice />
       </div>
     </div>
   )
