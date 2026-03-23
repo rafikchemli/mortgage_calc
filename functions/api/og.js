@@ -35,10 +35,19 @@ function buildBaseOgLayout() {
       },
       children: [
         {
-          type: 'div',
+          type: 'svg',
           props: {
-            style: { fontSize: 64, marginBottom: 24 },
-            children: '🏠',
+            viewBox: '0 0 120 100',
+            fill: 'none',
+            width: 100,
+            height: 84,
+            style: { marginBottom: 24 },
+            children: [
+              { type: 'path', props: { d: 'M60 12 L16 48 L104 48 Z', stroke: GOLD, strokeWidth: 3, strokeLinecap: 'round', strokeLinejoin: 'round' } },
+              { type: 'rect', props: { x: 24, y: 48, width: 72, height: 40, stroke: MUTED, strokeWidth: 2 } },
+              { type: 'rect', props: { x: 50, y: 60, width: 16, height: 28, stroke: MUTED, strokeWidth: 2, rx: 1 } },
+              { type: 'circle', props: { cx: 63, cy: 75, r: 1.5, fill: GOLD } },
+            ],
           },
         },
         {
@@ -151,7 +160,7 @@ function buildPriceOgLayout(price) {
               borderRadius: 999, border: `1px solid ${SURFACE2}`,
             },
             children: [
-              { type: 'div', props: { style: { fontSize: 20, color: TEAL }, children: '🏠' } },
+              { type: 'div', props: { style: { fontSize: 20, color: TEAL }, children: '⌂' } },
               { type: 'div', props: { style: { fontSize: 20, color: MUTED }, children: 'nestify.rafikchemli.com' } },
             ],
           },
