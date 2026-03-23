@@ -112,14 +112,9 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
 
           {/* ═══════════ HERO ═══════════ */}
           <motion.div variants={fadeUp} transition={spring} className="pb-6">
-            <div className="flex items-center gap-2 mb-1">
-              <svg className="w-4 h-4 text-ink-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-              </svg>
-              <p className="text-[12px] uppercase tracking-[0.16em] text-ink-faint font-medium">
-                You can afford up to
-              </p>
-            </div>
+            <p className="text-[14px] text-ink-faint mb-3">
+              You can afford up to
+            </p>
             <div className="flex items-end justify-between">
               <p className="display-number-hero text-5xl sm:text-7xl leading-none">
                 <AnimatedNumber value={maxPrice} />
