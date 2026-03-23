@@ -1,15 +1,21 @@
 import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import StepWelcome from './steps/StepWelcome'
 import StepIncome from './steps/StepIncome'
 import StepSavings from './steps/StepSavings'
 import StepMortgage from './steps/StepMortgage'
 import StepReveal from './steps/StepReveal'
 import Results from './Results'
 
-const STEPS = ['income', 'savings', 'mortgage', 'reveal']
+const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
 
-// Each step gets a unique transition character
 const stepVariants = {
+  welcome: {
+    enter: { opacity: 0, scale: 0.96 },
+    center: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.98, y: -20 },
+    exitBack: { opacity: 0 },
+  },
   income: {
     enter: { y: 40, opacity: 0 },
     center: { y: 0, opacity: 1 },
@@ -37,6 +43,7 @@ const stepVariants = {
 }
 
 const stepTransitions = {
+  welcome: { type: 'spring', stiffness: 200, damping: 22, mass: 0.8 },
   income: { type: 'spring', stiffness: 250, damping: 25, mass: 0.8 },
   savings: { type: 'spring', stiffness: 280, damping: 26, mass: 0.8 },
   mortgage: { type: 'spring', stiffness: 280, damping: 26, mass: 0.8 },
@@ -45,12 +52,37 @@ const stepTransitions = {
 
 const backTransition = { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }
 
-export default function StepFlow() {
+function DarkToggle({ isDark, toggle }) {
+  return (
+    <button
+      onClick={toggle}
+      className="p-2.5 rounded-xl text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-95"
+      aria-label="Toggle dark mode"
+    >
+      {isDark ? (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      ) : (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      )}
+    </button>
+  )
+}
+
+export default function StepFlow({ isDark, toggleDark }) {
   const [step, setStep] = useState(0)
   const [direction, setDirection] = useState(1)
   const [showResults, setShowResults] = useState(false)
 
   const currentStepName = STEPS[step]
+  const isWelcome = step === 0
+
+  // Progress dots skip the welcome screen
+  const progressSteps = STEPS.slice(1)
+  const progressIndex = step - 1
 
   const goNext = useCallback(() => {
     if (step === STEPS.length - 1) {
@@ -66,9 +98,10 @@ export default function StepFlow() {
       setShowResults(false)
       return
     }
+    if (step <= 0) return
     setDirection(-1)
     setStep((s) => Math.max(s - 1, 0))
-  }, [showResults])
+  }, [showResults, step])
 
   const restart = useCallback(() => {
     setShowResults(false)
@@ -106,27 +139,38 @@ export default function StepFlow() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <Results onBack={goBack} onRestart={restart} />
+        <Results onBack={goBack} onRestart={restart} isDark={isDark} toggleDark={toggleDark} />
       </motion.div>
     )
   }
 
   return (
     <div className="relative h-dvh w-full overflow-hidden flex flex-col">
-      {/* Progress dots */}
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
-        {STEPS.map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              scale: i === step ? 1.4 : 1,
-              backgroundColor: i < step ? 'var(--s-gold)' : i === step ? 'var(--s-text-primary)' : 'var(--s-surface-3)',
-            }}
-            className="w-1.5 h-1.5 rounded-full"
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-          />
-        ))}
+      {/* Dark mode — fixed top-right during steps */}
+      <div className="absolute top-4 right-4 z-10">
+        <DarkToggle isDark={isDark} toggle={toggleDark} />
       </div>
+
+      {/* Progress dots — hidden on welcome */}
+      {!isWelcome && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute top-6 left-1/2 -translate-x-1/2 z-10 flex gap-2"
+        >
+          {progressSteps.map((_, i) => (
+            <motion.div
+              key={i}
+              animate={{
+                scale: i === progressIndex ? 1.4 : 1,
+                backgroundColor: i < progressIndex ? 'var(--s-gold)' : i === progressIndex ? 'var(--s-text-primary)' : 'var(--s-surface-3)',
+              }}
+              className="w-1.5 h-1.5 rounded-full"
+              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            />
+          ))}
+        </motion.div>
+      )}
 
       {/* Step content */}
       <AnimatePresence initial={false} mode="wait">
@@ -139,18 +183,19 @@ export default function StepFlow() {
           className="absolute inset-0 flex items-center justify-center"
         >
           <div className="w-full max-w-lg px-6">
-            {step === 0 && <StepIncome onNext={goNext} />}
-            {step === 1 && <StepSavings onNext={goNext} onBack={goBack} />}
-            {step === 2 && <StepMortgage onNext={goNext} onBack={goBack} />}
-            {step === 3 && <StepReveal onNext={goNext} onBack={goBack} />}
+            {step === 0 && <StepWelcome onNext={goNext} />}
+            {step === 1 && <StepIncome onNext={goNext} />}
+            {step === 2 && <StepSavings onNext={goNext} onBack={goBack} />}
+            {step === 3 && <StepMortgage onNext={goNext} onBack={goBack} />}
+            {step === 4 && <StepReveal onNext={goNext} onBack={goBack} />}
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation hint — hidden on reveal */}
+      {/* Navigation hint — only on input steps, not welcome or reveal */}
       <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ opacity: step < 3 ? 0.5 : 0 }}
+        animate={{ opacity: step > 0 && step < 4 ? 0.5 : 0 }}
         transition={{ duration: 0.3 }}
       >
         <span className="text-[11px] text-ink-faint tracking-wide">

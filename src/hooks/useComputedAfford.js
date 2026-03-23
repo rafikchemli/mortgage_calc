@@ -33,7 +33,7 @@ export function useComputedAfford() {
   const {
     income1, income2, payFrequency1, payFrequency2, incomeType, savings,
     priceOverride, condoFeesMonthly,
-    interestRate, amortizationYears, downPaymentPercent, locationId,
+    housingBudgetPercent, interestRate, amortizationYears, downPaymentPercent, locationId,
   } = state
 
   const annualRate = interestRate / 100
@@ -49,8 +49,8 @@ export function useComputedAfford() {
   }
   const totalMonthlyIncome = monthlyIncome1 + monthlyIncome2
 
-  // Monthly budget (35% of income — moderate threshold)
-  const monthlyBudget = totalMonthlyIncome * 0.35
+  // Monthly budget based on user's chosen housing %
+  const monthlyBudget = totalMonthlyIncome * (housingBudgetPercent / 100)
 
   // Debounce
   const dBudget = useDebounce(monthlyBudget, 200)
@@ -159,6 +159,7 @@ export function useComputedAfford() {
 
     // Stress
     stressTest,
+    housingBudgetPercent,
     interestRate,
     amortizationYears,
     locationId,

@@ -16,7 +16,7 @@ export default function SelectInput({ label, options, value, onChange, compact }
               onClick={() => onChange(optValue)}
               role="radio"
               aria-checked={isActive}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-violet/20 ${
+              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-teal/20 ${
                 isActive
                   ? 'bg-[var(--s-text-primary)] text-[var(--s-surface-1)] border-transparent'
                   : 'bg-transparent text-ink-faint border-[var(--s-border)] hover:text-ink-muted hover:border-[var(--s-surface-3)]'

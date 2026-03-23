@@ -6,7 +6,7 @@ import CompactValueInput from '../shared/CompactValueInput'
 import InfoTip from '../shared/InfoTip'
 import { formatCAD } from '../shared/CurrencyDisplay'
 
-const COST_COLORS = ['var(--s-text-primary)', 'var(--s-teal)', 'var(--s-gold)', 'var(--s-copper)', 'var(--s-slate)', 'var(--s-violet)']
+const COST_COLORS = ['var(--s-text-primary)', 'var(--s-teal)', 'var(--s-gold)', 'var(--s-copper)', 'var(--s-slate)', 'var(--s-teal)']
 
 const COST_TIPS = {
   'Mortgage (P+I)': 'Principal and interest. Canadian semi-annual compounding.',
@@ -54,8 +54,8 @@ export default function VerdictSection({ computed }) {
         </p>
         {!isOverride && (
           <p className="text-[11px] text-ink-faint mt-1.5">
-            Based on 35% of your net income
-            <InfoTip text="Most lenders recommend housing costs stay below 35% of net income. This is the maximum price where your monthly costs (mortgage, taxes, insurance, maintenance, utilities) stay within that threshold." />
+            Based on your chosen housing ratio
+            <InfoTip text="This is the maximum price where your monthly housing costs (mortgage, taxes, insurance, maintenance, utilities) stay within your chosen percentage of take-home pay. CMHC's official GDS guideline is 39% of gross income." />
           </p>
         )}
       </div>
@@ -64,7 +64,7 @@ export default function VerdictSection({ computed }) {
       <button
         onClick={handleToggleOverride}
         className="text-[12px] font-medium mt-3 mb-4 transition-colors"
-        style={{ color: isOverride ? 'var(--s-danger)' : 'var(--s-violet)' }}
+        style={{ color: isOverride ? 'var(--s-danger)' : 'var(--s-teal)' }}
       >
         {isOverride ? '× Clear — use calculated max' : 'Check a specific property →'}
       </button>

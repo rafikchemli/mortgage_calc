@@ -87,7 +87,7 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
           onBlur={commitEdit}
           onKeyDown={handleKeyDown}
           aria-label={`${label} value`}
-          className="money flex-1 min-w-0 text-center rounded-lg px-2 py-1.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-violet/20 transition-colors border"
+          className="money flex-1 min-w-0 text-center rounded-lg px-2 py-1.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-teal/20 transition-colors border"
           style={{ background: 'var(--s-surface-2)', borderColor: 'var(--s-border)' }}
         />
         {showSteppers && (

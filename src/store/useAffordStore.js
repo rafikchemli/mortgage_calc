@@ -19,6 +19,7 @@ const useAffordStore = create(
       condoFeesMonthly: 0,
 
       // Mortgage terms
+      housingBudgetPercent: 35,
       interestRate: 5.0,
       amortizationYears: 25,
       downPaymentPercent: 20,
@@ -33,6 +34,7 @@ const useAffordStore = create(
       setSavings: (v) => set({ savings: v }),
       setPriceOverride: (v) => set({ priceOverride: v }),
       setCondoFeesMonthly: (v) => set({ condoFeesMonthly: v }),
+      setHousingBudgetPercent: (v) => set({ housingBudgetPercent: v }),
       setInterestRate: (v) => set({ interestRate: v }),
       setAmortizationYears: (v) => set({ amortizationYears: v }),
       setDownPaymentPercent: (v) => set({ downPaymentPercent: v }),
@@ -51,6 +53,7 @@ const useAffordStore = create(
         savings: state.savings,
         priceOverride: state.priceOverride,
         condoFeesMonthly: state.condoFeesMonthly,
+        housingBudgetPercent: state.housingBudgetPercent,
         interestRate: state.interestRate,
         amortizationYears: state.amortizationYears,
         downPaymentPercent: state.downPaymentPercent,

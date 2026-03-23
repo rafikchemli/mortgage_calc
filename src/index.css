@@ -11,14 +11,10 @@
 @property --s-text-primary { syntax: '<color>'; inherits: true; initial-value: #1C1917; }
 @property --s-text-secondary { syntax: '<color>'; inherits: true; initial-value: #44403C; }
 @property --s-text-tertiary { syntax: '<color>'; inherits: true; initial-value: #78716C; }
-@property --s-gold { syntax: '<color>'; inherits: true; initial-value: #92710A; }
-@property --s-gold-muted { syntax: '<color>'; inherits: true; initial-value: #A6883A; }
-@property --s-gold-glow { syntax: '<color>'; inherits: true; initial-value: rgba(146,113,10,0.06); }
-@property --s-violet { syntax: '<color>'; inherits: true; initial-value: #6D28D9; }
-@property --s-violet-muted { syntax: '<color>'; inherits: true; initial-value: #7C3AED; }
-@property --s-violet-glow { syntax: '<color>'; inherits: true; initial-value: rgba(109,40,217,0.04); }
+@property --s-gold { syntax: '<color>'; inherits: true; initial-value: #896B0E; }
+@property --s-gold-muted { syntax: '<color>'; inherits: true; initial-value: #9A7F2E; }
+@property --s-gold-glow { syntax: '<color>'; inherits: true; initial-value: rgba(137,107,14,0.06); }
 @property --s-copper { syntax: '<color>'; inherits: true; initial-value: #92400E; }
-@property --s-rose { syntax: '<color>'; inherits: true; initial-value: #9F1239; }
 @property --s-teal { syntax: '<color>'; inherits: true; initial-value: #0F766E; }
 @property --s-slate { syntax: '<color>'; inherits: true; initial-value: #64748B; }
 @property --s-danger { syntax: '<color>'; inherits: true; initial-value: #DC2626; }
@@ -36,17 +32,12 @@
   --s-text-secondary: #44403C;
   --s-text-tertiary: #78716C;
 
-  --s-gold: #92710A;
-  --s-gold-muted: #A6883A;
-  --s-gold-glow: rgba(146,113,10,0.06);
+  --s-gold: #896B0E;
+  --s-gold-muted: #9A7F2E;
+  --s-gold-glow: rgba(137,107,14,0.06);
   --s-gold-shadow: none;
 
-  --s-violet: #6D28D9;
-  --s-violet-muted: #7C3AED;
-  --s-violet-glow: rgba(109,40,217,0.04);
-
   --s-copper: #92400E;
-  --s-rose: #9F1239;
   --s-teal: #0F766E;
   --s-slate: #64748B;
   --s-danger: #DC2626;
@@ -70,12 +61,7 @@
   --s-gold-glow: rgba(212,160,23,0.12);
   --s-gold-shadow: 0 0 24px rgba(212,160,23,0.2), 0 0 60px rgba(212,160,23,0.08);
 
-  --s-violet: #A78BFA;
-  --s-violet-muted: #8B5CF6;
-  --s-violet-glow: rgba(167,139,250,0.08);
-
   --s-copper: #D97706;
-  --s-rose: #F43F5E;
   --s-teal: #2DD4BF;
   --s-slate: #94A3B8;
   --s-danger: #F87171;
@@ -83,10 +69,8 @@
 
 @theme {
   --color-gold: #D4A017;
-  --color-violet: #A78BFA;
   --color-copper: #D97706;
   --color-teal: #2DD4BF;
-  --color-rose: #F43F5E;
   --color-danger: #F87171;
   --color-warning: #FBBF24;
 
@@ -117,11 +101,7 @@ html.theme-transition {
     --s-gold 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     --s-gold-muted 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     --s-gold-glow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-violet 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-violet-muted 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-violet-glow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     --s-copper 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-rose 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     --s-teal 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     --s-slate 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     --s-danger 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -200,54 +180,89 @@ html.theme-transition *::after {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 4px;
+  height: 6px;
   border-radius: 999px;
   outline: none;
   background: var(--s-surface-3);
   cursor: pointer;
+  position: relative;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--s-text-primary);
-  cursor: pointer;
+  cursor: grab;
   border: 3px solid var(--s-surface-1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.06);
-  transform: scale(1.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2), 0 0 0 4px var(--s-gold-glow);
+  transform: scale(1.15);
 }
 
 input[type="range"]::-webkit-slider-thumb:active {
-  transform: scale(0.95);
+  cursor: grabbing;
+  transform: scale(1.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2), 0 0 0 6px var(--s-gold-glow);
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--s-text-primary);
-  cursor: pointer;
+  cursor: grab;
   border: 3px solid var(--s-surface-1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+input[type="range"]::-moz-range-thumb:active {
+  cursor: grabbing;
+}
+
+input[type="range"]::-moz-range-progress {
+  background: var(--s-gold);
+  height: 6px;
+  border-radius: 999px;
+}
+
+/* ── Focus visible ─────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--s-gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input[type="range"]:focus-visible {
+  outline: none;
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 4px var(--s-gold-glow);
 }
 
 /* ── Reduced motion ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .display-number-hero { animation: none; text-shadow: none; }
+  .bar-animate { animation: none; transform: scaleX(1); }
 
   html.theme-transition,
   html.theme-transition *,
   html.theme-transition *::before,
   html.theme-transition *::after {
     transition: none !important;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

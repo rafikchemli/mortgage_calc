@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { formatCAD } from '../shared/CurrencyDisplay'
-import { grossToNetAnnual, netToGrossAnnual } from '../../calc/incomeTax'
-import { toAnnual } from '../../hooks/useComputedAfford'
+import PrivacyNotice from '../layout/PrivacyNotice'
 
 const FREQ_CONFIG = {
   biweekly: { min: 500, max: 500000, step: 100, label: 'Bi-weekly' },
@@ -53,7 +52,7 @@ function FreqPicker({ value, onChange }) {
         <button
           key={key}
           onClick={() => onChange(key)}
-          className={`px-2 py-1 text-[10px] font-medium transition-all ${
+          className={`px-3 py-2 text-[10px] font-medium transition-all ${
             value === key ? 'bg-[var(--s-text-primary)] text-[var(--s-surface-1)]' : 'text-ink-faint hover:text-ink-muted'
           }`}
         >
@@ -84,66 +83,9 @@ export default function StepIncome({ onNext }) {
 
   const [showPartner, setShowPartner] = useState(income2 > 0)
 
-  const fromAnnual = (v, freq) => {
-    const config = FREQ_CONFIG[freq]
-    switch (freq) {
-      case 'biweekly': return Math.round(v / 26 / config.step) * config.step
-      case 'monthly': return Math.round(v / 12 / config.step) * config.step
-      case 'yearly': return Math.round(v / config.step) * config.step
-      default: return Math.round(v / 26 / config.step) * config.step
-    }
-  }
-
-  const handleFreq1Change = (newFreq) => {
-    const newConfig = FREQ_CONFIG[newFreq]
-    const oldConfig = FREQ_CONFIG[payFrequency1]
-    // Convert income1 to monthly, then to new frequency
-    let monthly
-    switch (payFrequency1) {
-      case 'biweekly': monthly = income1 * 26 / 12; break
-      case 'monthly': monthly = income1; break
-      case 'yearly': monthly = income1 / 12; break
-      default: monthly = income1
-    }
-    switch (newFreq) {
-      case 'biweekly': setIncome1(Math.round(monthly * 12 / 26 / newConfig.step) * newConfig.step); break
-      case 'monthly': setIncome1(Math.round(monthly / newConfig.step) * newConfig.step); break
-      case 'yearly': setIncome1(Math.round(monthly * 12 / newConfig.step) * newConfig.step); break
-    }
-    setPayFrequency1(newFreq)
-  }
-
-  const handleFreq2Change = (newFreq) => {
-    const newConfig = FREQ_CONFIG[newFreq]
-    let monthly
-    switch (payFrequency2) {
-      case 'biweekly': monthly = income2 * 26 / 12; break
-      case 'monthly': monthly = income2; break
-      case 'yearly': monthly = income2 / 12; break
-      default: monthly = income2
-    }
-    switch (newFreq) {
-      case 'biweekly': setIncome2(Math.round(monthly * 12 / 26 / newConfig.step) * newConfig.step); break
-      case 'monthly': setIncome2(Math.round(monthly / newConfig.step) * newConfig.step); break
-      case 'yearly': setIncome2(Math.round(monthly * 12 / newConfig.step) * newConfig.step); break
-    }
-    setPayFrequency2(newFreq)
-  }
-
-  const handleIncomeTypeChange = (newType) => {
-    if (newType === incomeType) return
-    const convert1 = newType === 'net'
-      ? fromAnnual(grossToNetAnnual(toAnnual(income1, payFrequency1)), payFrequency1)
-      : fromAnnual(netToGrossAnnual(toAnnual(income1, payFrequency1)), payFrequency1)
-    setIncome1(convert1)
-    if (income2 > 0) {
-      const convert2 = newType === 'net'
-        ? fromAnnual(grossToNetAnnual(toAnnual(income2, payFrequency2)), payFrequency2)
-        : fromAnnual(netToGrossAnnual(toAnnual(income2, payFrequency2)), payFrequency2)
-      setIncome2(convert2)
-    }
-    setIncomeType(newType)
-  }
+  const handleFreq1Change = (newFreq) => setPayFrequency1(newFreq)
+  const handleFreq2Change = (newFreq) => setPayFrequency2(newFreq)
+  const handleIncomeTypeChange = (newType) => setIncomeType(newType)
 
   return (
     <motion.div variants={stagger} initial="hidden" animate="visible">
@@ -167,7 +109,7 @@ export default function StepIncome({ onNext }) {
           <button
             onClick={() => setShowPartner(true)}
             className="text-[13px] font-medium transition-colors"
-            style={{ color: 'var(--s-violet)' }}
+            style={{ color: 'var(--s-teal)' }}
           >
             + Add a partner
           </button>
@@ -179,7 +121,7 @@ export default function StepIncome({ onNext }) {
                 <FreqPicker value={payFrequency2} onChange={handleFreq2Change} />
                 <button
                   onClick={() => { setIncome2(0); setShowPartner(false) }}
-                  className="text-[10px] text-ink-faint hover:text-danger transition-colors"
+                  className="w-7 h-7 flex items-center justify-center text-[12px] text-ink-faint hover:text-danger transition-colors rounded-lg"
                 >
                   ×
                 </button>
@@ -197,7 +139,7 @@ export default function StepIncome({ onNext }) {
             <button
               key={type}
               onClick={() => handleIncomeTypeChange(type)}
-              className={`px-3 py-1.5 text-[11px] font-medium transition-all ${
+              className={`px-3 py-2 text-[11px] font-medium transition-all ${
                 incomeType === type ? 'bg-[var(--s-text-primary)] text-[var(--s-surface-1)]' : 'text-ink-faint hover:text-ink-muted'
               }`}
             >
@@ -206,14 +148,18 @@ export default function StepIncome({ onNext }) {
           ))}
         </div>
         <span className="text-[11px] text-ink-faint">
-          {incomeType === 'net' ? 'after taxes' : 'before taxes'}
+          {incomeType === 'net' ? 'what hits your account' : 'before taxes'}
         </span>
+      </motion.div>
+
+      <motion.div variants={fadeUp} className="mt-6">
+        <PrivacyNotice prominent />
       </motion.div>
 
       <motion.button
         variants={fadeUp}
         onClick={onNext}
-        className="mt-8 w-full py-3 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
+        className="mt-4 w-full py-3 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
         style={{
           background: 'var(--s-text-primary)',
           color: 'var(--s-surface-1)',

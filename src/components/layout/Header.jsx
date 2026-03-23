@@ -28,7 +28,7 @@ export default function Header({ isDark, toggleDark }) {
       <div className="flex items-center gap-1.5">
         <button
           onClick={handleShare}
-          className="relative p-2.5 rounded-xl text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] focus:outline-none focus:ring-2 focus:ring-violet/20 transition-all active:scale-95"
+          className="relative p-2.5 rounded-xl text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] focus:outline-none focus:ring-2 focus:ring-teal/20 transition-all active:scale-95"
           aria-label="Share calculator link"
         >
           <AnimatePresence mode="wait">
@@ -74,7 +74,7 @@ export default function Header({ isDark, toggleDark }) {
         </button>
         <button
           onClick={toggleDark}
-          className="relative p-2.5 rounded-xl text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] focus:outline-none focus:ring-2 focus:ring-violet/20 transition-all active:scale-95 overflow-hidden"
+          className="relative p-2.5 rounded-xl text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] focus:outline-none focus:ring-2 focus:ring-teal/20 transition-all active:scale-95 overflow-hidden"
           aria-label="Toggle dark mode"
         >
           <AnimatePresence mode="wait">

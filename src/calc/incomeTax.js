@@ -1,10 +1,10 @@
 /**
- * Quebec gross-to-net income estimation (2024 rates).
+ * Quebec gross-to-net income estimation (2025 rates).
  * Includes federal tax, Quebec provincial tax, QPP, EI, and QPIP.
  * This is an approximation — actual net depends on deductions, credits, etc.
  */
 
-// Federal brackets 2024
+// Federal brackets 2025
 const FEDERAL_BRACKETS = [
   { min: 0,      max: 55867,  rate: 0.15 },
   { min: 55867,  max: 111733, rate: 0.205 },
@@ -13,7 +13,7 @@ const FEDERAL_BRACKETS = [
   { min: 220000, max: Infinity, rate: 0.33 },
 ]
 
-// Quebec provincial brackets 2024
+// Quebec provincial brackets 2025
 const QUEBEC_BRACKETS = [
   { min: 0,      max: 51780,  rate: 0.14 },
   { min: 51780,  max: 103545, rate: 0.19 },
@@ -25,16 +25,16 @@ const QUEBEC_BRACKETS = [
 const FEDERAL_BASIC_PERSONAL = 15705
 const QUEBEC_BASIC_PERSONAL = 17183
 
-// QPP (Quebec Pension Plan) 2024
+// QPP (Quebec Pension Plan) 2025
 const QPP_RATE = 0.064
 const QPP_MAX_PENSIONABLE = 68500
 const QPP_EXEMPTION = 3500
 
-// EI (Employment Insurance) 2024 — Quebec rate is lower
+// EI (Employment Insurance) 2025 — Quebec rate is lower
 const EI_RATE_QC = 0.01320
 const EI_MAX_INSURABLE = 63200
 
-// QPIP (Quebec Parental Insurance Plan) 2024
+// QPIP (Quebec Parental Insurance Plan) 2025
 const QPIP_RATE = 0.00494
 const QPIP_MAX_INSURABLE = 94000
 
