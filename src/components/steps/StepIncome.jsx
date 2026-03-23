@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { formatCAD } from '../shared/CurrencyDisplay'
 import PrivacyNotice from '../layout/PrivacyNotice'
@@ -88,13 +88,13 @@ export default function StepIncome({ onNext }) {
   const handleIncomeTypeChange = (newType) => setIncomeType(newType)
 
   return (
-    <motion.div variants={stagger} initial="hidden" animate="visible">
-      <motion.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 1</motion.p>
-      <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
+    <m.div variants={stagger} initial="hidden" animate="visible">
+      <m.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 1</m.p>
+      <m.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
         What do you earn?
-      </motion.h2>
+      </m.h2>
 
-      <motion.div variants={fadeUp} className="space-y-5">
+      <m.div variants={fadeUp} className="space-y-5">
         {/* Person 1 */}
         <div>
           <div className="flex items-center justify-between mb-2">
@@ -130,10 +130,10 @@ export default function StepIncome({ onNext }) {
             <CurrencyInput value={income2} onChange={setIncome2} />
           </div>
         )}
-      </motion.div>
+      </m.div>
 
       {/* Net/Gross toggle */}
-      <motion.div variants={fadeUp} className="flex items-center gap-3 mt-6">
+      <m.div variants={fadeUp} className="flex items-center gap-3 mt-6">
         <div className="flex rounded-lg overflow-hidden border" style={{ borderColor: 'var(--s-border)' }}>
           {['net', 'gross'].map((type) => (
             <button
@@ -150,13 +150,13 @@ export default function StepIncome({ onNext }) {
         <span className="text-[11px] text-ink-faint">
           {incomeType === 'net' ? 'what hits your account' : 'before taxes'}
         </span>
-      </motion.div>
+      </m.div>
 
-      <motion.div variants={fadeUp} className="mt-6">
+      <m.div variants={fadeUp} className="mt-6">
         <PrivacyNotice prominent />
-      </motion.div>
+      </m.div>
 
-      <motion.button
+      <m.button
         variants={fadeUp}
         onClick={onNext}
         className="mt-4 w-full py-3 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
@@ -166,7 +166,7 @@ export default function StepIncome({ onNext }) {
         }}
       >
         Continue
-      </motion.button>
-    </motion.div>
+      </m.button>
+    </m.div>
   )
 }

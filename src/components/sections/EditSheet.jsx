@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { formatCAD } from '../shared/CurrencyDisplay'
@@ -82,7 +82,7 @@ export default function EditSheet({ open, onClose }) {
       {open && (
         <>
           {/* Backdrop */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -92,7 +92,7 @@ export default function EditSheet({ open, onClose }) {
           />
 
           {/* Sheet */}
-          <motion.div
+          <m.div
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -229,7 +229,7 @@ export default function EditSheet({ open, onClose }) {
                 <div className="flex items-center gap-5">
                   <div>
                     <p className="text-[9px] uppercase tracking-wider text-ink-faint">Max price</p>
-                    <motion.p
+                    <m.p
                       key={maxPrice}
                       initial={{ opacity: 0.5, y: 2 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -237,11 +237,11 @@ export default function EditSheet({ open, onClose }) {
                       style={{ color: 'var(--s-gold)', fontFamily: 'var(--font-display)' }}
                     >
                       {formatCAD(maxPrice)}
-                    </motion.p>
+                    </m.p>
                   </div>
                   <div>
                     <p className="text-[9px] uppercase tracking-wider text-ink-faint">Monthly</p>
-                    <motion.p
+                    <m.p
                       key={costBreakdown.total}
                       initial={{ opacity: 0.5, y: 2 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -249,7 +249,7 @@ export default function EditSheet({ open, onClose }) {
                       style={{ color: housingColor, fontFamily: 'var(--font-display)' }}
                     >
                       {formatCAD(costBreakdown.total)}
-                    </motion.p>
+                    </m.p>
                   </div>
                 </div>
                 <button
@@ -261,7 +261,7 @@ export default function EditSheet({ open, onClose }) {
                 </button>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>

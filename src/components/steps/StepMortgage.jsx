@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 
 const stagger = {
@@ -23,7 +23,7 @@ function PresetOrCustom({ presets, value, onChange, suffix = '%', min = 0, max =
       {presets.map((v) => {
         const active = value === v && !editing
         return (
-          <motion.button
+          <m.button
             key={v}
             onClick={() => { setEditing(false); onChange(v) }}
             whileTap={{ scale: 0.95 }}
@@ -37,7 +37,7 @@ function PresetOrCustom({ presets, value, onChange, suffix = '%', min = 0, max =
             <span className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
               {v}{suffix}
             </span>
-          </motion.button>
+          </m.button>
         )
       })}
 
@@ -63,7 +63,7 @@ function PresetOrCustom({ presets, value, onChange, suffix = '%', min = 0, max =
           <span className="text-[13px] text-ink-faint">{suffix}</span>
         </div>
       ) : (
-        <motion.button
+        <m.button
           onClick={() => { setEditing(true); setText(isCustom ? String(value) : '') }}
           whileTap={{ scale: 0.95 }}
           className="px-4 py-3 rounded-xl text-center transition-all border min-w-[3.5rem]"
@@ -77,7 +77,7 @@ function PresetOrCustom({ presets, value, onChange, suffix = '%', min = 0, max =
           <span className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
             {isCustom ? `${value}${suffix}` : 'Other'}
           </span>
-        </motion.button>
+        </m.button>
       )}
     </div>
   )
@@ -105,18 +105,18 @@ export default function StepMortgage({ onNext, onBack }) {
     : 'Aggressive'
 
   return (
-    <motion.div variants={stagger} initial="hidden" animate="visible">
-      <motion.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 3</motion.p>
-      <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
+    <m.div variants={stagger} initial="hidden" animate="visible">
+      <m.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 3</m.p>
+      <m.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
         Set your terms
-      </motion.h2>
+      </m.h2>
 
       {/* ── Housing budget — slider for this one, it's a feel-based choice ── */}
-      <motion.div variants={fadeUp} className="mb-7">
+      <m.div variants={fadeUp} className="mb-7">
         <div className="flex items-baseline justify-between mb-2.5">
           <p className="text-[13px] text-ink-muted">% of take-home pay for housing</p>
           <div className="flex items-baseline gap-1.5">
-            <motion.span
+            <m.span
               key={housingBudgetPercent}
               initial={{ scale: 1.15, opacity: 0.5 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -124,9 +124,9 @@ export default function StepMortgage({ onNext, onBack }) {
               style={{ color: budgetColor, fontFamily: 'var(--font-display)' }}
             >
               {housingBudgetPercent}%
-            </motion.span>
+            </m.span>
             <AnimatePresence mode="wait">
-              <motion.span
+              <m.span
                 key={budgetHint}
                 initial={{ opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -136,7 +136,7 @@ export default function StepMortgage({ onNext, onBack }) {
                 style={{ color: budgetColor }}
               >
                 {budgetHint}
-              </motion.span>
+              </m.span>
             </AnimatePresence>
           </div>
         </div>
@@ -148,10 +148,10 @@ export default function StepMortgage({ onNext, onBack }) {
           <input type="range" min={15} max={60} step={1} value={housingBudgetPercent}
             onChange={(e) => setHousingBudgetPercent(Number(e.target.value))} className="relative z-10 w-full" />
         </div>
-      </motion.div>
+      </m.div>
 
       {/* ── Down payment ── */}
-      <motion.div variants={fadeUp} className="mb-7">
+      <m.div variants={fadeUp} className="mb-7">
         <p className="text-[13px] text-ink-muted mb-3">Down payment</p>
         <PresetOrCustom
           presets={[5, 10, 15, 20, 25]}
@@ -165,20 +165,20 @@ export default function StepMortgage({ onNext, onBack }) {
             : <>No insurance needed — conventional rates may be slightly higher.</>
           }
         </p>
-      </motion.div>
+      </m.div>
 
       {/* ── Interest rate — thermostat style ── */}
-      <motion.div variants={fadeUp} className="mb-7">
+      <m.div variants={fadeUp} className="mb-7">
         <p className="text-[13px] text-ink-muted mb-4">Interest rate</p>
         <div className="flex items-center justify-center gap-4">
-          <motion.button
+          <m.button
             whileTap={{ scale: 0.9 }}
             onClick={() => setInterestRate(Math.max(0.5, Math.round((interestRate - 0.1) * 10) / 10))}
             className="w-11 h-11 rounded-full flex items-center justify-center border transition-colors hover:bg-[var(--s-surface-2)] active:bg-[var(--s-surface-3)]"
             style={{ borderColor: 'var(--s-border)' }}
           >
             <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 12h14" /></svg>
-          </motion.button>
+          </m.button>
 
           {editingRate ? (
             <input
@@ -204,19 +204,19 @@ export default function StepMortgage({ onNext, onBack }) {
             </button>
           )}
 
-          <motion.button
+          <m.button
             whileTap={{ scale: 0.9 }}
             onClick={() => setInterestRate(Math.min(15, Math.round((interestRate + 0.1) * 10) / 10))}
             className="w-11 h-11 rounded-full flex items-center justify-center border transition-colors hover:bg-[var(--s-surface-2)] active:bg-[var(--s-surface-3)]"
             style={{ borderColor: 'var(--s-border)' }}
           >
             <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M12 5v14M5 12h14" /></svg>
-          </motion.button>
+          </m.button>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* ── Amortization ── */}
-      <motion.div variants={fadeUp} className="mb-2">
+      <m.div variants={fadeUp} className="mb-2">
         <p className="text-[13px] text-ink-muted mb-3">Amortization</p>
         <div className="grid grid-cols-3 gap-2">
           {[
@@ -226,7 +226,7 @@ export default function StepMortgage({ onNext, onBack }) {
           ].map(({ value, hint }) => {
             const active = amortizationYears === value
             return (
-              <motion.button key={value} onClick={() => setAmortizationYears(value)} whileTap={{ scale: 0.95 }}
+              <m.button key={value} onClick={() => setAmortizationYears(value)} whileTap={{ scale: 0.95 }}
                 className="py-4 rounded-xl text-center transition-all border"
                 style={{
                   background: active ? 'var(--s-text-primary)' : 'transparent',
@@ -235,14 +235,14 @@ export default function StepMortgage({ onNext, onBack }) {
                 }}>
                 <span className="text-lg font-semibold block" style={{ fontFamily: 'var(--font-display)' }}>{value}</span>
                 <span className="text-[9px] block mt-0.5" style={{ opacity: active ? 0.7 : 0.4 }}>{hint}</span>
-              </motion.button>
+              </m.button>
             )
           })}
         </div>
-      </motion.div>
+      </m.div>
 
       {/* ── Navigation ── */}
-      <motion.div variants={fadeUp} className="flex gap-3 mt-6">
+      <m.div variants={fadeUp} className="flex gap-3 mt-6">
         <button onClick={onBack} className="px-5 py-3 rounded-xl text-[14px] font-medium text-ink-faint transition-all active:scale-[0.98]">
           Back
         </button>
@@ -250,7 +250,7 @@ export default function StepMortgage({ onNext, onBack }) {
           style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}>
           See what I can afford
         </button>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import SelectInput from '../shared/SelectInput'
 import CompactValueInput from '../shared/CompactValueInput'
@@ -53,23 +53,23 @@ export default function TermsSection() {
           <span className="text-[11px] text-ink-faint ml-2">
             {LOCATIONS.find((l) => l.id === locationId)?.label || locationId}
           </span>
-          <motion.svg
+          <m.svg
             animate={{ rotate: showLocation ? 180 : 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             className="w-3 h-3 ml-auto text-ink-faint"
             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </motion.svg>
+          </m.svg>
         </button>
         <AnimatePresence>
           {showLocation && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
+            <m.div
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: 1, scaleY: 1 }}
+              exit={{ opacity: 0, scaleY: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="overflow-hidden"
+              className="origin-top"
             >
               <select
                 value={locationId}
@@ -94,7 +94,7 @@ export default function TermsSection() {
                   ))}
                 </optgroup>
               </select>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>

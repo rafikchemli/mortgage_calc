@@ -3,7 +3,8 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 const FIELD_ORDER = [
   'income1', 'income2', 'payFrequency1', 'payFrequency2', 'incomeType', 'savings',
   'priceOverride', 'condoFeesMonthly',
-  'interestRate', 'amortizationYears', 'downPaymentPercent', 'locationId',
+  'splitMode', 'customSplit', 'budgetPercent1', 'budgetPercent2',
+  'housingBudgetPercent', 'interestRate', 'amortizationYears', 'downPaymentPercent', 'locationId',
 ]
 
 export function encodeState(store) {

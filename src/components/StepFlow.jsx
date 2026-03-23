@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import StepWelcome from './steps/StepWelcome'
 import StepIncome from './steps/StepIncome'
 import StepSavings from './steps/StepSavings'
@@ -31,14 +31,14 @@ const stepVariants = {
   mortgage: {
     enter: { y: 50, opacity: 0 },
     center: { y: 0, opacity: 1 },
-    exit: { y: -20, opacity: 0, scale: 0.95, filter: 'blur(4px)' },
+    exit: { y: -20, opacity: 0, scale: 0.92 },
     exitBack: { y: 50, opacity: 0 },
   },
   reveal: {
-    enter: { scale: 0.85, opacity: 0, filter: 'blur(8px)' },
-    center: { scale: 1, opacity: 1, filter: 'blur(0px)' },
+    enter: { scale: 0.85, opacity: 0 },
+    center: { scale: 1, opacity: 1 },
     exit: { scale: 1.05, opacity: 0 },
-    exitBack: { scale: 0.95, opacity: 0, filter: 'blur(4px)' },
+    exitBack: { scale: 0.92, opacity: 0 },
   },
 }
 
@@ -134,13 +134,13 @@ export default function StepFlow({ isDark, toggleDark }) {
 
   if (showResults) {
     return (
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <Results onBack={goBack} onRestart={restart} isDark={isDark} toggleDark={toggleDark} />
-      </motion.div>
+      </m.div>
     )
   }
 
@@ -153,13 +153,13 @@ export default function StepFlow({ isDark, toggleDark }) {
 
       {/* Progress dots — hidden on welcome */}
       {!isWelcome && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="absolute top-6 left-1/2 -translate-x-1/2 z-10 flex gap-2"
         >
           {progressSteps.map((_, i) => (
-            <motion.div
+            <m.div
               key={i}
               animate={{
                 scale: i === progressIndex ? 1.4 : 1,
@@ -169,12 +169,12 @@ export default function StepFlow({ isDark, toggleDark }) {
               transition={{ type: 'spring', stiffness: 500, damping: 30 }}
             />
           ))}
-        </motion.div>
+        </m.div>
       )}
 
       {/* Step content */}
       <AnimatePresence initial={false} mode="wait">
-        <motion.div
+        <m.div
           key={step}
           initial={direction > 0 ? stepVariants[currentStepName].enter : stepVariants[currentStepName].exitBack || stepVariants[currentStepName].enter}
           animate={stepVariants[currentStepName].center}
@@ -189,11 +189,11 @@ export default function StepFlow({ isDark, toggleDark }) {
             {step === 3 && <StepMortgage onNext={goNext} onBack={goBack} />}
             {step === 4 && <StepReveal onNext={goNext} onBack={goBack} />}
           </div>
-        </motion.div>
+        </m.div>
       </AnimatePresence>
 
       {/* Navigation hint — only on input steps, not welcome or reveal */}
-      <motion.div
+      <m.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
         animate={{ opacity: step > 0 && step < 4 ? 0.5 : 0 }}
         transition={{ duration: 0.3 }}
@@ -201,7 +201,7 @@ export default function StepFlow({ isDark, toggleDark }) {
         <span className="text-[11px] text-ink-faint tracking-wide">
           press <span className="font-mono text-ink-muted">Enter ↵</span>
         </span>
-      </motion.div>
+      </m.div>
     </div>
   )
 }

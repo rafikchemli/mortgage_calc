@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 export default function InfoTip({ text }) {
   const [open, setOpen] = useState(false)
@@ -55,7 +55,7 @@ export default function InfoTip({ text }) {
       {createPortal(
         <AnimatePresence>
           {open && (
-            <motion.div
+            <m.div
               ref={tipRef}
               initial={{ opacity: 0, y: 4, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -71,7 +71,7 @@ export default function InfoTip({ text }) {
               }}
             >
               {text}
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>,
         document.body

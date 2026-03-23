@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 const stagger = {
   hidden: {},
@@ -21,7 +21,7 @@ const draw = {
 
 function HouseIllustration() {
   return (
-    <motion.svg
+    <m.svg
       viewBox="0 0 120 100"
       fill="none"
       className="w-24 h-24 sm:w-28 sm:h-28 mx-auto"
@@ -29,7 +29,7 @@ function HouseIllustration() {
       animate="visible"
     >
       {/* Roof */}
-      <motion.path
+      <m.path
         d="M60 12 L16 48 L104 48 Z"
         stroke="var(--s-gold)"
         strokeWidth="2"
@@ -39,7 +39,7 @@ function HouseIllustration() {
         variants={draw}
       />
       {/* Roof accent line */}
-      <motion.path
+      <m.path
         d="M60 22 L30 44 L90 44 Z"
         stroke="var(--s-gold)"
         strokeWidth="0.5"
@@ -50,7 +50,7 @@ function HouseIllustration() {
         variants={draw}
       />
       {/* Walls */}
-      <motion.rect
+      <m.rect
         x="24" y="48" width="72" height="40"
         stroke="var(--s-text-tertiary)"
         strokeWidth="1.5"
@@ -60,7 +60,7 @@ function HouseIllustration() {
         variants={draw}
       />
       {/* Door */}
-      <motion.rect
+      <m.rect
         x="50" y="60" width="16" height="28"
         stroke="var(--s-text-tertiary)"
         strokeWidth="1.5"
@@ -71,7 +71,7 @@ function HouseIllustration() {
         variants={draw}
       />
       {/* Door knob */}
-      <motion.circle
+      <m.circle
         cx="63" cy="75" r="1.2"
         fill="var(--s-gold)"
         variants={{
@@ -80,7 +80,7 @@ function HouseIllustration() {
         }}
       />
       {/* Left window */}
-      <motion.rect
+      <m.rect
         x="30" y="56" width="12" height="12"
         stroke="var(--s-text-tertiary)"
         strokeWidth="1.2"
@@ -88,10 +88,10 @@ function HouseIllustration() {
         fill="none"
         variants={draw}
       />
-      <motion.line x1="36" y1="56" x2="36" y2="68" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
-      <motion.line x1="30" y1="62" x2="42" y2="62" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
+      <m.line x1="36" y1="56" x2="36" y2="68" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
+      <m.line x1="30" y1="62" x2="42" y2="62" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
       {/* Right window */}
-      <motion.rect
+      <m.rect
         x="74" y="56" width="12" height="12"
         stroke="var(--s-text-tertiary)"
         strokeWidth="1.2"
@@ -99,10 +99,10 @@ function HouseIllustration() {
         fill="none"
         variants={draw}
       />
-      <motion.line x1="80" y1="56" x2="80" y2="68" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
-      <motion.line x1="74" y1="62" x2="86" y2="62" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
+      <m.line x1="80" y1="56" x2="80" y2="68" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
+      <m.line x1="74" y1="62" x2="86" y2="62" stroke="var(--s-text-tertiary)" strokeWidth="0.8" variants={draw} />
       {/* Chimney */}
-      <motion.rect
+      <m.rect
         x="78" y="18" width="8" height="20"
         stroke="var(--s-text-tertiary)"
         strokeWidth="1.2"
@@ -110,7 +110,7 @@ function HouseIllustration() {
         variants={draw}
       />
       {/* Smoke */}
-      <motion.path
+      <m.path
         d="M82 18 Q80 12 83 8 Q86 4 82 0"
         stroke="var(--s-text-tertiary)"
         strokeWidth="1"
@@ -127,20 +127,20 @@ function HouseIllustration() {
         }}
       />
       {/* Ground line */}
-      <motion.line
+      <m.line
         x1="8" y1="88" x2="112" y2="88"
         stroke="var(--s-text-tertiary)"
         strokeWidth="0.8"
         opacity="0.3"
         variants={draw}
       />
-    </motion.svg>
+    </m.svg>
   )
 }
 
 function FeaturePill({ children, delay }) {
   return (
-    <motion.span
+    <m.span
       variants={{
         hidden: { opacity: 0, scale: 0.9, y: 8 },
         visible: {
@@ -154,13 +154,13 @@ function FeaturePill({ children, delay }) {
       style={{ borderColor: 'var(--s-border)', color: 'var(--s-text-secondary)' }}
     >
       {children}
-    </motion.span>
+    </m.span>
   )
 }
 
 export default function StepWelcome({ onNext }) {
   return (
-    <motion.div
+    <m.div
       variants={stagger}
       initial="hidden"
       animate="visible"
@@ -168,7 +168,7 @@ export default function StepWelcome({ onNext }) {
     >
       <HouseIllustration />
 
-      <motion.h1
+      <m.h1
         variants={fadeUp}
         className="text-3xl sm:text-[2.5rem] font-bold tracking-tight text-ink leading-[1.15] mt-8"
         style={{ fontFamily: 'var(--font-display)' }}
@@ -176,18 +176,18 @@ export default function StepWelcome({ onNext }) {
         How much house
         <br />
         <span style={{ color: 'var(--s-gold)' }}>can you afford?</span>
-      </motion.h1>
+      </m.h1>
 
-      <motion.p
+      <m.p
         variants={fadeUp}
         className="text-[15px] text-ink-muted mt-4 leading-relaxed max-w-[22rem] mx-auto"
       >
         A few questions about your finances.
         <br className="hidden sm:block" />
         {' '}A clear answer in 30 seconds.
-      </motion.p>
+      </m.p>
 
-      <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-2 mt-6">
+      <m.div variants={fadeUp} className="flex flex-wrap justify-center gap-2 mt-6">
         <FeaturePill delay={0}>
           <svg className="w-3 h-3" viewBox="0 0 16 16" fill="currentColor" style={{ color: 'var(--s-teal)' }}>
             <path d="M8 0L1.5 3v4.5c0 4.1 2.8 7.9 6.5 8.5 3.7-.6 6.5-4.4 6.5-8.5V3L8 0z" />
@@ -207,9 +207,9 @@ export default function StepWelcome({ onNext }) {
           </svg>
           Quebec 2025 rates
         </FeaturePill>
-      </motion.div>
+      </m.div>
 
-      <motion.button
+      <m.button
         variants={fadeUp}
         onClick={onNext}
         whileHover={{ scale: 1.02 }}
@@ -218,11 +218,11 @@ export default function StepWelcome({ onNext }) {
         style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}
       >
         Get started
-      </motion.button>
+      </m.button>
 
-      <motion.p variants={fadeUp} className="text-[11px] text-ink-faint mt-3">
+      <m.p variants={fadeUp} className="text-[11px] text-ink-faint mt-3">
         For couples & solo buyers in Montreal
-      </motion.p>
-    </motion.div>
+      </m.p>
+    </m.div>
   )
 }

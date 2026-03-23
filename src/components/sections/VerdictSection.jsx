@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import AnimatedNumber from '../shared/AnimatedNumber'
 import CompactValueInput from '../shared/CompactValueInput'
@@ -72,12 +72,12 @@ export default function VerdictSection({ computed }) {
       {/* Override inputs */}
       <AnimatePresence>
         {showOverride && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+          <m.div
+            initial={{ opacity: 0, scaleY: 0 }}
+            animate={{ opacity: 1, scaleY: 1 }}
+            exit={{ opacity: 0, scaleY: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="overflow-hidden"
+            className="origin-top"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 pb-4 border-b" style={{ borderColor: 'var(--s-border)' }}>
               <CompactValueInput
@@ -102,7 +102,7 @@ export default function VerdictSection({ computed }) {
                 showSteppers
               />
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 

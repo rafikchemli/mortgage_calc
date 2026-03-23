@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { buildShareUrl } from '../../utils/shareUrl'
 
@@ -33,7 +33,7 @@ export default function Header({ isDark, toggleDark }) {
         >
           <AnimatePresence mode="wait">
             {copied ? (
-              <motion.svg
+              <m.svg
                 key="check"
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -43,9 +43,9 @@ export default function Header({ isDark, toggleDark }) {
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </motion.svg>
+              </m.svg>
             ) : (
-              <motion.svg
+              <m.svg
                 key="link"
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -55,12 +55,12 @@ export default function Header({ isDark, toggleDark }) {
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-              </motion.svg>
+              </m.svg>
             )}
           </AnimatePresence>
           <AnimatePresence>
             {copied && (
-              <motion.span
+              <m.span
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
@@ -68,7 +68,7 @@ export default function Header({ isDark, toggleDark }) {
                 style={{ color: 'var(--s-teal)' }}
               >
                 Copied!
-              </motion.span>
+              </m.span>
             )}
           </AnimatePresence>
         </button>
@@ -79,7 +79,7 @@ export default function Header({ isDark, toggleDark }) {
         >
           <AnimatePresence mode="wait">
             {isDark ? (
-              <motion.svg
+              <m.svg
                 key="sun"
                 initial={{ rotate: 90, scale: 0.5, opacity: 0 }}
                 animate={{ rotate: 0, scale: 1, opacity: 1 }}
@@ -89,9 +89,9 @@ export default function Header({ isDark, toggleDark }) {
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </motion.svg>
+              </m.svg>
             ) : (
-              <motion.svg
+              <m.svg
                 key="moon"
                 initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
                 animate={{ rotate: 0, scale: 1, opacity: 1 }}
@@ -101,7 +101,7 @@ export default function Header({ isDark, toggleDark }) {
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </motion.svg>
+              </m.svg>
             )}
           </AnimatePresence>
         </button>

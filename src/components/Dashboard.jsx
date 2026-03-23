@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { useComputedAfford } from '../hooks/useComputedAfford'
 import FinancesSection from './sections/FinancesSection'
 import VerdictSection from './sections/VerdictSection'
@@ -23,28 +23,28 @@ export default function Dashboard() {
 
   return (
     <>
-      <motion.div
+      <m.div
         className="space-y-4 sm:space-y-5"
         initial="hidden"
         animate="visible"
         variants={stagger}
       >
-        <motion.section variants={fadeUp} transition={spring}>
+        <m.section variants={fadeUp} transition={spring}>
           <FinancesSection />
-        </motion.section>
+        </m.section>
 
-        <motion.section variants={fadeUp} transition={spring}>
+        <m.section variants={fadeUp} transition={spring}>
           <VerdictSection computed={computed} />
-        </motion.section>
+        </m.section>
 
-        <motion.section variants={fadeUp} transition={spring}>
+        <m.section variants={fadeUp} transition={spring}>
           <CashSection computed={computed} />
-        </motion.section>
+        </m.section>
 
-        <motion.section variants={fadeUp} transition={spring}>
+        <m.section variants={fadeUp} transition={spring}>
           <TermsSection computed={computed} />
-        </motion.section>
-      </motion.div>
+        </m.section>
+      </m.div>
 
       <StickyResult computed={computed} />
     </>

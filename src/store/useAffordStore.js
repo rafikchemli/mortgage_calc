@@ -18,6 +18,12 @@ const useAffordStore = create(
       // Condo fees (only relevant when checking a property)
       condoFeesMonthly: 0,
 
+      // Split
+      splitMode: 'proportional', // 'proportional' | '50/50' | 'custom' | 'per-person'
+      customSplit: 50,
+      budgetPercent1: 35,
+      budgetPercent2: 35,
+
       // Mortgage terms
       housingBudgetPercent: 35,
       interestRate: 4.0,
@@ -34,6 +40,10 @@ const useAffordStore = create(
       setSavings: (v) => set({ savings: v }),
       setPriceOverride: (v) => set({ priceOverride: v }),
       setCondoFeesMonthly: (v) => set({ condoFeesMonthly: v }),
+      setSplitMode: (v) => set({ splitMode: v }),
+      setCustomSplit: (v) => set({ customSplit: v }),
+      setBudgetPercent1: (v) => set({ budgetPercent1: v }),
+      setBudgetPercent2: (v) => set({ budgetPercent2: v }),
       setHousingBudgetPercent: (v) => set({ housingBudgetPercent: v }),
       setInterestRate: (v) => set({ interestRate: v }),
       setAmortizationYears: (v) => set({ amortizationYears: v }),
@@ -53,6 +63,10 @@ const useAffordStore = create(
         savings: state.savings,
         priceOverride: state.priceOverride,
         condoFeesMonthly: state.condoFeesMonthly,
+        splitMode: state.splitMode,
+        customSplit: state.customSplit,
+        budgetPercent1: state.budgetPercent1,
+        budgetPercent2: state.budgetPercent2,
         housingBudgetPercent: state.housingBudgetPercent,
         interestRate: state.interestRate,
         amortizationYears: state.amortizationYears,

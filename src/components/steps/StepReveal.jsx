@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { formatCAD } from '../shared/CurrencyDisplay'
 
@@ -18,10 +18,10 @@ const labelIn = {
 }
 
 const priceIn = {
-  hidden: { opacity: 0, scale: 0.6, filter: 'blur(16px)' },
+  hidden: { opacity: 0, scale: 0.7 },
   visible: {
-    opacity: 1, scale: 1, filter: 'blur(0px)',
-    transition: { type: 'spring', stiffness: 100, damping: 14, mass: 1.4 },
+    opacity: 1, scale: 1,
+    transition: { type: 'spring', stiffness: 120, damping: 22, mass: 1 },
   },
 }
 
@@ -83,12 +83,14 @@ function CostMiniBar({ items, total }) {
       {/* Stacked bar */}
       <div className="flex h-2 rounded-full overflow-hidden" style={{ background: 'var(--s-surface-3)' }}>
         {items.map((item, i) => (
-          <motion.div
+          <div
             key={item.name}
-            initial={{ width: 0 }}
-            animate={{ width: `${(item.value / total) * 100}%` }}
-            transition={{ delay: 1.6 + i * 0.08, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-            style={{ background: colors[i % colors.length] }}
+            className="bar-animate"
+            style={{
+              width: `${(item.value / total) * 100}%`,
+              background: colors[i % colors.length],
+              animationDelay: `${1.6 + i * 0.08}s`,
+            }}
           />
         ))}
       </div>
@@ -118,38 +120,38 @@ export default function StepReveal({ onNext, onBack }) {
     : 'var(--s-danger)'
 
   return (
-    <motion.div
+    <m.div
       variants={stagger}
       initial="hidden"
       animate="visible"
       className="text-center"
     >
       {/* Label */}
-      <motion.p variants={labelIn} className="text-[11px] uppercase text-ink-faint mb-5 tracking-[0.2em]">
+      <m.p variants={labelIn} className="text-[11px] uppercase text-ink-faint mb-5 tracking-[0.2em]">
         You can afford up to
-      </motion.p>
+      </m.p>
 
       {/* Hero price */}
-      <motion.div variants={priceIn}>
+      <m.div variants={priceIn}>
         <p
           className="text-6xl sm:text-8xl font-bold tracking-tighter leading-none"
           style={{ color: 'var(--s-gold)', fontFamily: 'var(--font-display)', textShadow: 'var(--s-gold-shadow)' }}
         >
           <AnimatedCounter target={maxPrice} />
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Monthly cost + bar */}
-      <motion.div variants={detailIn} className="mt-8">
+      <m.div variants={detailIn} className="mt-8">
         <p style={{ fontFamily: 'var(--font-display)', color: 'var(--s-text-secondary)' }} className="text-xl">
           <AnimatedCounter target={costBreakdown.total} duration={1000} delay={1400} />
           <span className="text-sm text-ink-faint ml-1">/mo</span>
         </p>
         <CostMiniBar items={costBreakdown.items} total={costBreakdown.total} />
-      </motion.div>
+      </m.div>
 
       {/* Stats row */}
-      <motion.div
+      <m.div
         variants={detailIn}
         className="mt-6 grid grid-cols-2 gap-3"
       >
@@ -184,10 +186,10 @@ export default function StepReveal({ onNext, onBack }) {
             Cash needed to close
           </p>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Savings badge */}
-      <motion.div variants={badgeIn} className="mt-5">
+      <m.div variants={badgeIn} className="mt-5">
         <span
           className="inline-flex items-center gap-1.5 py-2 px-4 rounded-full text-[12px] font-medium"
           style={{
@@ -208,10 +210,10 @@ export default function StepReveal({ onNext, onBack }) {
             : `Need ${formatCAD(cashNeeded - savings)} more to close`
           }
         </span>
-      </motion.div>
+      </m.div>
 
       {/* Navigation */}
-      <motion.div variants={detailIn} className="flex flex-col gap-3 mt-10">
+      <m.div variants={detailIn} className="flex flex-col gap-3 mt-10">
         <button
           onClick={onNext}
           className="w-full py-3.5 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
@@ -225,7 +227,7 @@ export default function StepReveal({ onNext, onBack }) {
         >
           ← Adjust inputs
         </button>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }

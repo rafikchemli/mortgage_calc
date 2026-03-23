@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { LazyMotion, domAnimation } from 'framer-motion'
 import { useDarkMode } from './hooks/useDarkMode'
 import StepFlow from './components/StepFlow'
 import PrivacyNotice from './components/layout/PrivacyNotice'
@@ -17,9 +18,11 @@ export default function App() {
   }, [])
 
   return (
-    <div className="app-bg">
-      <StepFlow isDark={isDark} toggleDark={toggle} />
-      <PrivacyNotice />
-    </div>
+    <LazyMotion features={domAnimation} strict>
+      <div className="app-bg">
+        <StepFlow isDark={isDark} toggleDark={toggle} />
+        <PrivacyNotice />
+      </div>
+    </LazyMotion>
   )
 }
