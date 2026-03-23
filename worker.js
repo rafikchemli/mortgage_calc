@@ -260,7 +260,7 @@ function buildPriceOgLayout(price) {
                 type: 'div',
                 props: {
                   style: { fontSize: 20, color: MUTED },
-                  children: 'nestfi.rafikchemli.com',
+                  children: 'nestify.rafikchemli.com',
                 },
               },
             ],
