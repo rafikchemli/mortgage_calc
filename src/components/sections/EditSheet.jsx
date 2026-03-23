@@ -97,10 +97,8 @@ export default function EditSheet({ open, onClose }) {
             className="fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl"
             style={{ background: 'var(--s-surface-1)' }}
           >
-            {/* Drag handle */}
-            <div className="sticky top-0 z-10 pt-3 pb-2 flex justify-center" style={{ background: 'var(--s-surface-1)' }}>
-              <div className="w-10 h-1 rounded-full" style={{ background: 'var(--s-surface-3)' }} />
-            </div>
+            {/* Top bar */}
+            <div className="sticky top-0 z-10 pt-4 pb-2" style={{ background: 'var(--s-surface-1)' }} />
 
             <div className="px-5 pb-8 max-w-lg mx-auto">
               <div className="flex items-center justify-between mb-2">
