@@ -171,24 +171,21 @@ export async function onRequest(context) {
   }
 
   const cssRes = await fetch(
-    'https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700',
+    'https://fonts.googleapis.com/css2?family=Outfit:wght@700',
     { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' } }
   )
   const css = await cssRes.text()
-  const fontUrls = [...css.matchAll(/url\(([^)]+)\)/g)].map(m => m[1])
-  const fontConfigs = []
-  const weights = [400, 600, 700]
-  for (let i = 0; i < fontUrls.length; i++) {
-    const res = await fetch(fontUrls[i])
-    fontConfigs.push({ name: 'Outfit', data: await res.arrayBuffer(), weight: weights[i] || 700, style: 'normal' })
-  }
+  const fontUrl = css.match(/url\(([^)]+)\)/)?.[1]
+  if (!fontUrl) throw new Error('Could not find font URL')
+  const fontRes = await fetch(fontUrl)
+  const fontData = await fontRes.arrayBuffer()
 
   const layout = price > 0 ? buildPriceOgLayout(price) : buildBaseOgLayout()
 
   const svg = await satori(layout, {
     width: 1200,
     height: 630,
-    fonts: fontConfigs,
+    fonts: [{ name: 'Outfit', data: fontData, weight: 700, style: 'normal' }],
   })
 
   const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } })
