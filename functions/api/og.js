@@ -39,9 +39,9 @@ function buildBaseOgLayout() {
           props: {
             viewBox: '0 0 120 100',
             fill: 'none',
-            width: 100,
-            height: 84,
-            style: { marginBottom: 24 },
+            width: 140,
+            height: 117,
+            style: { marginBottom: 32 },
             children: [
               { type: 'path', props: { d: 'M60 12 L16 48 L104 48 Z', stroke: GOLD, strokeWidth: 3, strokeLinecap: 'round', strokeLinejoin: 'round' } },
               { type: 'rect', props: { x: 24, y: 48, width: 72, height: 40, stroke: MUTED, strokeWidth: 2 } },
@@ -59,7 +59,7 @@ function buildBaseOgLayout() {
                 type: 'div',
                 props: {
                   style: {
-                    fontSize: 64, fontWeight: 700, color: TEXT,
+                    fontSize: 80, fontWeight: 700, color: TEXT,
                     letterSpacing: '-0.02em', lineHeight: 1.15, textAlign: 'center',
                   },
                   children: 'How much house',
@@ -69,36 +69,13 @@ function buildBaseOgLayout() {
                 type: 'div',
                 props: {
                   style: {
-                    fontSize: 64, fontWeight: 700, color: GOLD,
+                    fontSize: 80, fontWeight: 700, color: GOLD,
                     letterSpacing: '-0.02em', lineHeight: 1.15, textAlign: 'center',
                   },
                   children: 'can you afford?',
                 },
               },
             ],
-          },
-        },
-        {
-          type: 'div',
-          props: {
-            style: { fontSize: 28, color: MUTED, marginTop: 24, textAlign: 'center', lineHeight: 1.5 },
-            children: 'A few questions about your finances. A clear answer in 30 seconds.',
-          },
-        },
-        {
-          type: 'div',
-          props: {
-            style: { display: 'flex', gap: 16, marginTop: 40 },
-            children: ['100% private', '30 seconds', 'Quebec 2025 rates'].map(label => ({
-              type: 'div',
-              props: {
-                style: {
-                  fontSize: 20, color: MUTED, padding: '10px 24px',
-                  borderRadius: 999, border: `1px solid ${SURFACE2}`,
-                },
-                children: label,
-              },
-            })),
           },
         },
       ],
