@@ -42,7 +42,6 @@ const spring = { type: 'spring', stiffness: 300, damping: 24 }
 export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const computed = useComputedAfford()
   const store = useAffordStore()
-  const { priceOverride, setPriceOverride, condoFeesMonthly, setCondoFeesMonthly } = store
   const [copied, setCopied] = useState(false)
   const [showBreakdown, setShowBreakdown] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
@@ -50,7 +49,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const [customSplit1, setCustomSplit1] = useState(50)
 
   const {
-    maxPrice, activePrice, isOverride,
+    maxPrice,
     costBreakdown, housingPercent,
     hasPartner, share1, share2,
     monthlyIncome1, monthlyIncome2, totalMonthlyIncome,
@@ -90,84 +89,57 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
         <button onClick={onRestart} className="text-[13px] font-medium text-ink-faint hover:text-ink transition-colors">
           ← Start over
         </button>
-        <button onClick={toggleDark} className="p-2 rounded-lg text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-95" aria-label="Toggle dark mode">
+        <div className="flex items-center gap-1">
+          <button onClick={handleShare} className="p-2 rounded-lg text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-95" aria-label="Share results">
+            {copied ? (
+              <svg className="w-4 h-4" style={{ color: 'var(--s-teal)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+            )}
+          </button>
+          <button onClick={(e) => toggleDark(e)} className="p-2 rounded-lg text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-95" aria-label="Toggle dark mode">
           {isDark ? (
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
           ) : (
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
           )}
         </button>
+        </div>
       </div>
 
       <div className="max-w-xl mx-auto px-5 sm:px-8 pb-12">
         <motion.div initial="hidden" animate="visible" variants={stagger}>
 
-          {/* ═══════════ MODE SWITCH — Segmented control ═══════════ */}
-          <motion.div variants={fadeUp} transition={spring} className="mb-6">
-            <div className="flex rounded-xl overflow-hidden border p-0.5" style={{ borderColor: 'var(--s-border)', background: 'var(--s-surface-2)' }}>
-              <button
-                onClick={() => { setPriceOverride(0); setCondoFeesMonthly(0) }}
-                className={`flex-1 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
-                  !isOverride ? 'bg-[var(--s-surface-1)] text-ink shadow-sm' : 'text-ink-faint'
-                }`}
-              >
-                What can I afford?
-              </button>
-              <button
-                onClick={() => { if (!isOverride) setPriceOverride(maxPrice) }}
-                className={`flex-1 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
-                  isOverride ? 'bg-[var(--s-surface-1)] text-ink shadow-sm' : 'text-ink-faint'
-                }`}
-              >
-                Check a property
-              </button>
-            </div>
-          </motion.div>
-
           {/* ═══════════ HERO ═══════════ */}
           <motion.div variants={fadeUp} transition={spring} className="pb-6">
-            {/* Override inputs */}
-            {isOverride && (
-              <div className="flex gap-3 mb-4">
-                <div className="flex-1">
-                  <label className="text-[10px] text-ink-faint uppercase tracking-wider mb-1 block">Price</label>
-                  <input type="text" inputMode="decimal" defaultValue={formatCAD(priceOverride)}
-                    onBlur={(e) => { const v = Number(e.target.value.replace(/[^0-9]/g, '')); if (v > 0) { setPriceOverride(v); e.target.value = formatCAD(v) } }}
-                    className="w-full text-xl font-display py-2 bg-transparent border-b-2 focus:outline-none transition-colors text-ink"
-                    style={{ borderColor: 'var(--s-border)', fontFamily: 'var(--font-display)' }}
-                  />
-                </div>
-                <div className="w-28">
-                  <label className="text-[10px] text-ink-faint uppercase tracking-wider mb-1 block">Condo fees</label>
-                  <input type="text" inputMode="decimal" defaultValue={condoFeesMonthly === 0 ? '' : condoFeesMonthly}
-                    placeholder="None"
-                    onBlur={(e) => { const v = Number(e.target.value.replace(/[^0-9]/g, '')); setCondoFeesMonthly(v || 0) }}
-                    className="w-full text-xl font-display py-2 bg-transparent border-b-2 focus:outline-none transition-colors text-ink"
-                    style={{ borderColor: 'var(--s-border)', fontFamily: 'var(--font-display)' }}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* The number */}
             <div className="flex items-center gap-2 mb-1">
               <svg className="w-4 h-4 text-ink-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
               </svg>
               <p className="text-[12px] uppercase tracking-[0.16em] text-ink-faint font-medium">
-                {isOverride ? 'Checking' : 'You can afford up to'}
+                You can afford up to
               </p>
             </div>
-            <p className="display-number-hero text-5xl sm:text-7xl leading-none">
-              <AnimatedNumber value={activePrice} />
-            </p>
-            {!isOverride && (
-              <p className="text-[12px] text-ink-faint mt-2">
-                At {computed.housingBudgetPercent}% of take-home pay · <a href="https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/calculating-gds-tds" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-ink-muted transition-colors">CMHC uses 39% gross</a>
+            <div className="flex items-end justify-between">
+              <p className="display-number-hero text-5xl sm:text-7xl leading-none">
+                <AnimatedNumber value={maxPrice} />
               </p>
-            )}
+              <button
+                onClick={() => setShowEdit(true)}
+                className="shrink-0 mb-1 sm:mb-2 p-2 rounded-lg text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-90"
+                aria-label="Adjust your numbers"
+                title="Adjust your numbers"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-[12px] text-ink-faint mt-2">
+              At {computed.housingBudgetPercent}% of take-home pay · <a href="https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/calculating-gds-tds" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-ink-muted transition-colors">CMHC uses 39% gross</a>
+            </p>
 
-            {/* FIX #1: Savings verdict elevated to hero */}
+            {/* Savings verdict */}
             <div
               className="mt-4 py-2.5 px-4 rounded-xl text-[12px] font-medium flex items-center gap-2"
               style={{
@@ -185,18 +157,6 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                 : `You need ${formatCAD(savingsGap)} more in savings to close`
               }
             </div>
-
-            {/* FIX #3: Prominent adjust button */}
-            <button
-              onClick={() => setShowEdit(true)}
-              className="mt-4 flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-medium transition-all active:scale-[0.97] border"
-              style={{ borderColor: 'var(--s-border)', color: 'var(--s-text-secondary)' }}
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-              </svg>
-              Adjust your numbers
-            </button>
           </motion.div>
 
           {/* ═══════════ MONTHLY COST ═══════════ */}
@@ -312,6 +272,62 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                   </div>
                 ))}
               </div>
+
+              {/* Contextual share — the emotional moment */}
+              <motion.button
+                onClick={handleShare}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  boxShadow: copied
+                    ? '0 0 0 rgba(0,0,0,0)'
+                    : [
+                        '0 0 12px color-mix(in srgb, var(--s-gold) 15%, transparent)',
+                        '0 0 24px color-mix(in srgb, var(--s-gold) 25%, transparent)',
+                        '0 0 12px color-mix(in srgb, var(--s-gold) 15%, transparent)',
+                      ],
+                }}
+                transition={{
+                  delay: 0.4,
+                  type: 'spring',
+                  stiffness: 200,
+                  damping: 20,
+                  boxShadow: { duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1.5 },
+                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="mt-4 w-full flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl text-[13px] font-semibold"
+                style={{
+                  background: copied ? 'var(--s-teal)' : 'var(--s-text-primary)',
+                  color: 'var(--s-surface-1)',
+                }}
+              >
+                {copied ? (
+                  <>
+                    <motion.svg
+                      initial={{ scale: 0.5 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                      className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </motion.svg>
+                    Link copied — send it over!
+                  </>
+                ) : (
+                  <>
+                    <motion.svg
+                      animate={{ x: [0, 2, 0], y: [0, -2, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: 'easeInOut' }}
+                      className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    </motion.svg>
+                    Send this to your partner
+                  </>
+                )}
+              </motion.button>
             </motion.div>
           )}
 
@@ -344,28 +360,11 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
             </div>
           </motion.div>
 
-          {/* ═══════════ FOOTER + SHARE ═══════════ */}
+          {/* ═══════════ FOOTER ═══════════ */}
           <motion.div variants={fadeUp} transition={spring} className="pt-4 pb-6 border-t" style={{ borderColor: 'var(--s-border)' }}>
-            <p className="text-[11px] text-ink-faint leading-relaxed mb-6">
+            <p className="text-[11px] text-ink-faint leading-relaxed">
               Calculations use take-home pay (not gross income). Official <a href="https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/calculating-gds-tds" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">CMHC GDS/TDS ratios</a> use gross income and may differ. Tax rates: Quebec 2025. For illustration only — not financial advice.
             </p>
-
-            {/* FIX #2: Share inline at end of content, not sticky */}
-            <button
-              onClick={handleShare}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[14px] font-semibold transition-all active:scale-[0.98] border"
-              style={{
-                borderColor: copied ? 'var(--s-teal)' : 'var(--s-border)',
-                color: copied ? 'var(--s-teal)' : 'var(--s-text-secondary)',
-                background: copied ? 'color-mix(in srgb, var(--s-teal) 6%, transparent)' : 'transparent',
-              }}
-            >
-              {copied ? (
-                <><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>Link copied!</>
-              ) : (
-                <><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>Share these results</>
-              )}
-            </button>
           </motion.div>
 
         </motion.div>

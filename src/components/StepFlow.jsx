@@ -55,7 +55,7 @@ const backTransition = { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 
 function DarkToggle({ isDark, toggle }) {
   return (
     <button
-      onClick={toggle}
+      onClick={(e) => toggle(e)}
       className="p-2.5 rounded-xl text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-95"
       aria-label="Toggle dark mode"
     >

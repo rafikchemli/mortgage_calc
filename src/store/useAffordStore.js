@@ -20,7 +20,7 @@ const useAffordStore = create(
 
       // Mortgage terms
       housingBudgetPercent: 35,
-      interestRate: 5.0,
+      interestRate: 4.0,
       amortizationYears: 25,
       downPaymentPercent: 20,
       locationId: 'rosemont-la-petite-patrie',

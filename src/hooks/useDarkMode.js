@@ -8,7 +8,6 @@ export function useDarkMode() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
 
-  // Sync on mount only (not on toggle — toggle handles DOM directly)
   const didMount = useRef(false)
   useEffect(() => {
     if (!didMount.current) {
@@ -17,23 +16,61 @@ export function useDarkMode() {
     }
   }, [isDark])
 
-  const toggle = useCallback(() => {
+  const toggle = useCallback((e) => {
     const goingDark = !isDark
 
-    // 1. Enable transitions BEFORE the class change
-    document.documentElement.classList.add('theme-transition')
+    // Get click origin for circular reveal
+    let x, y
+    if (e?.currentTarget) {
+      const rect = e.currentTarget.getBoundingClientRect()
+      x = rect.left + rect.width / 2
+      y = rect.top + rect.height / 2
+    } else {
+      x = window.innerWidth - 30
+      y = 30
+    }
 
-    // 2. Toggle .dark synchronously in the same frame
-    document.documentElement.classList.toggle('dark', goingDark)
-    localStorage.setItem('darkMode', String(goingDark))
+    // Try View Transitions API (Telegram-style circular reveal)
+    if (document.startViewTransition) {
+      document.documentElement.style.setProperty('--reveal-x', `${x}px`)
+      document.documentElement.style.setProperty('--reveal-y', `${y}px`)
 
-    // 3. Sync React state (silent — DOM already updated)
-    setIsDark(goingDark)
+      const transition = document.startViewTransition(() => {
+        document.documentElement.classList.toggle('dark', goingDark)
+        localStorage.setItem('darkMode', String(goingDark))
+        setIsDark(goingDark)
+      })
 
-    // 4. Remove transition class after animation completes
-    setTimeout(() => {
-      document.documentElement.classList.remove('theme-transition')
-    }, 650)
+      transition.ready.then(() => {
+        const maxRadius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        )
+
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${maxRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 500,
+            easing: 'ease-in-out',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        )
+      })
+    } else {
+      // Fallback: simple transition
+      document.documentElement.classList.add('theme-transition')
+      document.documentElement.classList.toggle('dark', goingDark)
+      localStorage.setItem('darkMode', String(goingDark))
+      setIsDark(goingDark)
+      setTimeout(() => {
+        document.documentElement.classList.remove('theme-transition')
+      }, 650)
+    }
   }, [isDark])
 
   return { isDark, toggle }

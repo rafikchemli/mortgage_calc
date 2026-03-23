@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
+import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { formatCAD } from '../shared/CurrencyDisplay'
 import { LOCATIONS } from '../../data/constants'
 
@@ -73,6 +74,8 @@ function PillRow({ options, value, onChange }) {
 
 export default function EditSheet({ open, onClose }) {
   const store = useAffordStore()
+  const { maxPrice, costBreakdown, housingPercent } = useComputedAfford()
+  const housingColor = housingPercent < 30 ? 'var(--s-teal)' : housingPercent < 40 ? 'var(--s-gold)' : housingPercent < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
 
   return (
     <AnimatePresence>
@@ -100,12 +103,9 @@ export default function EditSheet({ open, onClose }) {
             {/* Top bar */}
             <div className="sticky top-0 z-10 pt-4 pb-2" style={{ background: 'var(--s-surface-1)' }} />
 
-            <div className="px-5 pb-8 max-w-lg mx-auto">
+            <div className="px-5 pb-24 max-w-lg mx-auto">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-[15px] font-semibold text-ink">Edit inputs</h3>
-                <button onClick={onClose} className="text-[13px] text-ink-faint hover:text-ink transition-colors">
-                  Done
-                </button>
+                <h3 className="text-[15px] font-semibold text-ink">Adjust</h3>
               </div>
 
               {/* Income */}
@@ -153,7 +153,7 @@ export default function EditSheet({ open, onClose }) {
                   <span className="text-[13px] text-ink-muted">Housing budget</span>
                   <div className="flex items-center gap-2">
                     <input
-                      type="range" min={25} max={50} step={1}
+                      type="range" min={15} max={60} step={1}
                       value={store.housingBudgetPercent}
                       onChange={(e) => store.setHousingBudgetPercent(Number(e.target.value))}
                       className="w-20"
@@ -218,6 +218,48 @@ export default function EditSheet({ open, onClose }) {
                   </select>
                 </div>
               </Section>
+            </div>
+
+            {/* Sticky live preview */}
+            <div
+              className="sticky bottom-0 left-0 right-0 border-t px-5 py-3"
+              style={{ background: 'var(--s-surface-1)', borderColor: 'var(--s-border)' }}
+            >
+              <div className="max-w-lg mx-auto flex items-center justify-between">
+                <div className="flex items-center gap-5">
+                  <div>
+                    <p className="text-[9px] uppercase tracking-wider text-ink-faint">Max price</p>
+                    <motion.p
+                      key={maxPrice}
+                      initial={{ opacity: 0.5, y: 2 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-[15px] font-bold tabular-nums leading-tight"
+                      style={{ color: 'var(--s-gold)', fontFamily: 'var(--font-display)' }}
+                    >
+                      {formatCAD(maxPrice)}
+                    </motion.p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase tracking-wider text-ink-faint">Monthly</p>
+                    <motion.p
+                      key={costBreakdown.total}
+                      initial={{ opacity: 0.5, y: 2 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-[15px] font-bold tabular-nums leading-tight"
+                      style={{ color: housingColor, fontFamily: 'var(--font-display)' }}
+                    >
+                      {formatCAD(costBreakdown.total)}
+                    </motion.p>
+                  </div>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="px-5 py-2 rounded-xl text-[13px] font-semibold transition-all active:scale-[0.97]"
+                  style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}
+                >
+                  Done
+                </button>
+              </div>
             </div>
           </motion.div>
         </>

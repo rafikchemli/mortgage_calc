@@ -64,7 +64,7 @@ export default function StepSavings({ onNext, onBack }) {
           <button
             key={v}
             onClick={() => setSavings(v)}
-            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-all ${
+            className={`px-3 py-2 rounded-lg text-[12px] font-medium border transition-all ${
               savings === v
                 ? 'bg-[var(--s-text-primary)] text-[var(--s-surface-1)] border-transparent'
                 : 'text-ink-faint border-[var(--s-border)] hover:text-ink-muted hover:border-[var(--s-surface-3)]'

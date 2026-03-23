@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 
 const stagger = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.12 } },
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
 }
 
 const fadeUp = {
@@ -12,103 +12,77 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
 }
 
-/* ── Filled-track range slider ────────────── */
-function FilledSlider({ min, max, step, value, onChange, color = 'var(--s-gold)' }) {
-  const trackRef = useRef(null)
-  const pct = ((value - min) / (max - min)) * 100
+/* ── Presets with "other" custom input ── */
+function PresetOrCustom({ presets, value, onChange, suffix = '%', min = 0, max = 100 }) {
+  const [editing, setEditing] = useState(false)
+  const [text, setText] = useState('')
+  const isCustom = !presets.includes(value)
 
   return (
-    <div className="relative w-full" ref={trackRef}>
-      {/* Filled track overlay */}
-      <div
-        className="absolute top-1/2 left-0 h-[6px] rounded-full -translate-y-1/2 pointer-events-none transition-all duration-150"
-        style={{ width: `${pct}%`, background: color, opacity: 0.7 }}
-      />
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="relative z-10 w-full"
-      />
-    </div>
-  )
-}
-
-/* ── Pill selector with optional sub-label ── */
-function PillSelector({ options, value, onChange, gridClass = 'grid-cols-5' }) {
-  return (
-    <div className={`grid gap-2 ${gridClass}`}>
-      {options.map((opt) => {
-        const isActive = opt.value === value
+    <div className="flex flex-wrap gap-2">
+      {presets.map((v) => {
+        const active = value === v && !editing
         return (
           <motion.button
-            key={opt.value}
-            onClick={() => onChange(opt.value)}
-            whileTap={{ scale: 0.96 }}
-            className="relative rounded-xl text-center transition-all border overflow-hidden"
+            key={v}
+            onClick={() => { setEditing(false); onChange(v) }}
+            whileTap={{ scale: 0.95 }}
+            className="px-4 py-3 rounded-xl text-center transition-all border min-w-[3.5rem]"
             style={{
-              background: isActive ? 'var(--s-text-primary)' : 'transparent',
-              color: isActive ? 'var(--s-surface-1)' : 'var(--s-text-secondary)',
-              borderColor: isActive ? 'transparent' : 'var(--s-border)',
-              padding: opt.sub ? '12px 4px 10px' : '16px 4px',
+              background: active ? 'var(--s-text-primary)' : 'transparent',
+              color: active ? 'var(--s-surface-1)' : 'var(--s-text-secondary)',
+              borderColor: active ? 'transparent' : 'var(--s-border)',
             }}
           >
-            <span className="text-lg font-semibold block" style={{ fontFamily: 'var(--font-display)' }}>
-              {opt.label}
+            <span className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
+              {v}{suffix}
             </span>
-            {opt.sub && (
-              <span
-                className="text-[9px] block mt-0.5 leading-tight"
-                style={{ opacity: isActive ? 0.7 : 0.45 }}
-              >
-                {opt.sub}
-              </span>
-            )}
           </motion.button>
         )
       })}
+
+      {/* Custom / Other */}
+      {editing ? (
+        <div className="px-3 py-2 rounded-xl border flex items-center gap-1" style={{ borderColor: 'var(--s-gold)' }}>
+          <input
+            type="text" inputMode="decimal" value={text}
+            onChange={(e) => setText(e.target.value.replace(/[^0-9.]/g, ''))}
+            onBlur={() => {
+              const v = parseFloat(text)
+              if (!isNaN(v) && v >= min && v <= max) {
+                onChange(Math.round(v * 10) / 10)
+              }
+              setEditing(false)
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
+            autoFocus
+            placeholder="..."
+            className="w-12 text-[15px] font-semibold bg-transparent focus:outline-none text-center tabular-nums"
+            style={{ fontFamily: 'var(--font-display)', color: 'var(--s-text-primary)' }}
+          />
+          <span className="text-[13px] text-ink-faint">{suffix}</span>
+        </div>
+      ) : (
+        <motion.button
+          onClick={() => { setEditing(true); setText(isCustom ? String(value) : '') }}
+          whileTap={{ scale: 0.95 }}
+          className="px-4 py-3 rounded-xl text-center transition-all border min-w-[3.5rem]"
+          style={{
+            background: isCustom ? 'var(--s-text-primary)' : 'transparent',
+            color: isCustom ? 'var(--s-surface-1)' : 'var(--s-text-tertiary)',
+            borderColor: isCustom ? 'transparent' : 'var(--s-border)',
+            borderStyle: isCustom ? 'solid' : 'dashed',
+          }}
+        >
+          <span className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
+            {isCustom ? `${value}${suffix}` : 'Other'}
+          </span>
+        </motion.button>
+      )}
     </div>
   )
 }
 
-/* ── Editable rate display ─────────────────── */
-function EditableRate({ value, onChange }) {
-  const [editing, setEditing] = useState(false)
-  const [text, setText] = useState('')
-
-  return (
-    <button
-      onClick={() => { setEditing(true); setText(value.toFixed(1)) }}
-      className="text-3xl font-bold tabular-nums min-w-[5rem] text-right"
-      style={{ color: 'var(--s-text-primary)', fontFamily: 'var(--font-display)' }}
-    >
-      {editing ? (
-        <input
-          type="text"
-          inputMode="decimal"
-          value={text}
-          onChange={(e) => setText(e.target.value.replace(/[^0-9.]/g, ''))}
-          onBlur={() => {
-            setEditing(false)
-            const v = parseFloat(text)
-            if (!isNaN(v) && v >= 1 && v <= 10) onChange(Math.round(v * 10) / 10)
-          }}
-          onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
-          autoFocus
-          className="w-full text-right bg-transparent focus:outline-none text-3xl font-bold"
-          style={{ fontFamily: 'var(--font-display)' }}
-        />
-      ) : (
-        <>{value.toFixed(1)}%</>
-      )}
-    </button>
-  )
-}
-
-/* ── Main step component ───────────────────── */
 export default function StepMortgage({ onNext, onBack }) {
   const {
     housingBudgetPercent, setHousingBudgetPercent,
@@ -117,142 +91,163 @@ export default function StepMortgage({ onNext, onBack }) {
     interestRate, setInterestRate,
   } = useAffordStore()
 
+  const [editingRate, setEditingRate] = useState(false)
+  const [rateText, setRateText] = useState('')
+
   const budgetColor = housingBudgetPercent <= 30 ? 'var(--s-teal)'
     : housingBudgetPercent <= 35 ? 'var(--s-gold)'
     : housingBudgetPercent <= 40 ? 'var(--s-copper)'
     : 'var(--s-danger)'
 
-  const budgetLabel = housingBudgetPercent <= 30 ? 'Conservative — plenty of room for other expenses'
-    : housingBudgetPercent <= 35 ? 'Balanced — a common target for take-home pay'
-    : housingBudgetPercent <= 40 ? 'Stretched — less room for savings and surprises'
-    : 'Aggressive — consider whether this is sustainable'
-
-  const cmhcRates = { 5: '4.0%', 10: '3.1%', 15: '2.8%' }
-
-  const downPaymentOptions = [5, 10, 15, 20, 25].map((v) => ({
-    value: v,
-    label: `${v}%`,
-    sub: v < 20 ? `+${cmhcRates[v]} ins.` : v === 20 ? 'no ins.' : 'no ins.',
-  }))
-
-  const amortOptions = [20, 25, 30].map((v) => ({
-    value: v,
-    label: `${v}`,
-    sub: v === 20 ? 'less interest' : v === 25 ? 'balanced' : 'lower payment',
-  }))
+  const budgetHint = housingBudgetPercent <= 30 ? 'Conservative'
+    : housingBudgetPercent <= 35 ? 'Balanced'
+    : housingBudgetPercent <= 40 ? 'Stretched'
+    : 'Aggressive'
 
   return (
     <motion.div variants={stagger} initial="hidden" animate="visible">
       <motion.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 3</motion.p>
-      <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-6">
-        Your mortgage
+      <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
+        Set your terms
       </motion.h2>
 
-      {/* Housing budget % */}
-      <motion.div variants={fadeUp} className="mb-8">
-        <div className="flex items-baseline justify-between mb-3">
-          <p className="text-[13px] text-ink-muted">
-            How much of your pay goes to housing?
-          </p>
-          <motion.span
-            key={housingBudgetPercent}
-            initial={{ scale: 1.2, opacity: 0.5 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="text-2xl font-bold tabular-nums"
-            style={{ color: budgetColor, fontFamily: 'var(--font-display)' }}
-          >
-            {housingBudgetPercent}%
-          </motion.span>
+      {/* ── Housing budget — slider for this one, it's a feel-based choice ── */}
+      <motion.div variants={fadeUp} className="mb-7">
+        <div className="flex items-baseline justify-between mb-2.5">
+          <p className="text-[13px] text-ink-muted">% of take-home pay for housing</p>
+          <div className="flex items-baseline gap-1.5">
+            <motion.span
+              key={housingBudgetPercent}
+              initial={{ scale: 1.15, opacity: 0.5 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-lg font-bold tabular-nums"
+              style={{ color: budgetColor, fontFamily: 'var(--font-display)' }}
+            >
+              {housingBudgetPercent}%
+            </motion.span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={budgetHint}
+                initial={{ opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 4 }}
+                transition={{ duration: 0.12 }}
+                className="text-[10px] font-medium"
+                style={{ color: budgetColor }}
+              >
+                {budgetHint}
+              </motion.span>
+            </AnimatePresence>
+          </div>
         </div>
-        <FilledSlider
-          min={25} max={50} step={1}
-          value={housingBudgetPercent}
-          onChange={setHousingBudgetPercent}
-          color={budgetColor}
-        />
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={budgetLabel}
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 4 }}
-            transition={{ duration: 0.15 }}
-            className="text-[11px] mt-2 ml-0.5"
-            style={{ color: budgetColor }}
-          >
-            {budgetLabel}
-          </motion.p>
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Down payment */}
-      <motion.div variants={fadeUp} className="mb-8">
-        <p className="text-[13px] text-ink-muted mb-3">Down payment</p>
-        <PillSelector
-          options={downPaymentOptions}
-          value={downPaymentPercent}
-          onChange={setDownPaymentPercent}
-          gridClass="grid-cols-3 sm:grid-cols-5"
-        />
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={downPaymentPercent < 20 ? 'insured' : 'conventional'}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="text-[11px] text-ink-faint mt-2.5 ml-0.5 leading-relaxed overflow-hidden"
-          >
-            {downPaymentPercent < 20 ? (
-              <>
-                <span className="font-medium text-ink-muted">CMHC insurance required</span> — adds {cmhcRates[downPaymentPercent]} to your mortgage, but insured rates are typically 0.1–0.2% lower.
-              </>
-            ) : (
-              <>
-                <span className="font-medium text-ink-muted">No insurance needed</span> — conventional rates are typically 0.1–0.2% higher than insured.
-              </>
-            )}
-          </motion.p>
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Amortization */}
-      <motion.div variants={fadeUp} className="mb-8">
-        <p className="text-[13px] text-ink-muted mb-3">Amortization</p>
-        <PillSelector
-          options={amortOptions}
-          value={amortizationYears}
-          onChange={setAmortizationYears}
-          gridClass="grid-cols-3"
-        />
-      </motion.div>
-
-      {/* Interest rate */}
-      <motion.div variants={fadeUp} className="mb-2">
-        <p className="text-[13px] text-ink-muted mb-3">Interest rate</p>
-        <div className="flex items-center gap-4">
-          <FilledSlider
-            min={1} max={10} step={0.1}
-            value={interestRate}
-            onChange={setInterestRate}
-            color="var(--s-gold)"
+        <div className="relative w-full">
+          <div
+            className="absolute top-1/2 left-0 h-[6px] rounded-full -translate-y-1/2 pointer-events-none transition-all duration-150"
+            style={{ width: `${((housingBudgetPercent - 15) / 45) * 100}%`, background: budgetColor, opacity: 0.7 }}
           />
-          <EditableRate value={interestRate} onChange={setInterestRate} />
+          <input type="range" min={15} max={60} step={1} value={housingBudgetPercent}
+            onChange={(e) => setHousingBudgetPercent(Number(e.target.value))} className="relative z-10 w-full" />
         </div>
       </motion.div>
 
-      {/* Navigation */}
-      <motion.div variants={fadeUp} className="flex gap-3 mt-10">
-        <button
-          onClick={onBack}
-          className="px-5 py-3 rounded-xl text-[14px] font-medium text-ink-faint transition-all active:scale-[0.98]"
-        >
+      {/* ── Down payment ── */}
+      <motion.div variants={fadeUp} className="mb-7">
+        <p className="text-[13px] text-ink-muted mb-3">Down payment</p>
+        <PresetOrCustom
+          presets={[5, 10, 15, 20, 25]}
+          value={downPaymentPercent}
+          onChange={(v) => setDownPaymentPercent(Math.round(v))}
+          min={5} max={95}
+        />
+        <p className="text-[11px] text-ink-faint mt-2 leading-relaxed">
+          {downPaymentPercent < 20
+            ? <>CMHC insurance applies — adds to mortgage but typically lowers your rate.</>
+            : <>No insurance needed — conventional rates may be slightly higher.</>
+          }
+        </p>
+      </motion.div>
+
+      {/* ── Interest rate — thermostat style ── */}
+      <motion.div variants={fadeUp} className="mb-7">
+        <p className="text-[13px] text-ink-muted mb-4">Interest rate</p>
+        <div className="flex items-center justify-center gap-4">
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setInterestRate(Math.max(0.5, Math.round((interestRate - 0.1) * 10) / 10))}
+            className="w-11 h-11 rounded-full flex items-center justify-center border transition-colors hover:bg-[var(--s-surface-2)] active:bg-[var(--s-surface-3)]"
+            style={{ borderColor: 'var(--s-border)' }}
+          >
+            <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 12h14" /></svg>
+          </motion.button>
+
+          {editingRate ? (
+            <input
+              type="text" inputMode="decimal" value={rateText}
+              onChange={(e) => setRateText(e.target.value.replace(/[^0-9.]/g, ''))}
+              onBlur={() => {
+                setEditingRate(false)
+                const v = parseFloat(rateText)
+                if (!isNaN(v) && v >= 0.5 && v <= 15) setInterestRate(Math.round(v * 10) / 10)
+              }}
+              onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
+              autoFocus
+              className="w-28 text-center text-4xl font-bold bg-transparent border-b-2 focus:outline-none py-1 tabular-nums"
+              style={{ color: 'var(--s-text-primary)', borderColor: 'var(--s-gold)', fontFamily: 'var(--font-display)' }}
+            />
+          ) : (
+            <button
+              onClick={() => { setEditingRate(true); setRateText(interestRate.toFixed(1)) }}
+              className="text-4xl font-bold tabular-nums py-1 tracking-tight"
+              style={{ color: 'var(--s-text-primary)', fontFamily: 'var(--font-display)' }}
+            >
+              {interestRate.toFixed(1)}%
+            </button>
+          )}
+
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setInterestRate(Math.min(15, Math.round((interestRate + 0.1) * 10) / 10))}
+            className="w-11 h-11 rounded-full flex items-center justify-center border transition-colors hover:bg-[var(--s-surface-2)] active:bg-[var(--s-surface-3)]"
+            style={{ borderColor: 'var(--s-border)' }}
+          >
+            <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M12 5v14M5 12h14" /></svg>
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* ── Amortization ── */}
+      <motion.div variants={fadeUp} className="mb-2">
+        <p className="text-[13px] text-ink-muted mb-3">Amortization</p>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { value: 20, hint: 'less interest' },
+            { value: 25, hint: 'standard' },
+            { value: 30, hint: 'lower payment' },
+          ].map(({ value, hint }) => {
+            const active = amortizationYears === value
+            return (
+              <motion.button key={value} onClick={() => setAmortizationYears(value)} whileTap={{ scale: 0.95 }}
+                className="py-4 rounded-xl text-center transition-all border"
+                style={{
+                  background: active ? 'var(--s-text-primary)' : 'transparent',
+                  color: active ? 'var(--s-surface-1)' : 'var(--s-text-secondary)',
+                  borderColor: active ? 'transparent' : 'var(--s-border)',
+                }}>
+                <span className="text-lg font-semibold block" style={{ fontFamily: 'var(--font-display)' }}>{value}</span>
+                <span className="text-[9px] block mt-0.5" style={{ opacity: active ? 0.7 : 0.4 }}>{hint}</span>
+              </motion.button>
+            )
+          })}
+        </div>
+      </motion.div>
+
+      {/* ── Navigation ── */}
+      <motion.div variants={fadeUp} className="flex gap-3 mt-6">
+        <button onClick={onBack} className="px-5 py-3 rounded-xl text-[14px] font-medium text-ink-faint transition-all active:scale-[0.98]">
           Back
         </button>
-        <button
-          onClick={onNext}
-          className="flex-1 py-3 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
-          style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}
-        >
+        <button onClick={onNext} className="flex-1 py-3 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
+          style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}>
           See what I can afford
         </button>
       </motion.div>
