@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { useComputedAfford } from '../../hooks/useComputedAfford'
+import { useRafCallback } from '../../hooks/useDebounce'
 import { formatCAD } from '../shared/CurrencyDisplay'
 import { LOCATIONS } from '../../data/constants'
 
@@ -76,6 +77,8 @@ export default function EditSheet({ open, onClose }) {
   const store = useAffordStore()
   const { maxPrice, costBreakdown, housingPercent } = useComputedAfford()
   const housingColor = housingPercent < 30 ? 'var(--s-teal)' : housingPercent < 40 ? 'var(--s-gold)' : housingPercent < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
+  const throttledSetBudget = useRafCallback((v) => store.setHousingBudgetPercent(v))
+  const throttledSetRate = useRafCallback((v) => store.setInterestRate(v))
 
   return (
     <AnimatePresence>
@@ -88,7 +91,7 @@ export default function EditSheet({ open, onClose }) {
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 z-50"
-            style={{ background: 'rgba(0,0,0,0.4)' }}
+            style={{ background: 'rgba(0,0,0,0.4)', willChange: 'opacity' }}
           />
 
           {/* Sheet */}
@@ -98,7 +101,7 @@ export default function EditSheet({ open, onClose }) {
             exit={{ y: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className="fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl"
-            style={{ background: 'var(--s-surface-1)' }}
+            style={{ background: 'var(--s-surface-1)', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', willChange: 'transform' }}
           >
             {/* Top bar */}
             <div className="sticky top-0 z-10 pt-4 pb-2" style={{ background: 'var(--s-surface-1)' }} />
@@ -155,7 +158,7 @@ export default function EditSheet({ open, onClose }) {
                     <input
                       type="range" min={15} max={60} step={1}
                       value={store.housingBudgetPercent}
-                      onChange={(e) => store.setHousingBudgetPercent(Number(e.target.value))}
+                      onChange={(e) => throttledSetBudget(Number(e.target.value))}
                       className="w-20"
                     />
                     <span className="text-[14px] font-medium tabular-nums w-10 text-right" style={{ fontFamily: 'var(--font-display)' }}>
@@ -185,7 +188,7 @@ export default function EditSheet({ open, onClose }) {
                     <input
                       type="range" min={1} max={10} step={0.1}
                       value={store.interestRate}
-                      onChange={(e) => store.setInterestRate(Number(e.target.value))}
+                      onChange={(e) => throttledSetRate(Number(e.target.value))}
                       className="w-20"
                     />
                     <span className="text-[14px] font-medium tabular-nums w-12 text-right" style={{ fontFamily: 'var(--font-display)' }}>

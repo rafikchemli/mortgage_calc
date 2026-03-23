@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { useRafCallback } from '../../hooks/useDebounce'
 
 export default function CompactValueInput({ label, min, max, step, value, onChange, formatFn, tooltip, showSteppers, slider, sliderMin, sliderMax, sliderStep }) {
+  const throttledOnChange = useRafCallback(onChange)
   const [localValue, setLocalValue] = useState(value)
   const [isEditing, setIsEditing] = useState(false)
   const [editText, setEditText] = useState('')
@@ -111,7 +113,7 @@ export default function CompactValueInput({ label, min, max, step, value, onChan
           onChange={(e) => {
             const v = Number(e.target.value)
             setLocalValue(v)
-            onChange(v)
+            throttledOnChange(v)
           }}
           className="w-full mt-2"
           aria-label={`${label} slider`}

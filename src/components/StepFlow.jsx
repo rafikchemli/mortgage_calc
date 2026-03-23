@@ -7,6 +7,7 @@ import StepMortgage from './steps/StepMortgage'
 import StepReveal from './steps/StepReveal'
 import StepShared from './steps/StepShared'
 import Results from './Results'
+import PrivacyNotice from './layout/PrivacyNotice'
 import useAffordStore from '../store/useAffordStore'
 
 const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
@@ -204,6 +205,7 @@ export default function StepFlow({ isDark, toggleDark }) {
           exit={direction > 0 ? stepVariants[currentStepName].exit : stepVariants[currentStepName].exitBack}
           transition={direction > 0 ? stepTransitions[currentStepName] : backTransition}
           className="absolute inset-0 flex items-center justify-center"
+          style={{ willChange: 'transform, opacity' }}
         >
           <div className="w-full max-w-lg px-6">
             {step === 0 && <StepWelcome onNext={goNext} />}
@@ -216,8 +218,11 @@ export default function StepFlow({ isDark, toggleDark }) {
       </AnimatePresence>
 
       {/* Navigation hint — only on input steps, not welcome or reveal */}
+      {/* Privacy notice — only on welcome and income steps */}
+      {step <= 1 && !showResults && !showShared && <PrivacyNotice />}
+
       <m.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
         animate={{ opacity: step > 0 && step < 4 ? 0.5 : 0 }}
         transition={{ duration: 0.3 }}
       >

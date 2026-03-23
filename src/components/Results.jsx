@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useComputedAfford } from '../hooks/useComputedAfford'
 import useAffordStore from '../store/useAffordStore'
+import { useRafCallback } from '../hooks/useDebounce'
 import { buildShareUrl } from '../utils/shareUrl'
 import AnimatedNumber from './shared/AnimatedNumber'
 import InfoTip from './shared/InfoTip'
@@ -75,6 +76,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
     splitMode, customSplit: customSplit1, setSplitMode, setCustomSplit: setCustomSplit1,
     budgetPercent1, budgetPercent2, setBudgetPercent1, setBudgetPercent2,
   } = useAffordStore()
+  const throttledSetCustomSplit = useRafCallback((v) => setCustomSplit1(v))
 
   const {
     maxPrice, costBreakdown, housingPercent,
@@ -164,7 +166,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
           </m.div>
 
           {/* ═══════════ TWO-COLUMN: Monthly + Cash ═══════════ */}
-          <m.div variants={fadeUp} transition={spring}>
+          <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={fadeUp} transition={spring}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 border-t" style={{ borderColor: 'var(--s-border)' }}>
 
               {/* ── LEFT: Monthly cost ── */}
@@ -267,7 +269,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
 
           {/* ═══════════ PARTNER SPLIT ═══════════ */}
           {hasPartner && (
-            <m.div variants={fadeUp} transition={spring} className="py-6 md:py-8 border-t" style={{ borderColor: 'var(--s-border)' }}>
+            <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={fadeUp} transition={spring} className="py-6 md:py-8 border-t" style={{ borderColor: 'var(--s-border)' }}>
               {/* Split mode tabs + custom slider (inline on desktop) + share */}
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <p className="text-[14px] text-ink-muted">Split</p>
@@ -285,7 +287,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                 {splitMode === 'custom' && (
                   <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 md:max-w-[200px] order-last md:order-none">
                     <span className="text-[11px] text-ink-faint tabular-nums shrink-0">{customSplit1}%</span>
-                    <input type="range" min={10} max={90} step={1} value={customSplit1} onChange={(e) => setCustomSplit1(Number(e.target.value))} className="flex-1" />
+                    <input type="range" min={10} max={90} step={1} value={customSplit1} onChange={(e) => throttledSetCustomSplit(Number(e.target.value))} className="flex-1" />
                     <span className="text-[11px] text-ink-faint tabular-nums shrink-0">{100 - customSplit1}%</span>
                   </div>
                 )}
@@ -369,7 +371,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
           )}
 
           {/* ═══════════ FOOTER ═══════════ */}
-          <m.div variants={fadeUp} transition={spring} className="pt-4 pb-6 border-t" style={{ borderColor: 'var(--s-border)' }}>
+          <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-30px' }} variants={fadeUp} transition={spring} className="pt-4 pb-6 border-t" style={{ borderColor: 'var(--s-border)' }}>
             <p className="text-[11px] text-ink-faint leading-relaxed">
               Calculations use take-home pay (not gross income). Official <a href="https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/calculating-gds-tds" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">CMHC GDS/TDS ratios</a> use gross income and may differ. Tax rates: Quebec 2025. For illustration only — not financial advice.
             </p>
