@@ -14,7 +14,7 @@ function buildOgHtml(price, url, origin) {
     : 'Find out what you can afford together in Montreal, Quebec'
   const ogImage = hasPrice
     ? `${origin}/api/og?p=${price}`
-    : `${origin}/og.png`
+    : `${origin}/api/og`
 
   return `<!DOCTYPE html>
 <html lang="en">
