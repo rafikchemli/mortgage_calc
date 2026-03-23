@@ -112,12 +112,20 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
       {/* ── Header ── */}
       <div className="px-5 sm:px-8 py-4 sticky top-0 z-10 flex items-center justify-between" style={{ background: 'var(--s-base)' }}>
         <button onClick={onRestart} className="text-[13px] font-medium text-ink-faint hover:text-ink transition-colors">← Start over</button>
-        <div className="flex items-center gap-1">
-          <button onClick={handleShare} className="p-2 rounded-lg text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-95" aria-label="Share">
-            {copied
-              ? <svg className="w-4 h-4" style={{ color: 'var(--s-teal)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-              : <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
-            }
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[12px] font-semibold transition-all active:scale-[0.97]"
+            style={{
+              background: copied ? 'var(--s-teal)' : 'var(--s-text-primary)',
+              color: 'var(--s-surface-1)',
+            }}
+          >
+            {copied ? (
+              <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>Copied!</>
+            ) : (
+              <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>Share</>
+            )}
           </button>
           <button onClick={(e) => toggleDark(e)} className="p-2 rounded-lg text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all active:scale-95" aria-label="Toggle dark mode">
             {isDark
@@ -282,18 +290,6 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                   </div>
                 )}
 
-                <button
-                  onClick={handleShare}
-                  className="ml-auto flex items-center gap-1.5 text-[12px] font-medium transition-colors"
-                  style={{ color: copied ? 'var(--s-teal)' : 'var(--s-text-tertiary)' }}
-                >
-                  {copied ? (
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  ) : (
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
-                  )}
-                  <span className="hidden sm:inline">{copied ? 'Copied' : 'Share with partner'}</span>
-                </button>
               </div>
 
               {/* Two-column cards on desktop, stacked on mobile */}

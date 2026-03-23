@@ -5,7 +5,9 @@ import StepIncome from './steps/StepIncome'
 import StepSavings from './steps/StepSavings'
 import StepMortgage from './steps/StepMortgage'
 import StepReveal from './steps/StepReveal'
+import StepShared from './steps/StepShared'
 import Results from './Results'
+import useAffordStore from '../store/useAffordStore'
 
 const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
 
@@ -73,9 +75,12 @@ function DarkToggle({ isDark, toggle }) {
 }
 
 export default function StepFlow({ isDark, toggleDark }) {
+  const fromShare = useAffordStore((s) => s.fromShare)
+  const setFromShare = useAffordStore((s) => s.setFromShare)
   const [step, setStep] = useState(0)
   const [direction, setDirection] = useState(1)
   const [showResults, setShowResults] = useState(false)
+  const [showShared, setShowShared] = useState(fromShare)
 
   const currentStepName = STEPS[step]
   const isWelcome = step === 0
@@ -105,9 +110,11 @@ export default function StepFlow({ isDark, toggleDark }) {
 
   const restart = useCallback(() => {
     setShowResults(false)
+    setShowShared(false)
+    setFromShare(false)
     setDirection(-1)
     setStep(0)
-  }, [])
+  }, [setFromShare])
 
   // Keyboard navigation
   useEffect(() => {
@@ -131,6 +138,22 @@ export default function StepFlow({ isDark, toggleDark }) {
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [goNext, goBack, step])
+
+  // Shared link interstitial
+  if (showShared && !showResults) {
+    return (
+      <div className="relative h-dvh w-full overflow-hidden flex flex-col">
+        <div className="absolute top-4 right-4 z-10">
+          <DarkToggle isDark={isDark} toggle={toggleDark} />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-full max-w-lg px-6">
+            <StepShared onNext={() => setShowResults(true)} />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (showResults) {
     return (

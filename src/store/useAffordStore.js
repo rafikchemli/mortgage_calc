@@ -50,7 +50,10 @@ const useAffordStore = create(
       setDownPaymentPercent: (v) => set({ downPaymentPercent: v }),
       setLocationId: (v) => set({ locationId: v }),
 
-      hydrateFromShare: (values) => set(values),
+      // Share
+      fromShare: false,
+      setFromShare: (v) => set({ fromShare: v }),
+      hydrateFromShare: (values) => set({ ...values, fromShare: true }),
     }),
     {
       name: 'house-afford-v3',
