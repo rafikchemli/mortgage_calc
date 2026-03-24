@@ -55,8 +55,6 @@ const enterTransition = { type: 'spring', stiffness: 300, damping: 28, mass: 0.8
 const exitTransition = { duration: 0.15, ease: 'easeOut' }
 const backTransition = { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }
 
-const backTransition = { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }
-
 function DarkToggle({ isDark, toggle }) {
   return (
     <button

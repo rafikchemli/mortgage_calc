@@ -87,7 +87,7 @@ function CostMiniBar({ items, total }) {
             key={item.name}
             className="bar-animate"
             style={{
-              width: `${(item.value / total) * 100}%`,
+              width: `${total > 0 ? (item.value / total) * 100 : 0}%`,
               background: colors[i % colors.length],
               animationDelay: `${1.6 + i * 0.08}s`,
             }}

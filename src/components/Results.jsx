@@ -98,7 +98,9 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
 
   const handleShare = useCallback(() => {
     const url = buildShareUrl(useAffordStore.getState())
-    navigator.clipboard.writeText(url).then(() => { hapticTap(); setCopied(true); setTimeout(() => setCopied(false), 2000) })
+    navigator.clipboard.writeText(url)
+      .then(() => { hapticTap(); setCopied(true); setTimeout(() => setCopied(false), 2000) })
+      .catch(() => {})
   }, [])
 
   const total = costBreakdown.total

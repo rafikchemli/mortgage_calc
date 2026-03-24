@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
 // ── Shared RAF scheduler ─────────────────
-// All animated numbers share a single requestAnimationFrame loop
-// instead of each running their own. On the Results page with 10+
-// numbers, this reduces RAF callbacks from 10+ to 1 per frame.
 const subscribers = new Set()
 let rafId = null
 
@@ -32,13 +29,14 @@ function subscribe(fn) {
 export default function useAnimatedNumber(target, duration = 400) {
   const [display, setDisplay] = useState(target)
   const fromRef = useRef(target)
+  const currentRef = useRef(target) // tracks the latest animated value (no stale closure)
   const startTimeRef = useRef(null)
   const targetRef = useRef(target)
 
   useEffect(() => {
     if (targetRef.current === target) return
 
-    fromRef.current = display
+    fromRef.current = currentRef.current // always use the latest animated position
     targetRef.current = target
     startTimeRef.current = performance.now()
 
@@ -48,7 +46,9 @@ export default function useAnimatedNumber(target, duration = 400) {
 
       const t = Math.min((now - start) / duration, 1)
       const eased = 1 - Math.pow(1 - t, 3)
-      setDisplay(fromRef.current + (targetRef.current - fromRef.current) * eased)
+      const value = fromRef.current + (targetRef.current - fromRef.current) * eased
+      currentRef.current = value
+      setDisplay(value)
 
       if (t >= 1) {
         startTimeRef.current = null

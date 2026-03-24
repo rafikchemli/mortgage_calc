@@ -29,19 +29,26 @@ export function decodeShareParams() {
       return result
     }
 
-    // v1/v2 backward compat — use defaults for missing fields
+    // v1/v2 backward compat — map old fields to current schema
     if (arr.length >= 9) {
+      const freq = arr[2] || 'biweekly'
       return {
         income1: arr[0],
         income2: arr[1],
-        payFrequency: arr[2] || 'biweekly',
+        payFrequency1: freq,
+        payFrequency2: freq,
         incomeType: arr[3] || 'net',
         savings: 100000,
         priceOverride: 0,
         condoFeesMonthly: 0,
+        splitMode: 'proportional',
+        customSplit: 50,
+        budgetPercent1: 35,
+        budgetPercent2: 35,
+        housingBudgetPercent: 35,
         interestRate: arr[7] || 5.0,
         amortizationYears: arr[8] || 25,
-        downPaymentPercent: 20,
+        downPaymentPercent: arr[6] || 20,
         locationId: arr[9] || 'rosemont-la-petite-patrie',
       }
     }

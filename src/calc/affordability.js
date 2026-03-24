@@ -41,9 +41,10 @@ export function calcCostBreakdownForPrice(housePrice, downPaymentPercent, annual
  * Uses binary search because CMHC thresholds create discontinuities.
  */
 export function calcMaxAffordablePrice(monthlyBudget, downPaymentPercent, annualRate, amortizationYears, locationId) {
-  let low = 100000
+  if (monthlyBudget <= 0) return 0
+  let low = 0
   let high = 5000000
-  let result = low
+  let result = 0
 
   for (let i = 0; i < 50; i++) {
     const mid = Math.round((low + high) / 2)

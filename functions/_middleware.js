@@ -1,10 +1,16 @@
 const CRAWLER_UA = /bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegrambot|twitterbot|linkedinbot|discordbot|embedly|quora|pinterest|slack|vkshare|facebot/i
 
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
 function formatPrice(num) {
   return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(num)
 }
 
-function buildOgHtml(price, url, origin) {
+function buildOgHtml(price, rawUrl, rawOrigin) {
+  const url = escapeHtml(rawUrl)
+  const origin = escapeHtml(rawOrigin)
   const hasPrice = price != null
   const title = hasPrice
     ? `We can afford ${formatPrice(price)} in Montreal`
