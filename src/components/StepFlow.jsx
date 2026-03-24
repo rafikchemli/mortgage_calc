@@ -12,46 +12,47 @@ import useAffordStore from '../store/useAffordStore'
 
 const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
 
+// Exit animations are kept short (opacity-only, no scale/y) to avoid
+// exposing the bare background between steps — which causes a visible
+// top-to-bottom repaint wave on mobile.
 const stepVariants = {
   welcome: {
-    enter: { opacity: 0, scale: 0.96 },
-    center: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.98, y: -20 },
+    enter: { opacity: 0 },
+    center: { opacity: 1 },
+    exit: { opacity: 0 },
     exitBack: { opacity: 0 },
   },
   income: {
-    enter: { y: 40, opacity: 0 },
+    enter: { y: 30, opacity: 0 },
     center: { y: 0, opacity: 1 },
-    exit: { y: -30, opacity: 0, scale: 0.98 },
-    exitBack: { y: 40, opacity: 0 },
+    exit: { opacity: 0 },
+    exitBack: { y: 30, opacity: 0 },
   },
   savings: {
-    enter: { y: 50, opacity: 0 },
+    enter: { y: 30, opacity: 0 },
     center: { y: 0, opacity: 1 },
-    exit: { y: -30, opacity: 0, scale: 0.98 },
-    exitBack: { y: 50, opacity: 0 },
+    exit: { opacity: 0 },
+    exitBack: { y: 30, opacity: 0 },
   },
   mortgage: {
-    enter: { y: 50, opacity: 0 },
+    enter: { y: 30, opacity: 0 },
     center: { y: 0, opacity: 1 },
-    exit: { y: -20, opacity: 0, scale: 0.92 },
-    exitBack: { y: 50, opacity: 0 },
+    exit: { opacity: 0 },
+    exitBack: { y: 30, opacity: 0 },
   },
   reveal: {
-    enter: { scale: 0.85, opacity: 0 },
+    enter: { scale: 0.9, opacity: 0 },
     center: { scale: 1, opacity: 1 },
-    exit: { scale: 1.05, opacity: 0 },
-    exitBack: { scale: 0.92, opacity: 0 },
+    exit: { opacity: 0 },
+    exitBack: { scale: 0.95, opacity: 0 },
   },
 }
 
-const stepTransitions = {
-  welcome: { type: 'spring', stiffness: 200, damping: 22, mass: 0.8 },
-  income: { type: 'spring', stiffness: 250, damping: 25, mass: 0.8 },
-  savings: { type: 'spring', stiffness: 280, damping: 26, mass: 0.8 },
-  mortgage: { type: 'spring', stiffness: 280, damping: 26, mass: 0.8 },
-  reveal: { type: 'spring', stiffness: 180, damping: 22, mass: 1 },
-}
+// Enter transitions use springs for feel; exit uses fast tween to minimize
+// the gap between old and new content.
+const enterTransition = { type: 'spring', stiffness: 300, damping: 28, mass: 0.8 }
+const exitTransition = { duration: 0.15, ease: 'easeOut' }
+const backTransition = { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }
 
 const backTransition = { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }
 
@@ -201,11 +202,10 @@ export default function StepFlow({ isDark, toggleDark }) {
         <m.div
           key={step}
           initial={direction > 0 ? stepVariants[currentStepName].enter : stepVariants[currentStepName].exitBack || stepVariants[currentStepName].enter}
-          animate={stepVariants[currentStepName].center}
-          exit={direction > 0 ? stepVariants[currentStepName].exit : stepVariants[currentStepName].exitBack}
-          transition={direction > 0 ? stepTransitions[currentStepName] : backTransition}
+          animate={{ ...stepVariants[currentStepName].center, transition: direction > 0 ? enterTransition : backTransition }}
+          exit={{ ...(direction > 0 ? stepVariants[currentStepName].exit : stepVariants[currentStepName].exitBack), transition: exitTransition }}
           className="absolute inset-0 flex items-center justify-center"
-          style={{ willChange: 'transform, opacity' }}
+          style={{ willChange: 'transform, opacity', background: 'var(--s-base)' }}
         >
           <div className="w-full max-w-lg px-6">
             {step === 0 && <StepWelcome onNext={goNext} />}
