@@ -1,4 +1,5 @@
 import useAffordStore from '../../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 import CompactValueInput from '../shared/CompactValueInput'
 import SelectInput from '../shared/SelectInput'
 import { formatCAD } from '../shared/CurrencyDisplay'
@@ -40,7 +41,13 @@ export default function FinancesSection() {
     payFrequency, setPayFrequency,
     incomeType, setIncomeType,
     savings, setSavings,
-  } = useAffordStore()
+  } = useAffordStore(useShallow((s) => ({
+    income1: s.income1, setIncome1: s.setIncome1,
+    income2: s.income2, setIncome2: s.setIncome2,
+    payFrequency: s.payFrequency, setPayFrequency: s.setPayFrequency,
+    incomeType: s.incomeType, setIncomeType: s.setIncomeType,
+    savings: s.savings, setSavings: s.setSavings,
+  })))
 
   const config = FREQ_CONFIG[payFrequency]
 

@@ -8,6 +8,7 @@ import StepReveal from './steps/StepReveal'
 import StepShared from './steps/StepShared'
 import Results from './Results'
 import PrivacyNotice from './layout/PrivacyNotice'
+import { hapticTap, hapticSuccess } from '../utils/haptics'
 import useAffordStore from '../store/useAffordStore'
 
 const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
@@ -93,9 +94,11 @@ export default function StepFlow({ isDark, toggleDark }) {
 
   const goNext = useCallback(() => {
     if (step === STEPS.length - 1) {
+      hapticSuccess()
       setShowResults(true)
       return
     }
+    hapticTap()
     setDirection(1)
     setStep((s) => Math.min(s + 1, STEPS.length - 1))
   }, [step])

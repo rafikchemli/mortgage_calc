@@ -14,7 +14,8 @@ const fadeUp = {
 }
 
 export default function StepSavings({ onNext, onBack }) {
-  const { savings, setSavings } = useAffordStore()
+  const savings = useAffordStore((s) => s.savings)
+  const setSavings = useAffordStore((s) => s.setSavings)
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState('')
 

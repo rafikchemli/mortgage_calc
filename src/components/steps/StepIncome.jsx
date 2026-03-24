@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { m } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 import { formatCAD } from '../shared/CurrencyDisplay'
 import PrivacyNotice from '../layout/PrivacyNotice'
 
@@ -79,7 +80,13 @@ export default function StepIncome({ onNext }) {
     payFrequency1, setPayFrequency1,
     payFrequency2, setPayFrequency2,
     incomeType, setIncomeType,
-  } = useAffordStore()
+  } = useAffordStore(useShallow((s) => ({
+    income1: s.income1, setIncome1: s.setIncome1,
+    income2: s.income2, setIncome2: s.setIncome2,
+    payFrequency1: s.payFrequency1, setPayFrequency1: s.setPayFrequency1,
+    payFrequency2: s.payFrequency2, setPayFrequency2: s.setPayFrequency2,
+    incomeType: s.incomeType, setIncomeType: s.setIncomeType,
+  })))
 
   const [showPartner, setShowPartner] = useState(income2 > 0)
 

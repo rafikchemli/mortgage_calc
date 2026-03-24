@@ -2,8 +2,10 @@ import { useState, useCallback } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useComputedAfford } from '../hooks/useComputedAfford'
 import useAffordStore from '../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 import { useRafCallback } from '../hooks/useDebounce'
 import { buildShareUrl } from '../utils/shareUrl'
+import { hapticTap } from '../utils/haptics'
 import AnimatedNumber from './shared/AnimatedNumber'
 import InfoTip from './shared/InfoTip'
 import { formatCAD } from './shared/CurrencyDisplay'
@@ -75,7 +77,12 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const {
     splitMode, customSplit: customSplit1, setSplitMode, setCustomSplit: setCustomSplit1,
     budgetPercent1, budgetPercent2, setBudgetPercent1, setBudgetPercent2,
-  } = useAffordStore()
+  } = useAffordStore(useShallow((s) => ({
+    splitMode: s.splitMode, customSplit: s.customSplit,
+    setSplitMode: s.setSplitMode, setCustomSplit: s.setCustomSplit,
+    budgetPercent1: s.budgetPercent1, budgetPercent2: s.budgetPercent2,
+    setBudgetPercent1: s.setBudgetPercent1, setBudgetPercent2: s.setBudgetPercent2,
+  })))
   const throttledSetCustomSplit = useRafCallback((v) => setCustomSplit1(v))
 
   const {
@@ -91,7 +98,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
 
   const handleShare = useCallback(() => {
     const url = buildShareUrl(useAffordStore.getState())
-    navigator.clipboard.writeText(url).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
+    navigator.clipboard.writeText(url).then(() => { hapticTap(); setCopied(true); setTimeout(() => setCopied(false), 2000) })
   }, [])
 
   const total = costBreakdown.total

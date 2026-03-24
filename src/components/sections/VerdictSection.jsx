@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 import AnimatedNumber from '../shared/AnimatedNumber'
 import CompactValueInput from '../shared/CompactValueInput'
 import InfoTip from '../shared/InfoTip'
@@ -18,7 +19,10 @@ const COST_TIPS = {
 }
 
 export default function VerdictSection({ computed }) {
-  const { priceOverride, setPriceOverride, condoFeesMonthly, setCondoFeesMonthly } = useAffordStore()
+  const { priceOverride, setPriceOverride, condoFeesMonthly, setCondoFeesMonthly } = useAffordStore(useShallow((s) => ({
+    priceOverride: s.priceOverride, setPriceOverride: s.setPriceOverride,
+    condoFeesMonthly: s.condoFeesMonthly, setCondoFeesMonthly: s.setCondoFeesMonthly,
+  })))
   const [showOverride, setShowOverride] = useState(priceOverride > 0)
 
   const {

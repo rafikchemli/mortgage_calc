@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 import SelectInput from '../shared/SelectInput'
 import CompactValueInput from '../shared/CompactValueInput'
 import { LOCATIONS } from '../../data/constants'
@@ -11,7 +12,12 @@ export default function TermsSection() {
     amortizationYears, setAmortizationYears,
     downPaymentPercent, setDownPaymentPercent,
     locationId, setLocationId,
-  } = useAffordStore()
+  } = useAffordStore(useShallow((s) => ({
+    interestRate: s.interestRate, setInterestRate: s.setInterestRate,
+    amortizationYears: s.amortizationYears, setAmortizationYears: s.setAmortizationYears,
+    downPaymentPercent: s.downPaymentPercent, setDownPaymentPercent: s.setDownPaymentPercent,
+    locationId: s.locationId, setLocationId: s.setLocationId,
+  })))
 
   const [showLocation, setShowLocation] = useState(false)
 

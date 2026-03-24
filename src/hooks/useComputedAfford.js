@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import useAffordStore from '../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 import { calcMaxAffordablePrice, calcCostBreakdownForPrice, calcStressTest } from '../calc/affordability'
 import { calcCMHCInsurance } from '../calc/insurance'
 import { calcWelcomeTax } from '../calc/taxes'
@@ -28,14 +29,21 @@ function toAnnual(value, frequency) {
 export { toMonthly, toAnnual }
 
 export function useComputedAfford() {
-  const state = useAffordStore()
-
   const {
     income1, income2, payFrequency1, payFrequency2, incomeType, savings,
     priceOverride, condoFeesMonthly,
     housingBudgetPercent, interestRate, amortizationYears, downPaymentPercent, locationId,
     splitMode, budgetPercent1, budgetPercent2,
-  } = state
+  } = useAffordStore(useShallow((s) => ({
+    income1: s.income1, income2: s.income2,
+    payFrequency1: s.payFrequency1, payFrequency2: s.payFrequency2,
+    incomeType: s.incomeType, savings: s.savings,
+    priceOverride: s.priceOverride, condoFeesMonthly: s.condoFeesMonthly,
+    housingBudgetPercent: s.housingBudgetPercent,
+    interestRate: s.interestRate, amortizationYears: s.amortizationYears,
+    downPaymentPercent: s.downPaymentPercent, locationId: s.locationId,
+    splitMode: s.splitMode, budgetPercent1: s.budgetPercent1, budgetPercent2: s.budgetPercent2,
+  })))
 
   const annualRate = interestRate / 100
 

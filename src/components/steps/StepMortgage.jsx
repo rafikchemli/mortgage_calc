@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 
 const stagger = {
   hidden: {},
@@ -89,7 +90,12 @@ export default function StepMortgage({ onNext, onBack }) {
     downPaymentPercent, setDownPaymentPercent,
     amortizationYears, setAmortizationYears,
     interestRate, setInterestRate,
-  } = useAffordStore()
+  } = useAffordStore(useShallow((s) => ({
+    housingBudgetPercent: s.housingBudgetPercent, setHousingBudgetPercent: s.setHousingBudgetPercent,
+    downPaymentPercent: s.downPaymentPercent, setDownPaymentPercent: s.setDownPaymentPercent,
+    amortizationYears: s.amortizationYears, setAmortizationYears: s.setAmortizationYears,
+    interestRate: s.interestRate, setInterestRate: s.setInterestRate,
+  })))
 
   const [editingRate, setEditingRate] = useState(false)
   const [rateText, setRateText] = useState('')

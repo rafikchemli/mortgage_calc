@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
+import { useShallow } from 'zustand/react/shallow'
 import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { useRafCallback } from '../../hooks/useDebounce'
 import { formatCAD } from '../shared/CurrencyDisplay'
@@ -74,7 +75,20 @@ function PillRow({ options, value, onChange }) {
 }
 
 export default function EditSheet({ open, onClose }) {
-  const store = useAffordStore()
+  const store = useAffordStore(useShallow((s) => ({
+    income1: s.income1, income2: s.income2,
+    payFrequency1: s.payFrequency1, payFrequency2: s.payFrequency2,
+    incomeType: s.incomeType, savings: s.savings,
+    housingBudgetPercent: s.housingBudgetPercent,
+    downPaymentPercent: s.downPaymentPercent, amortizationYears: s.amortizationYears,
+    interestRate: s.interestRate, locationId: s.locationId,
+    setIncome1: s.setIncome1, setIncome2: s.setIncome2,
+    setPayFrequency1: s.setPayFrequency1, setPayFrequency2: s.setPayFrequency2,
+    setIncomeType: s.setIncomeType, setSavings: s.setSavings,
+    setHousingBudgetPercent: s.setHousingBudgetPercent,
+    setDownPaymentPercent: s.setDownPaymentPercent, setAmortizationYears: s.setAmortizationYears,
+    setInterestRate: s.setInterestRate, setLocationId: s.setLocationId,
+  })))
   const { maxPrice, costBreakdown, housingPercent } = useComputedAfford()
   const housingColor = housingPercent < 30 ? 'var(--s-teal)' : housingPercent < 40 ? 'var(--s-gold)' : housingPercent < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
   const throttledSetBudget = useRafCallback((v) => store.setHousingBudgetPercent(v))
