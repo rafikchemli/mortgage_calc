@@ -24,8 +24,8 @@ const COST_TIPS = {
 const COST_BAR_COLORS = ['var(--s-gold)', 'var(--s-teal)', 'var(--s-copper)', 'var(--s-slate)', 'var(--s-text-tertiary)', 'var(--s-gold-muted)']
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }
-const spring = { type: 'spring', stiffness: 300, damping: 24 }
+const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }
+const snappy = { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
 
 /* ── SVG donut chart for desktop ── */
 function CostDonut({ items, total, size = 140 }) {
@@ -151,7 +151,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
         <m.div initial="hidden" animate="visible" variants={stagger}>
 
           {/* ═══════════ HERO ═══════════ */}
-          <m.div variants={fadeUp} transition={spring} className="pb-8 md:pb-12">
+          <m.div variants={fadeUp} transition={snappy} className="pb-8 md:pb-12">
             <p className="text-[14px] md:text-[16px] text-ink-faint mb-3">You can afford up to</p>
             <div className="flex items-end justify-between">
               <p className="display-number-hero text-5xl sm:text-7xl md:text-8xl leading-none">
@@ -175,7 +175,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
           </m.div>
 
           {/* ═══════════ TWO-COLUMN: Monthly + Cash ═══════════ */}
-          <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={fadeUp} transition={spring}>
+          <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={fadeUp} transition={snappy}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 border-t" style={{ borderColor: 'var(--s-border)' }}>
 
               {/* ── LEFT: Monthly cost ── */}
@@ -226,11 +226,11 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                   </div>
                   <button onClick={() => setShowBreakdown((v) => !v)} className="flex items-center gap-1.5 mt-3 text-[12px] text-ink-faint hover:text-ink-muted transition-colors">
                     <span>{showBreakdown ? 'Hide' : 'Show'} details</span>
-                    <m.svg animate={{ rotate: showBreakdown ? 180 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 25 }} className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></m.svg>
+                    <m.svg animate={{ rotate: showBreakdown ? 180 : 0 }} transition={{ duration: 0.2 }} className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></m.svg>
                   </button>
                   <AnimatePresence>
                     {showBreakdown && (
-                      <m.div initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 30 }} className="origin-top">
+                      <m.div initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} transition={{ duration: 0.25, ease: 'easeOut' }} className="origin-top">
                         <div className="space-y-2 pt-3">
                           {costBreakdown.items.map((item, i) => (
                             <div key={item.name} className="flex items-baseline justify-between">
@@ -278,7 +278,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
 
           {/* ═══════════ PARTNER SPLIT ═══════════ */}
           {hasPartner && (
-            <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={fadeUp} transition={spring} className="py-6 md:py-8 border-t" style={{ borderColor: 'var(--s-border)' }}>
+            <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={fadeUp} transition={snappy} className="py-6 md:py-8 border-t" style={{ borderColor: 'var(--s-border)' }}>
               {/* Split mode tabs + custom slider (inline on desktop) + share */}
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <p className="text-[14px] text-ink-muted">Split</p>
@@ -380,7 +380,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
           )}
 
           {/* ═══════════ FOOTER ═══════════ */}
-          <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-30px' }} variants={fadeUp} transition={spring} className="pt-4 pb-6 border-t" style={{ borderColor: 'var(--s-border)' }}>
+          <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-30px' }} variants={fadeUp} transition={snappy} className="pt-4 pb-6 border-t" style={{ borderColor: 'var(--s-border)' }}>
             <p className="text-[11px] text-ink-faint leading-relaxed">
               Calculations use take-home pay (not gross income). Official <a href="https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/calculating-gds-tds" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">CMHC GDS/TDS ratios</a> use gross income and may differ. Tax rates: Quebec 2025. For illustration only — not financial advice.
             </p>

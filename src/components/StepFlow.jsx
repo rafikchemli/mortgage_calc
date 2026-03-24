@@ -51,9 +51,9 @@ const stepVariants = {
 
 // Enter transitions use springs for feel; exit uses fast tween to minimize
 // the gap between old and new content.
-const enterTransition = { type: 'spring', stiffness: 300, damping: 28, mass: 0.8 }
+const enterTransition = { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
 const exitTransition = { duration: 0.15, ease: 'easeOut' }
-const backTransition = { type: 'spring', stiffness: 400, damping: 35, mass: 0.6 }
+const backTransition = { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
 
 function DarkToggle({ isDark, toggle }) {
   return (
@@ -192,7 +192,7 @@ export default function StepFlow({ isDark, toggleDark }) {
                 backgroundColor: i < progressIndex ? 'var(--s-gold)' : i === progressIndex ? 'var(--s-text-primary)' : 'var(--s-surface-3)',
               }}
               className="w-1.5 h-1.5 rounded-full"
-              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              transition={{ duration: 0.2 }}
             />
           ))}
         </m.div>
