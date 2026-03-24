@@ -1,17 +1,9 @@
 import { useState } from 'react'
-import { m } from 'framer-motion'
+
 import useAffordStore from '../../store/useAffordStore'
 import { formatCAD } from '../shared/CurrencyDisplay'
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
-}
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
-}
 
 export default function StepSavings({ onNext, onBack }) {
   const savings = useAffordStore((s) => s.savings)
@@ -31,16 +23,16 @@ export default function StepSavings({ onNext, onBack }) {
   }
 
   return (
-    <m.div variants={stagger} initial="hidden" animate="visible">
-      <m.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 2</m.p>
-      <m.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-3">
+    <div className="stagger-fade-up">
+      <p className="text-sm text-ink-faint mb-2">Step 2</p>
+      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-3">
         How much have you saved?
-      </m.h2>
-      <m.p variants={fadeUp} className="text-sm text-ink-faint mb-8">
+      </h2>
+      <p className="text-sm text-ink-faint mb-8">
         Total cash available for down payment and closing costs.
-      </m.p>
+      </p>
 
-      <m.div variants={fadeUp}>
+      <div>
         <input
           type="text"
           inputMode="decimal"
@@ -57,10 +49,10 @@ export default function StepSavings({ onNext, onBack }) {
             fontFamily: 'var(--font-display)',
           }}
         />
-      </m.div>
+      </div>
 
       {/* Quick presets */}
-      <m.div variants={fadeUp} className="flex flex-wrap gap-2 mt-6 justify-center">
+      <div className="flex flex-wrap gap-2 mt-6 justify-center">
         {[50000, 75000, 100000, 150000, 200000].map((v) => (
           <button
             key={v}
@@ -74,10 +66,10 @@ export default function StepSavings({ onNext, onBack }) {
             {formatCAD(v)}
           </button>
         ))}
-      </m.div>
+      </div>
 
       {/* Navigation */}
-      <m.div variants={fadeUp} className="flex gap-3 mt-8">
+      <div className="flex gap-3 mt-8">
         <button
           onClick={onBack}
           className="px-5 py-3 rounded-xl text-[14px] font-medium transition-all active:scale-[0.98]"
@@ -95,7 +87,7 @@ export default function StepSavings({ onNext, onBack }) {
         >
           Continue
         </button>
-      </m.div>
-    </m.div>
+      </div>
+    </div>
   )
 }

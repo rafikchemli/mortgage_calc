@@ -3,15 +3,7 @@ import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { useShallow } from 'zustand/react/shallow'
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
-}
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
-}
 
 /* ── Presets with "other" custom input ── */
 function PresetOrCustom({ presets, value, onChange, suffix = '%', min = 0, max = 100 }) {
@@ -111,14 +103,14 @@ export default function StepMortgage({ onNext, onBack }) {
     : 'Aggressive'
 
   return (
-    <m.div variants={stagger} initial="hidden" animate="visible">
-      <m.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 3</m.p>
-      <m.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
+    <div className="stagger-fade-up">
+      <p className="text-sm text-ink-faint mb-2">Step 3</p>
+      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
         Set your terms
-      </m.h2>
+      </h2>
 
       {/* ── Housing budget — slider for this one, it's a feel-based choice ── */}
-      <m.div variants={fadeUp} className="mb-7">
+      <div className="mb-7">
         <div className="flex items-baseline justify-between mb-2.5">
           <p className="text-[13px] text-ink-muted">% of take-home pay for housing</p>
           <div className="flex items-baseline gap-1.5">
@@ -154,10 +146,10 @@ export default function StepMortgage({ onNext, onBack }) {
           <input type="range" min={15} max={60} step={1} value={housingBudgetPercent}
             onChange={(e) => setHousingBudgetPercent(Number(e.target.value))} className="relative z-10 w-full" />
         </div>
-      </m.div>
+      </div>
 
       {/* ── Down payment ── */}
-      <m.div variants={fadeUp} className="mb-7">
+      <div className="mb-7">
         <p className="text-[13px] text-ink-muted mb-3">Down payment</p>
         <PresetOrCustom
           presets={[5, 10, 15, 20, 25]}
@@ -171,10 +163,10 @@ export default function StepMortgage({ onNext, onBack }) {
             : <>No insurance needed — conventional rates may be slightly higher.</>
           }
         </p>
-      </m.div>
+      </div>
 
       {/* ── Interest rate — thermostat style ── */}
-      <m.div variants={fadeUp} className="mb-7">
+      <div className="mb-7">
         <p className="text-[13px] text-ink-muted mb-4">Interest rate</p>
         <div className="flex items-center justify-center gap-4">
           <m.button
@@ -219,10 +211,10 @@ export default function StepMortgage({ onNext, onBack }) {
             <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M12 5v14M5 12h14" /></svg>
           </m.button>
         </div>
-      </m.div>
+      </div>
 
       {/* ── Amortization ── */}
-      <m.div variants={fadeUp} className="mb-2">
+      <div className="mb-2">
         <p className="text-[13px] text-ink-muted mb-3">Amortization</p>
         <div className="grid grid-cols-3 gap-2">
           {[
@@ -245,10 +237,10 @@ export default function StepMortgage({ onNext, onBack }) {
             )
           })}
         </div>
-      </m.div>
+      </div>
 
       {/* ── Navigation ── */}
-      <m.div variants={fadeUp} className="flex gap-3 mt-6">
+      <div className="flex gap-3 mt-6">
         <button onClick={onBack} className="px-5 py-3 rounded-xl text-[14px] font-medium text-ink-faint transition-all active:scale-[0.98]">
           Back
         </button>
@@ -256,7 +248,7 @@ export default function StepMortgage({ onNext, onBack }) {
           style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}>
           See what I can afford
         </button>
-      </m.div>
-    </m.div>
+      </div>
+    </div>
   )
 }

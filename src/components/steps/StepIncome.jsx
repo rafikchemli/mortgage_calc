@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { m } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { useShallow } from 'zustand/react/shallow'
 import { formatCAD } from '../shared/CurrencyDisplay'
@@ -64,15 +63,6 @@ function FreqPicker({ value, onChange }) {
   )
 }
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
-}
 
 export default function StepIncome({ onNext }) {
   const {
@@ -95,13 +85,13 @@ export default function StepIncome({ onNext }) {
   const handleIncomeTypeChange = (newType) => setIncomeType(newType)
 
   return (
-    <m.div variants={stagger} initial="hidden" animate="visible">
-      <m.p variants={fadeUp} className="text-sm text-ink-faint mb-2">Step 1</m.p>
-      <m.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
+    <div className="stagger-fade-up">
+      <p className="text-sm text-ink-faint mb-2">Step 1</p>
+      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
         What do you earn?
-      </m.h2>
+      </h2>
 
-      <m.div variants={fadeUp} className="space-y-5">
+      <div className="space-y-5">
         {/* Person 1 */}
         <div>
           <div className="flex items-center justify-between mb-2">
@@ -137,10 +127,10 @@ export default function StepIncome({ onNext }) {
             <CurrencyInput value={income2} onChange={setIncome2} />
           </div>
         )}
-      </m.div>
+      </div>
 
       {/* Net/Gross toggle */}
-      <m.div variants={fadeUp} className="flex items-center gap-3 mt-6">
+      <div className="flex items-center gap-3 mt-6">
         <div className="flex rounded-lg overflow-hidden border" style={{ borderColor: 'var(--s-border)' }}>
           {['net', 'gross'].map((type) => (
             <button
@@ -157,14 +147,13 @@ export default function StepIncome({ onNext }) {
         <span className="text-[11px] text-ink-faint">
           {incomeType === 'net' ? 'what hits your account' : 'before taxes'}
         </span>
-      </m.div>
+      </div>
 
-      <m.div variants={fadeUp} className="mt-6">
+      <div className="mt-6">
         <PrivacyNotice prominent />
-      </m.div>
+      </div>
 
-      <m.button
-        variants={fadeUp}
+      <button
         onClick={onNext}
         className="mt-4 w-full py-3 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
         style={{
@@ -173,7 +162,7 @@ export default function StepIncome({ onNext }) {
         }}
       >
         Continue
-      </m.button>
-    </m.div>
+      </button>
+    </div>
   )
 }
