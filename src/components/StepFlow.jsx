@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { m, AnimatePresence } from 'framer-motion'
+import { m } from 'framer-motion'
 import StepWelcome from './steps/StepWelcome'
 import StepIncome from './steps/StepIncome'
 import StepSavings from './steps/StepSavings'
@@ -13,15 +13,10 @@ import useAffordStore from '../store/useAffordStore'
 
 const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
 
-// Container swaps instantly — children handle their own entrance via
-// CSS .stagger-fade-up (compositor-thread, no double-animation).
-// mode="wait" with near-zero exit prevents the bare-background flash
-// that mode="sync" caused (both steps semi-transparent simultaneously).
-const stepVariants = {
-  enter:    { opacity: 1 },
-  center:   { opacity: 1, transition: { duration: 0 } },
-  exit:     { opacity: 0, transition: { duration: 0.08, ease: 'easeOut' } },
-}
+// No AnimatePresence — instant swap, CSS .step-enter handles the
+// single container fade-in on the compositor thread.
+// AnimatePresence always creates a gap (mode="wait") or ghosting
+// (mode="sync"), both of which flash on mobile.
 
 function DarkToggle({ isDark, toggle }) {
   return (
@@ -168,26 +163,20 @@ export default function StepFlow({ isDark, toggleDark }) {
         </m.div>
       )}
 
-      {/* Step content */}
-      <AnimatePresence initial={false} mode="wait">
-        <m.div
-          key={step}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          variants={stepVariants}
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ background: 'var(--s-base)' }}
-        >
-          <div className="w-full max-w-lg px-6">
-            {step === 0 && <StepWelcome onNext={goNext} />}
-            {step === 1 && <StepIncome onNext={goNext} />}
-            {step === 2 && <StepSavings onNext={goNext} onBack={goBack} />}
-            {step === 3 && <StepMortgage onNext={goNext} onBack={goBack} />}
-            {step === 4 && <StepReveal onNext={goNext} onBack={goBack} />}
-          </div>
-        </m.div>
-      </AnimatePresence>
+      {/* Step content — key forces remount, CSS .step-enter handles fade */}
+      <div
+        key={step}
+        className="absolute inset-0 flex items-center justify-center step-enter"
+        style={{ background: 'var(--s-base)' }}
+      >
+        <div className="w-full max-w-lg px-6">
+          {step === 0 && <StepWelcome onNext={goNext} />}
+          {step === 1 && <StepIncome onNext={goNext} />}
+          {step === 2 && <StepSavings onNext={goNext} onBack={goBack} />}
+          {step === 3 && <StepMortgage onNext={goNext} onBack={goBack} />}
+          {step === 4 && <StepReveal onNext={goNext} onBack={goBack} />}
+        </div>
+      </div>
 
       {/* Navigation hint — only on input steps, not welcome or reveal */}
       {/* Privacy notice — only on welcome and income steps */}
