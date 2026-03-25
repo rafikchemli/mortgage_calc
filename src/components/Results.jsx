@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useComputedAfford } from '../hooks/useComputedAfford'
 import useAffordStore from '../store/useAffordStore'
@@ -28,13 +28,14 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08, de
 const snappy = { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
 
 /* ── SVG donut chart for desktop ── */
-function CostDonut({ items, total, size = 140 }) {
+const CostDonut = memo(function CostDonut({ items, total, size = 140 }) {
   const r = 54
   const circumference = 2 * Math.PI * r
   let offset = 0
 
   return (
-    <svg width={size} height={size} viewBox="0 0 140 140" className="shrink-0">
+    <m.svg width={size} height={size} viewBox="0 0 140 140" className="shrink-0"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}>
       <circle cx="70" cy="70" r={r} fill="none" stroke="var(--s-surface-3)" strokeWidth="12" />
       {items.map((item, i) => {
         const pct = total > 0 ? item.value / total : 0
@@ -43,7 +44,7 @@ function CostDonut({ items, total, size = 140 }) {
         const currentOffset = offset
         offset += pct * circumference
         return (
-          <m.circle
+          <circle
             key={item.name}
             cx="70" cy="70" r={r}
             fill="none"
@@ -53,9 +54,6 @@ function CostDonut({ items, total, size = 140 }) {
             strokeDashoffset={-currentOffset}
             strokeLinecap="round"
             transform="rotate(-90 70 70)"
-            initial={{ strokeDasharray: `0 ${circumference}` }}
-            animate={{ strokeDasharray: `${dash} ${gap}` }}
-            transition={{ duration: 0.8, delay: 0.3 + i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
           />
         )
       })}
@@ -65,9 +63,9 @@ function CostDonut({ items, total, size = 140 }) {
       <text x="70" y="82" textAnchor="middle" fill="var(--s-text-tertiary)" fontSize="10">
         /month
       </text>
-    </svg>
+    </m.svg>
   )
-}
+}, (prev, next) => prev.total === next.total && prev.size === next.size)
 
 export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const computed = useComputedAfford()
