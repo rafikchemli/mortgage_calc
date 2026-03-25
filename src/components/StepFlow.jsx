@@ -7,7 +7,6 @@ import StepMortgage from './steps/StepMortgage'
 import StepReveal from './steps/StepReveal'
 import StepShared from './steps/StepShared'
 import Results from './Results'
-import PrivacyNotice from './layout/PrivacyNotice'
 import { hapticTap, hapticSuccess } from '../utils/haptics'
 import useAffordStore from '../store/useAffordStore'
 
@@ -217,10 +216,6 @@ export default function StepFlow({ isDark, toggleDark }) {
           </div>
         </m.div>
       </AnimatePresence>
-
-      {/* Navigation hint — only on input steps, not welcome or reveal */}
-      {/* Privacy notice — only on welcome and income steps */}
-      {step <= 1 && !showResults && !showShared && <PrivacyNotice />}
 
       <m.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"

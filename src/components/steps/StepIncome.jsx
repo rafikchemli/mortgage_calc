@@ -2,7 +2,6 @@ import { useState } from 'react'
 import useAffordStore from '../../store/useAffordStore'
 import { useShallow } from 'zustand/react/shallow'
 import { formatCAD } from '../shared/CurrencyDisplay'
-import PrivacyNotice from '../layout/PrivacyNotice'
 
 const FREQ_CONFIG = {
   biweekly: { min: 500, max: 500000, step: 100, label: 'Bi-weekly' },
@@ -147,10 +146,6 @@ export default function StepIncome({ onNext }) {
         <span className="text-[11px] text-ink-faint">
           {incomeType === 'net' ? 'what hits your account' : 'before taxes'}
         </span>
-      </div>
-
-      <div className="mt-6">
-        <PrivacyNotice prominent />
       </div>
 
       <button

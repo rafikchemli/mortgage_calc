@@ -115,7 +115,7 @@ export default function EditSheet({ open, onClose }) {
             exit={{ y: '100%' }}
             transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
             className="fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl"
-            style={{ background: 'var(--s-surface-1)', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', willChange: 'transform' }}
+            style={{ background: 'var(--s-surface-1)', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}
           >
             {/* Top bar */}
             <div className="sticky top-0 z-10 pt-4 pb-2" style={{ background: 'var(--s-surface-1)' }} />

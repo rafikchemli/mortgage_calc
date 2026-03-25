@@ -80,8 +80,9 @@
 }
 
 html {
-  /* Prevent pull-to-refresh and overscroll bounce on mobile */
-  overscroll-behavior: none;
+  /* Allow pull-to-refresh on scrollable pages (Results).
+     Steps use h-dvh + overflow-hidden so they don't bounce. */
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -346,16 +347,6 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--s-surface-3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--s-text-tertiary); }
-
-/* ── Privacy notice ───────────────────── */
-@keyframes privacy-in {
-  from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.96); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-}
-@keyframes privacy-out {
-  from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-  to   { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.98); }
-}
 
 /* ── Percentage bar animation ─────────── */
 @keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
