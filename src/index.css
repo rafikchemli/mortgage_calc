@@ -277,23 +277,20 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
   z-index: 9999;
 }
 
-/* ── Step entrance — single container fade, no per-child stagger ── */
-/* Per-child stagger created visible "painting down" jank on mobile.
-   A single container animation is compositor-friendly and flicker-free. */
+/* ── Step entrance — transform only, NO opacity ── */
+/* Any opacity:0 start = guaranteed blank frame on key-swap = flash.
+   Transform-only is compositor-thread and content is visible from frame 0. */
 @keyframes step-enter {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(6px); }
+  to   { transform: translateY(0); }
 }
 .step-enter {
-  animation: step-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: step-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Legacy alias — steps use .stagger-fade-up which now just fades the whole block */
-.stagger-fade-up {
-  animation: step-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.fade-up {
-  animation: step-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+/* Steps use .stagger-fade-up — same animation, no per-child stagger */
+.stagger-fade-up, .fade-up {
+  animation: step-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ── Reveal step cinematic entrance ───── */
