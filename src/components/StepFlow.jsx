@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import StepWelcome from './steps/StepWelcome'
 import StepIncome from './steps/StepIncome'
@@ -82,28 +82,35 @@ export default function StepFlow({ isDark, toggleDark }) {
     setStep(0)
   }, [setFromShare])
 
-  // Keyboard navigation
+  // Keyboard navigation — use refs so the listener is attached once
+  const goNextRef = useRef(goNext)
+  const goBackRef = useRef(goBack)
+  const stepRef = useRef(step)
+  goNextRef.current = goNext
+  goBackRef.current = goBack
+  stepRef.current = step
+
   useEffect(() => {
     const handler = (e) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
         if (e.key === 'Enter') {
           e.preventDefault()
-          goNext()
+          goNextRef.current()
         }
         return
       }
       if (e.key === 'Enter' || e.key === 'ArrowDown') {
         e.preventDefault()
-        goNext()
+        goNextRef.current()
       }
-      if ((e.key === 'ArrowUp' || e.key === 'Backspace') && step > 0) {
+      if ((e.key === 'ArrowUp' || e.key === 'Backspace') && stepRef.current > 0) {
         e.preventDefault()
-        goBack()
+        goBackRef.current()
       }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [goNext, goBack, step])
+  }, [])
 
   // Shared link interstitial
   if (showShared && !showResults) {

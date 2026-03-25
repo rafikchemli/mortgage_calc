@@ -69,7 +69,7 @@ export function useDarkMode() {
       setIsDark(goingDark)
       setTimeout(() => {
         document.documentElement.classList.remove('theme-transition')
-      }, 650)
+      }, 400)
     }
   }, [isDark])
 

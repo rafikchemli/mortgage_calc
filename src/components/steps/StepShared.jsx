@@ -53,7 +53,7 @@ export default function StepShared({ onNext }) {
           fill="var(--s-gold)"
           variants={{
             hidden: { scale: 0, opacity: 0 },
-            visible: { scale: 1, opacity: 1, transition: { delay: 1.4, type: 'spring', stiffness: 300 } },
+            visible: { scale: 1, opacity: 1, transition: { delay: 1.4, duration: 0.3, ease: [0.16, 1, 0.3, 1] } },
           }}
         />
       </m.svg>

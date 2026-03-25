@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from 'react'
+import { useState, useCallback, useRef, memo } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useComputedAfford } from '../hooks/useComputedAfford'
 import useAffordStore from '../store/useAffordStore'
@@ -65,7 +65,7 @@ const CostDonut = memo(function CostDonut({ items, total, size = 140 }) {
       </text>
     </m.svg>
   )
-}, (prev, next) => prev.total === next.total && prev.size === next.size)
+})
 
 export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const computed = useComputedAfford()
@@ -94,10 +94,16 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const housingColor = housingPercent < 30 ? 'var(--s-teal)' : housingPercent < 40 ? 'var(--s-gold)' : housingPercent < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
   const colorFor = (pct) => pct < 30 ? 'var(--s-teal)' : pct < 40 ? 'var(--s-gold)' : pct < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
 
+  const copiedTimerRef = useRef(null)
   const handleShare = useCallback(() => {
     const url = buildShareUrl(useAffordStore.getState())
     navigator.clipboard.writeText(url)
-      .then(() => { hapticTap(); setCopied(true); setTimeout(() => setCopied(false), 2000) })
+      .then(() => {
+        hapticTap()
+        setCopied(true)
+        if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current)
+        copiedTimerRef.current = setTimeout(() => setCopied(false), 2000)
+      })
       .catch(() => {})
   }, [])
 
@@ -222,13 +228,13 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                       </div>
                     ))}
                   </div>
-                  <button onClick={() => setShowBreakdown((v) => !v)} aria-expanded={showBreakdown} className="flex items-center gap-1.5 mt-3 text-[12px] text-ink-faint hover:text-ink-muted transition-colors">
+                  <button onClick={() => setShowBreakdown((v) => !v)} aria-expanded={showBreakdown} aria-controls="cost-breakdown-details" className="flex items-center gap-1.5 mt-3 text-[12px] text-ink-faint hover:text-ink-muted transition-colors">
                     <span>{showBreakdown ? 'Hide' : 'Show'} details</span>
                     <m.svg animate={{ rotate: showBreakdown ? 180 : 0 }} transition={{ duration: 0.2 }} className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></m.svg>
                   </button>
                   <AnimatePresence>
                     {showBreakdown && (
-                      <m.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}>
+                      <m.div id="cost-breakdown-details" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}>
                         <div className="space-y-2 pt-3">
                           {costBreakdown.items.map((item, i) => (
                             <div key={item.name} className="flex items-baseline justify-between">

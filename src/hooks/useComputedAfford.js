@@ -63,13 +63,13 @@ export function useComputedAfford() {
     ? (monthlyIncome1 * (budgetPercent1 / 100)) + (monthlyIncome2 * (budgetPercent2 / 100))
     : totalMonthlyIncome * (housingBudgetPercent / 100)
 
-  // Debounce
-  const dBudget = useDebounce(monthlyBudget, 200)
-  const dDown = useDebounce(downPaymentPercent, 200)
-  const dRate = useDebounce(annualRate, 200)
-  const dYears = useDebounce(amortizationYears, 200)
-  const dOverride = useDebounce(priceOverride, 200)
-  const dCondoFees = useDebounce(condoFeesMonthly, 200)
+  // Debounce continuous values (sliders), pass discrete values (button clicks) directly
+  const dBudget = useDebounce(monthlyBudget, 150)
+  const dRate = useDebounce(annualRate, 150)
+  const dOverride = useDebounce(priceOverride, 150)
+  const dCondoFees = useDebounce(condoFeesMonthly, 150)
+  const dDown = downPaymentPercent
+  const dYears = amortizationYears
 
   // Max affordable price (the reverse calculation)
   const maxPrice = useMemo(
