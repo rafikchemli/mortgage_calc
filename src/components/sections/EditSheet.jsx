@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { useShallow } from 'zustand/react/shallow'
-import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { useRafCallback } from '../../hooks/useDebounce'
 import { formatCAD } from '../shared/CurrencyDisplay'
 import { LOCATIONS } from '../../data/constants'
@@ -74,7 +73,7 @@ function PillRow({ options, value, onChange }) {
   )
 }
 
-export default function EditSheet({ open, onClose }) {
+export default function EditSheet({ open, onClose, computed }) {
   const store = useAffordStore(useShallow((s) => ({
     income1: s.income1, income2: s.income2,
     payFrequency1: s.payFrequency1, payFrequency2: s.payFrequency2,
@@ -89,7 +88,7 @@ export default function EditSheet({ open, onClose }) {
     setDownPaymentPercent: s.setDownPaymentPercent, setAmortizationYears: s.setAmortizationYears,
     setInterestRate: s.setInterestRate, setLocationId: s.setLocationId,
   })))
-  const { maxPrice, costBreakdown, housingPercent } = useComputedAfford()
+  const { maxPrice, costBreakdown, housingPercent } = computed
   const housingColor = housingPercent < 30 ? 'var(--s-teal)' : housingPercent < 40 ? 'var(--s-gold)' : housingPercent < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
   const throttledSetBudget = useRafCallback((v) => store.setHousingBudgetPercent(v))
   const throttledSetRate = useRafCallback((v) => store.setInterestRate(v))

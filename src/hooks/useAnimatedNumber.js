@@ -1,64 +1,28 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useEffect } from 'react'
+import { useMotionValue, animate } from 'framer-motion'
 
-// ── Shared RAF scheduler ─────────────────
-const subscribers = new Set()
-let rafId = null
-
-function loop(now) {
-  for (const fn of subscribers) fn(now)
-  if (subscribers.size > 0) {
-    rafId = requestAnimationFrame(loop)
-  } else {
-    rafId = null
-  }
-}
-
-function subscribe(fn) {
-  subscribers.add(fn)
-  if (rafId === null) rafId = requestAnimationFrame(loop)
-  return () => {
-    subscribers.delete(fn)
-    if (subscribers.size === 0 && rafId !== null) {
-      cancelAnimationFrame(rafId)
-      rafId = null
-    }
-  }
-}
-
-// ── Hook ─────────────────────────────────
-export default function useAnimatedNumber(target, duration = 400) {
-  const [display, setDisplay] = useState(target)
-  const fromRef = useRef(target)
-  const currentRef = useRef(target) // tracks the latest animated value (no stale closure)
-  const startTimeRef = useRef(null)
-  const targetRef = useRef(target)
+/**
+ * Animates a number using framer-motion MotionValues.
+ * Updates the DOM directly via a ref — no React re-renders per frame.
+ *
+ * Returns { motionValue, ref } — attach ref to the DOM element whose
+ * textContent should update, or use motionValue directly.
+ */
+export default function useAnimatedNumber(target, duration = 0.4) {
+  const mv = useMotionValue(target)
+  const prevTarget = useRef(target)
 
   useEffect(() => {
-    if (targetRef.current === target) return
+    if (prevTarget.current === target) return
+    prevTarget.current = target
 
-    fromRef.current = currentRef.current // always use the latest animated position
-    targetRef.current = target
-    startTimeRef.current = performance.now()
+    const controls = animate(mv, target, {
+      duration,
+      ease: [0.16, 1, 0.3, 1], // expo-out — compositor-friendly tween
+    })
 
-    const tick = (now) => {
-      const start = startTimeRef.current
-      if (start === null) return
+    return () => controls.stop()
+  }, [target, duration, mv])
 
-      const t = Math.min((now - start) / duration, 1)
-      const eased = 1 - Math.pow(1 - t, 3)
-      const value = fromRef.current + (targetRef.current - fromRef.current) * eased
-      currentRef.current = value
-      setDisplay(value)
-
-      if (t >= 1) {
-        startTimeRef.current = null
-        unsubscribe()
-      }
-    }
-
-    const unsubscribe = subscribe(tick)
-    return unsubscribe
-  }, [target, duration])
-
-  return display
+  return mv
 }

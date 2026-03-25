@@ -389,7 +389,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
         </m.div>
       </div>
 
-      <EditSheet open={showEdit} onClose={() => setShowEdit(false)} />
+      <EditSheet open={showEdit} onClose={() => setShowEdit(false)} computed={computed} />
     </m.div>
   )
 }

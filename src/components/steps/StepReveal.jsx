@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
-import { m } from 'framer-motion'
+import { useRef, useEffect } from 'react'
+import { m, useMotionValue, animate } from 'framer-motion'
 import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { formatCAD } from '../shared/CurrencyDisplay'
 
-/* ── Animation variants ──────────────────── */
+/* ── Animation variants — tween only (compositor-friendly) ── */
 const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.18, delayChildren: 0.3 } },
@@ -21,7 +21,7 @@ const priceIn = {
   hidden: { opacity: 0, scale: 0.7 },
   visible: {
     opacity: 1, scale: 1,
-    transition: { type: 'spring', stiffness: 120, damping: 22, mass: 1 },
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
   },
 }
 
@@ -29,7 +29,7 @@ const detailIn = {
   hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1, y: 0,
-    transition: { type: 'spring', stiffness: 200, damping: 22 },
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
   },
 }
 
@@ -37,35 +37,35 @@ const badgeIn = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1, scale: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 20 },
+    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
   },
 }
 
-/* ── Animated counter with ease-out expo ─── */
-function AnimatedCounter({ target, duration = 1500, delay = 600, prefix = '' }) {
-  const [display, setDisplay] = useState(0)
-  const [started, setStarted] = useState(false)
+/* ── Animated counter — MotionValue, zero re-renders ─── */
+function AnimatedCounter({ target, duration = 1.5, delay = 0.6, prefix = '' }) {
+  const ref = useRef(null)
+  const mv = useMotionValue(0)
 
   useEffect(() => {
-    const timer = setTimeout(() => setStarted(true), delay)
+    const timer = setTimeout(() => {
+      const controls = animate(mv, target, {
+        duration,
+        ease: [0.16, 1, 0.3, 1],
+      })
+      return () => controls.stop()
+    }, delay * 1000)
     return () => clearTimeout(timer)
-  }, [delay])
+  }, [target, duration, delay, mv])
 
   useEffect(() => {
-    if (!started) return
-    const start = performance.now()
-    let raf
-    function tick(now) {
-      const t = Math.min((now - start) / duration, 1)
-      const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
-      setDisplay(Math.round(target * eased))
-      if (t < 1) raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [target, duration, started])
+    if (ref.current) ref.current.textContent = `${prefix}${formatCAD(0)}`
+    const unsub = mv.on('change', (v) => {
+      if (ref.current) ref.current.textContent = `${prefix}${formatCAD(Math.round(v))}`
+    })
+    return unsub
+  }, [mv, prefix])
 
-  return <span>{prefix}{formatCAD(display)}</span>
+  return <span ref={ref} />
 }
 
 /* ── Cost breakdown mini-bar ────────────── */

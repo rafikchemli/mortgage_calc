@@ -107,23 +107,14 @@ button, label, [role="button"], .section-label, .display-number, .display-number
 p, span, a { user-select: text; }
 
 /* ── Smooth theme transition ──────────────────────── */
+/* Only transition the most visible properties to reduce paint storms on mobile.
+   Secondary/accent colours snap instantly — users won't notice. */
 html.theme-transition {
   transition:
-    --s-base 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-surface-1 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-surface-2 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-surface-3 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-border 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-text-primary 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-text-secondary 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-text-tertiary 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-gold 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-gold-muted 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-gold-glow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-copper 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-teal 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-slate 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    --s-danger 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --s-base 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-surface-1 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-text-primary 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    --s-gold 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Scope theme transitions to direct-content elements only.
