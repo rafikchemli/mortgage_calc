@@ -24,7 +24,7 @@ export default function StepSavings({ onNext, onBack }) {
 
   return (
     <div className="stagger-fade-up">
-      <p className="text-sm text-ink-faint mb-2">Step 2</p>
+      <p className="text-sm text-ink-faint mb-2">Step 2 of 3</p>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-3">
         How much have you saved?
       </h2>
@@ -41,7 +41,6 @@ export default function StepSavings({ onNext, onBack }) {
           onChange={(e) => setText(e.target.value.replace(/[^0-9]/g, ''))}
           onBlur={handleBlur}
           onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
-          autoFocus
           className="w-full text-center text-4xl sm:text-5xl font-display tracking-tight py-4 bg-transparent border-b-2 focus:outline-none transition-colors"
           style={{
             color: 'var(--s-gold)',

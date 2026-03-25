@@ -101,7 +101,7 @@ export default function StepReveal({ onNext, onBack }) {
       {/* Monthly cost + bar */}
       <div className="reveal-detail mt-8">
         <p style={{ fontFamily: 'var(--font-display)', color: 'var(--s-text-secondary)' }} className="text-xl">
-          <AnimatedCounter target={costBreakdown.total} duration={1000} delay={1400} />
+          <AnimatedCounter target={costBreakdown.total} duration={1} delay={1.4} />
           <span className="text-sm text-ink-faint ml-1">/mo</span>
         </p>
         <CostMiniBar items={costBreakdown.items} total={costBreakdown.total} />

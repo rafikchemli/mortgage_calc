@@ -67,7 +67,7 @@ function HouseIllustration() {
         fill="var(--s-gold)"
         variants={{
           hidden: { scale: 0, opacity: 0 },
-          visible: { scale: 1, opacity: 1, transition: { delay: 1.4, type: 'spring', stiffness: 300 } },
+          visible: { scale: 1, opacity: 1, transition: { delay: 1.4, duration: 0.3, ease: [0.16, 1, 0.3, 1] } },
         }}
       />
       {/* Left window */}
@@ -138,7 +138,7 @@ function FeaturePill({ children, delay }) {
           opacity: 1,
           scale: 1,
           y: 0,
-          transition: { type: 'spring', stiffness: 250, damping: 22, delay },
+          transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1], delay },
         },
       }}
       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-medium border"

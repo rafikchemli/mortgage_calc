@@ -119,7 +119,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const pctOfIncome2 = splitMode === 'per-person' ? budgetPercent2 : monthlyIncome2 > 0 ? Math.round((displayShare2 / monthlyIncome2) * 100) : 0
 
   return (
-    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="min-h-dvh">
+    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="min-h-dvh" role="main">
       {/* ── Header ── */}
       <div className="px-5 sm:px-8 py-4 sticky top-0 z-10 flex items-center justify-between" style={{ background: 'var(--s-base)' }}>
         <button onClick={onRestart} className="text-[13px] font-medium text-ink-faint hover:text-ink transition-colors">← Start over</button>
@@ -187,7 +187,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                   </div>
                   <div className="text-right mt-1">
                     <p className="text-[14px] font-semibold tabular-nums" style={{ color: housingColor }}>{housingPercent}%</p>
-                    <p className="text-[10px] text-ink-faint">of take-home</p>
+                    <p className="text-[10px] text-ink-faint">of take-home{housingPercent < 30 ? ' · Conservative' : housingPercent < 40 ? ' · Balanced' : housingPercent < 50 ? ' · Stretched' : ' · Aggressive'}</p>
                   </div>
                 </div>
 
@@ -224,13 +224,13 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                       </div>
                     ))}
                   </div>
-                  <button onClick={() => setShowBreakdown((v) => !v)} className="flex items-center gap-1.5 mt-3 text-[12px] text-ink-faint hover:text-ink-muted transition-colors">
+                  <button onClick={() => setShowBreakdown((v) => !v)} aria-expanded={showBreakdown} className="flex items-center gap-1.5 mt-3 text-[12px] text-ink-faint hover:text-ink-muted transition-colors">
                     <span>{showBreakdown ? 'Hide' : 'Show'} details</span>
                     <m.svg animate={{ rotate: showBreakdown ? 180 : 0 }} transition={{ duration: 0.2 }} className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></m.svg>
                   </button>
                   <AnimatePresence>
                     {showBreakdown && (
-                      <m.div initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} transition={{ duration: 0.25, ease: 'easeOut' }} className="origin-top">
+                      <m.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}>
                         <div className="space-y-2 pt-3">
                           {costBreakdown.items.map((item, i) => (
                             <div key={item.name} className="flex items-baseline justify-between">
@@ -357,17 +357,19 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                       <div className="shrink-0 flex flex-col gap-1">
                         <button
                           onClick={() => p.setBudgetPct(Math.min(80, p.budgetPct + 1))}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center border transition-all hover:bg-[var(--s-surface-3)] active:scale-90"
+                          className="w-11 h-11 rounded-lg flex items-center justify-center border transition-all hover:bg-[var(--s-surface-3)] active:scale-90"
                           style={{ borderColor: 'var(--s-border)' }}
+                          aria-label={`Increase ${p.label} budget`}
                         >
-                          <svg className="w-3.5 h-3.5 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M12 5v14M5 12h14" /></svg>
+                          <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M12 5v14M5 12h14" /></svg>
                         </button>
                         <button
                           onClick={() => p.setBudgetPct(Math.max(10, p.budgetPct - 1))}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center border transition-all hover:bg-[var(--s-surface-3)] active:scale-90"
+                          className="w-11 h-11 rounded-lg flex items-center justify-center border transition-all hover:bg-[var(--s-surface-3)] active:scale-90"
                           style={{ borderColor: 'var(--s-border)' }}
+                          aria-label={`Decrease ${p.label} budget`}
                         >
-                          <svg className="w-3.5 h-3.5 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 12h14" /></svg>
+                          <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 12h14" /></svg>
                         </button>
                       </div>
                     )}

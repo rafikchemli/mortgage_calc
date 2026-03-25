@@ -60,7 +60,7 @@ function PillRow({ options, value, onChange }) {
         <button
           key={opt.value}
           onClick={() => onChange(opt.value)}
-          className={`px-2.5 py-1.5 rounded-lg text-[12px] font-medium transition-all border ${
+          className={`px-3 py-2 rounded-lg text-[12px] font-medium transition-all border ${
             String(value) === String(opt.value)
               ? 'bg-[var(--s-text-primary)] text-[var(--s-surface-1)] border-transparent'
               : 'text-ink-faint border-[var(--s-border)]'
@@ -116,13 +116,22 @@ export default function EditSheet({ open, onClose, computed }) {
             className="fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl"
             style={{ background: 'var(--s-surface-1)', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', willChange: 'transform' }}
           >
-            {/* Top bar */}
-            <div className="sticky top-0 z-10 pt-4 pb-2" style={{ background: 'var(--s-surface-1)' }} />
+            {/* Top bar with drag handle + close */}
+            <div className="sticky top-0 z-10 pt-3 pb-2 px-5" style={{ background: 'var(--s-surface-1)' }}>
+              <div className="w-8 h-1 rounded-full mx-auto mb-3" style={{ background: 'var(--s-surface-3)' }} />
+              <div className="flex items-center justify-between max-w-lg mx-auto">
+                <h3 className="text-[15px] font-semibold text-ink">Adjust</h3>
+                <button
+                  onClick={onClose}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-ink-faint hover:text-ink hover:bg-[var(--s-surface-2)] transition-all"
+                  aria-label="Close"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+            </div>
 
             <div className="px-5 pb-24 max-w-lg mx-auto">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-[15px] font-semibold text-ink">Adjust</h3>
-              </div>
 
               {/* Income */}
               <Section title="Income">

@@ -86,7 +86,7 @@ export default function StepIncome({ onNext }) {
 
   return (
     <div className="stagger-fade-up">
-      <p className="text-sm text-ink-faint mb-2">Step 1</p>
+      <p className="text-sm text-ink-faint mb-2">Step 1 of 3</p>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
         What do you earn?
       </h2>
@@ -98,7 +98,7 @@ export default function StepIncome({ onNext }) {
             <label className="text-[11px] text-ink-faint uppercase tracking-wider">Your pay</label>
             <FreqPicker value={payFrequency1} onChange={handleFreq1Change} />
           </div>
-          <CurrencyInput value={income1} onChange={setIncome1} autoFocus />
+          <CurrencyInput value={income1} onChange={setIncome1} />
         </div>
 
         {/* Person 2 */}
