@@ -309,6 +309,19 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
 .stagger-fade-up > *:nth-child(6) { animation-delay: 0.36s; }
 .stagger-fade-up > *:nth-child(7) { animation-delay: 0.42s; }
 
+/* ── Faster theme transition on mobile ── */
+@media (max-width: 768px) {
+  html.theme-transition { transition-duration: 0.3s; }
+  html.theme-transition .card,
+  html.theme-transition .app-bg,
+  html.theme-transition button,
+  html.theme-transition input,
+  html.theme-transition select,
+  html.theme-transition svg {
+    transition-duration: 0.3s;
+  }
+}
+
 /* ── Reduced motion ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .display-number-hero { animation: none; text-shadow: none; }

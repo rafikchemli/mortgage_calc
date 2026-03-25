@@ -10,9 +10,9 @@ const stagger = {
 }
 
 const labelIn = {
-  hidden: { opacity: 0, y: -10, letterSpacing: '0.05em' },
+  hidden: { opacity: 0, y: -10 },
   visible: {
-    opacity: 1, y: 0, letterSpacing: '0.2em',
+    opacity: 1, y: 0,
     transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
   },
 }
@@ -21,7 +21,7 @@ const priceIn = {
   hidden: { opacity: 0, scale: 0.7 },
   visible: {
     opacity: 1, scale: 1,
-    transition: { type: 'spring', stiffness: 120, damping: 22, mass: 1 },
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
   },
 }
 
@@ -29,7 +29,7 @@ const detailIn = {
   hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1, y: 0,
-    transition: { type: 'spring', stiffness: 200, damping: 22 },
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
   },
 }
 
@@ -37,7 +37,7 @@ const badgeIn = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1, scale: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 20 },
+    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
   },
 }
 

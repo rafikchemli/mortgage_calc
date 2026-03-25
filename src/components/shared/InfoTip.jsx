@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, memo } from 'react'
 import { createPortal } from 'react-dom'
 import { m, AnimatePresence } from 'framer-motion'
 
-export default function InfoTip({ text }) {
+export default memo(function InfoTip({ text }) {
   const [open, setOpen] = useState(false)
   const btnRef = useRef(null)
   const tipRef = useRef(null)
@@ -21,18 +21,27 @@ export default function InfoTip({ text }) {
   useEffect(() => {
     if (!open) return
     updatePos()
+    let rafId = null
+    const throttledUpdate = () => {
+      if (rafId !== null) return
+      rafId = requestAnimationFrame(() => {
+        rafId = null
+        updatePos()
+      })
+    }
     const handleClickOutside = (e) => {
       if (btnRef.current?.contains(e.target)) return
       if (tipRef.current?.contains(e.target)) return
       setOpen(false)
     }
     document.addEventListener('pointerdown', handleClickOutside)
-    window.addEventListener('scroll', updatePos, true)
-    window.addEventListener('resize', updatePos)
+    window.addEventListener('scroll', throttledUpdate, { capture: true, passive: true })
+    window.addEventListener('resize', throttledUpdate)
     return () => {
       document.removeEventListener('pointerdown', handleClickOutside)
-      window.removeEventListener('scroll', updatePos, true)
-      window.removeEventListener('resize', updatePos)
+      window.removeEventListener('scroll', throttledUpdate, { capture: true })
+      window.removeEventListener('resize', throttledUpdate)
+      if (rafId !== null) cancelAnimationFrame(rafId)
     }
   }, [open, updatePos])
 
@@ -78,4 +87,4 @@ export default function InfoTip({ text }) {
       )}
     </>
   )
-}
+})

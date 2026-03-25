@@ -206,7 +206,7 @@ export default function StepFlow({ isDark, toggleDark }) {
           animate={{ ...stepVariants[currentStepName].center, transition: direction > 0 ? enterTransition : backTransition }}
           exit={{ ...(direction > 0 ? stepVariants[currentStepName].exit : stepVariants[currentStepName].exitBack), transition: exitTransition }}
           className="absolute inset-0 flex items-center justify-center"
-          style={{ willChange: 'transform, opacity', background: 'var(--s-base)' }}
+          style={{ background: 'var(--s-base)' }}
         >
           <div className="w-full max-w-lg px-6">
             {step === 0 && <StepWelcome onNext={goNext} />}
