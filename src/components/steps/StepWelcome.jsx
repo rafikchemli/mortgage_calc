@@ -1,14 +1,5 @@
 import { m } from 'framer-motion'
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 180, damping: 20 } },
-}
 
 const draw = {
   hidden: { pathLength: 0, opacity: 0 },
@@ -160,34 +151,27 @@ function FeaturePill({ children, delay }) {
 
 export default function StepWelcome({ onNext }) {
   return (
-    <m.div
-      variants={stagger}
-      initial="hidden"
-      animate="visible"
-      className="text-center"
-    >
+    <div className="text-center stagger-fade-up">
       <HouseIllustration />
 
-      <m.h1
-        variants={fadeUp}
+      <h1
         className="text-3xl sm:text-[2.5rem] font-bold tracking-tight text-ink leading-[1.15] mt-8"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         How much house
         <br />
         <span style={{ color: 'var(--s-gold)' }}>can you afford?</span>
-      </m.h1>
+      </h1>
 
-      <m.p
-        variants={fadeUp}
+      <p
         className="text-[15px] text-ink-muted mt-4 leading-relaxed max-w-[22rem] mx-auto"
       >
         A few questions about your finances.
         <br className="hidden sm:block" />
         {' '}A clear answer in 30 seconds.
-      </m.p>
+      </p>
 
-      <m.div variants={fadeUp} className="flex flex-wrap justify-center gap-2 mt-6">
+      <div className="flex flex-wrap justify-center gap-2 mt-6">
         <FeaturePill delay={0}>
           <svg className="w-3 h-3" viewBox="0 0 16 16" fill="currentColor" style={{ color: 'var(--s-teal)' }}>
             <path d="M8 0L1.5 3v4.5c0 4.1 2.8 7.9 6.5 8.5 3.7-.6 6.5-4.4 6.5-8.5V3L8 0z" />
@@ -207,10 +191,9 @@ export default function StepWelcome({ onNext }) {
           </svg>
           Quebec 2025 rates
         </FeaturePill>
-      </m.div>
+      </div>
 
       <m.button
-        variants={fadeUp}
         onClick={onNext}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -220,9 +203,9 @@ export default function StepWelcome({ onNext }) {
         Get started
       </m.button>
 
-      <m.p variants={fadeUp} className="text-[11px] text-ink-faint mt-3">
+      <p className="text-[11px] text-ink-faint mt-3">
         For couples & solo buyers in Montreal
-      </m.p>
-    </m.div>
+      </p>
+    </div>
   )
 }

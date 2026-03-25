@@ -1,45 +1,7 @@
 import { useRef, useEffect } from 'react'
-import { m, useMotionValue, animate } from 'framer-motion'
+import { useMotionValue, animate } from 'framer-motion'
 import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { formatCAD } from '../shared/CurrencyDisplay'
-
-/* ── Animation variants — tween only (compositor-friendly) ── */
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.18, delayChildren: 0.3 } },
-}
-
-const labelIn = {
-  hidden: { opacity: 0, y: -10, letterSpacing: '0.05em' },
-  visible: {
-    opacity: 1, y: 0, letterSpacing: '0.2em',
-    transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
-  },
-}
-
-const priceIn = {
-  hidden: { opacity: 0, scale: 0.7 },
-  visible: {
-    opacity: 1, scale: 1,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-  },
-}
-
-const detailIn = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1, y: 0,
-    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
-  },
-}
-
-const badgeIn = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1, scale: 1,
-    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
-  },
-}
 
 /* ── Animated counter — MotionValue, zero re-renders ─── */
 function AnimatedCounter({ target, duration = 1.5, delay = 0.6, prefix = '' }) {
@@ -120,41 +82,33 @@ export default function StepReveal({ onNext, onBack }) {
     : 'var(--s-danger)'
 
   return (
-    <m.div
-      variants={stagger}
-      initial="hidden"
-      animate="visible"
-      className="text-center"
-    >
+    <div className="text-center">
       {/* Label */}
-      <m.p variants={labelIn} className="text-[11px] uppercase text-ink-faint mb-5 tracking-[0.2em]">
+      <p className="reveal-label text-[11px] uppercase text-ink-faint mb-5 tracking-[0.2em]">
         You can afford up to
-      </m.p>
+      </p>
 
       {/* Hero price */}
-      <m.div variants={priceIn}>
+      <div className="reveal-price">
         <p
           className="text-6xl sm:text-8xl font-bold tracking-tighter leading-none"
           style={{ color: 'var(--s-gold)', fontFamily: 'var(--font-display)', textShadow: 'var(--s-gold-shadow)' }}
         >
           <AnimatedCounter target={maxPrice} />
         </p>
-      </m.div>
+      </div>
 
       {/* Monthly cost + bar */}
-      <m.div variants={detailIn} className="mt-8">
+      <div className="reveal-detail mt-8">
         <p style={{ fontFamily: 'var(--font-display)', color: 'var(--s-text-secondary)' }} className="text-xl">
           <AnimatedCounter target={costBreakdown.total} duration={1000} delay={1400} />
           <span className="text-sm text-ink-faint ml-1">/mo</span>
         </p>
         <CostMiniBar items={costBreakdown.items} total={costBreakdown.total} />
-      </m.div>
+      </div>
 
       {/* Stats row */}
-      <m.div
-        variants={detailIn}
-        className="mt-6 grid grid-cols-2 gap-3"
-      >
+      <div className="reveal-stats mt-6 grid grid-cols-2 gap-3">
         <div
           className="rounded-xl py-3 px-4 text-left"
           style={{ background: 'var(--s-surface-2)', border: '1px solid var(--s-border)' }}
@@ -186,10 +140,10 @@ export default function StepReveal({ onNext, onBack }) {
             Cash needed to close
           </p>
         </div>
-      </m.div>
+      </div>
 
       {/* Savings badge */}
-      <m.div variants={badgeIn} className="mt-5">
+      <div className="reveal-badge mt-5">
         <span
           className="inline-flex items-center gap-1.5 py-2 px-4 rounded-full text-[12px] font-medium"
           style={{
@@ -210,10 +164,10 @@ export default function StepReveal({ onNext, onBack }) {
             : `Need ${formatCAD(cashNeeded - savings)} more to close`
           }
         </span>
-      </m.div>
+      </div>
 
       {/* Navigation */}
-      <m.div variants={detailIn} className="flex flex-col gap-3 mt-10">
+      <div className="reveal-nav flex flex-col gap-3 mt-10">
         <button
           onClick={onNext}
           className="w-full py-3.5 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
@@ -227,7 +181,7 @@ export default function StepReveal({ onNext, onBack }) {
         >
           ← Adjust inputs
         </button>
-      </m.div>
-    </m.div>
+      </div>
+    </div>
   )
 }

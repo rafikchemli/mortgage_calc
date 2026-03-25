@@ -16,44 +16,19 @@ const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
 // Exit animations are kept short (opacity-only, no scale/y) to avoid
 // exposing the bare background between steps — which causes a visible
 // top-to-bottom repaint wave on mobile.
+// Container only handles opacity crossfade — children handle their own
+// stagger via CSS .stagger-fade-up, so NO y/scale on enter to avoid
+// double-animation "wave" artifacts.
 const stepVariants = {
-  welcome: {
-    enter: { opacity: 0 },
-    center: { opacity: 1 },
-    exit: { opacity: 0 },
-    exitBack: { opacity: 0 },
-  },
-  income: {
-    enter: { y: 30, opacity: 0 },
-    center: { y: 0, opacity: 1 },
-    exit: { opacity: 0 },
-    exitBack: { y: 30, opacity: 0 },
-  },
-  savings: {
-    enter: { y: 30, opacity: 0 },
-    center: { y: 0, opacity: 1 },
-    exit: { opacity: 0 },
-    exitBack: { y: 30, opacity: 0 },
-  },
-  mortgage: {
-    enter: { y: 30, opacity: 0 },
-    center: { y: 0, opacity: 1 },
-    exit: { opacity: 0 },
-    exitBack: { y: 30, opacity: 0 },
-  },
-  reveal: {
-    enter: { scale: 0.9, opacity: 0 },
-    center: { scale: 1, opacity: 1 },
-    exit: { opacity: 0 },
-    exitBack: { scale: 0.95, opacity: 0 },
-  },
+  enter:    { opacity: 0 },
+  center:   { opacity: 1 },
+  exit:     { opacity: 0 },
 }
 
 // Enter transitions use springs for feel; exit uses fast tween to minimize
 // the gap between old and new content.
-const enterTransition = { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
-const exitTransition = { duration: 0.15, ease: 'easeOut' }
-const backTransition = { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
+const enterTransition = { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
+const backTransition = { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
 
 function DarkToggle({ isDark, toggle }) {
   return (
@@ -83,7 +58,6 @@ export default function StepFlow({ isDark, toggleDark }) {
   const [showResults, setShowResults] = useState(false)
   const [showShared, setShowShared] = useState(fromShare)
 
-  const currentStepName = STEPS[step]
   const isWelcome = step === 0
 
   // Progress dots skip the welcome screen
@@ -202,9 +176,11 @@ export default function StepFlow({ isDark, toggleDark }) {
       <AnimatePresence initial={false} mode="sync">
         <m.div
           key={step}
-          initial={direction > 0 ? stepVariants[currentStepName].enter : stepVariants[currentStepName].exitBack || stepVariants[currentStepName].enter}
-          animate={{ ...stepVariants[currentStepName].center, transition: direction > 0 ? enterTransition : backTransition }}
-          exit={{ ...(direction > 0 ? stepVariants[currentStepName].exit : stepVariants[currentStepName].exitBack), transition: exitTransition }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          variants={stepVariants}
+          transition={direction > 0 ? enterTransition : backTransition}
           className="absolute inset-0 flex items-center justify-center"
           style={{ background: 'var(--s-base)' }}
         >

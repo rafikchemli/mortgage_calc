@@ -2,16 +2,6 @@ import { m } from 'framer-motion'
 import { useComputedAfford } from '../../hooks/useComputedAfford'
 import { formatCAD } from '../shared/CurrencyDisplay'
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 180, damping: 20 } },
-}
-
 const draw = {
   hidden: { pathLength: 0, opacity: 0 },
   visible: {
@@ -25,12 +15,7 @@ export default function StepShared({ onNext }) {
   const { maxPrice } = useComputedAfford()
 
   return (
-    <m.div
-      variants={stagger}
-      initial="hidden"
-      animate="visible"
-      className="text-center"
-    >
+    <div className="text-center stagger-fade-up">
       {/* House icon — same as welcome */}
       <m.svg
         viewBox="0 0 120 100"
@@ -73,38 +58,29 @@ export default function StepShared({ onNext }) {
         />
       </m.svg>
 
-      <m.p
-        variants={fadeUp}
-        className="text-[13px] text-ink-faint mt-6 mb-3"
-      >
+      <p className="text-[13px] text-ink-faint mt-6 mb-3">
         Someone shared their results with you
-      </m.p>
+      </p>
 
-      <m.h1
-        variants={fadeUp}
+      <h1
         className="text-2xl sm:text-3xl font-bold tracking-tight text-ink leading-tight"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         They can afford up to
-      </m.h1>
+      </h1>
 
-      <m.p
-        variants={fadeUp}
+      <p
         className="text-4xl sm:text-5xl font-bold tracking-tighter mt-3"
         style={{ color: 'var(--s-gold)', fontFamily: 'var(--font-display)' }}
       >
         {formatCAD(maxPrice)}
-      </m.p>
+      </p>
 
-      <m.p
-        variants={fadeUp}
-        className="text-[13px] text-ink-faint mt-4"
-      >
+      <p className="text-[13px] text-ink-faint mt-4">
         in Montreal, Quebec
-      </m.p>
+      </p>
 
       <m.button
-        variants={fadeUp}
         onClick={onNext}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -113,6 +89,6 @@ export default function StepShared({ onNext }) {
       >
         See the breakdown
       </m.button>
-    </m.div>
+    </div>
   )
 }
