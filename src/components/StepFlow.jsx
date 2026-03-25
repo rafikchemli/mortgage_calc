@@ -13,22 +13,15 @@ import useAffordStore from '../store/useAffordStore'
 
 const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
 
-// Exit animations are kept short (opacity-only, no scale/y) to avoid
-// exposing the bare background between steps — which causes a visible
-// top-to-bottom repaint wave on mobile.
-// Container only handles opacity crossfade — children handle their own
-// stagger via CSS .stagger-fade-up, so NO y/scale on enter to avoid
-// double-animation "wave" artifacts.
+// Container swaps instantly — children handle their own entrance via
+// CSS .stagger-fade-up (compositor-thread, no double-animation).
+// mode="wait" with near-zero exit prevents the bare-background flash
+// that mode="sync" caused (both steps semi-transparent simultaneously).
 const stepVariants = {
-  enter:    { opacity: 0 },
-  center:   { opacity: 1 },
-  exit:     { opacity: 0 },
+  enter:    { opacity: 1 },
+  center:   { opacity: 1, transition: { duration: 0 } },
+  exit:     { opacity: 0, transition: { duration: 0.08, ease: 'easeOut' } },
 }
-
-// Enter transitions use springs for feel; exit uses fast tween to minimize
-// the gap between old and new content.
-const enterTransition = { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
-const backTransition = { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
 
 function DarkToggle({ isDark, toggle }) {
   return (
@@ -54,7 +47,6 @@ export default function StepFlow({ isDark, toggleDark }) {
   const fromShare = useAffordStore((s) => s.fromShare)
   const setFromShare = useAffordStore((s) => s.setFromShare)
   const [step, setStep] = useState(0)
-  const [direction, setDirection] = useState(1)
   const [showResults, setShowResults] = useState(false)
   const [showShared, setShowShared] = useState(fromShare)
 
@@ -71,7 +63,6 @@ export default function StepFlow({ isDark, toggleDark }) {
       return
     }
     hapticTap()
-    setDirection(1)
     setStep((s) => Math.min(s + 1, STEPS.length - 1))
   }, [step])
 
@@ -81,7 +72,6 @@ export default function StepFlow({ isDark, toggleDark }) {
       return
     }
     if (step <= 0) return
-    setDirection(-1)
     setStep((s) => Math.max(s - 1, 0))
   }, [showResults, step])
 
@@ -89,7 +79,6 @@ export default function StepFlow({ isDark, toggleDark }) {
     setShowResults(false)
     setShowShared(false)
     setFromShare(false)
-    setDirection(-1)
     setStep(0)
   }, [setFromShare])
 
@@ -173,14 +162,13 @@ export default function StepFlow({ isDark, toggleDark }) {
       )}
 
       {/* Step content */}
-      <AnimatePresence initial={false} mode="sync">
+      <AnimatePresence initial={false} mode="wait">
         <m.div
           key={step}
           initial="enter"
           animate="center"
           exit="exit"
           variants={stepVariants}
-          transition={direction > 0 ? enterTransition : backTransition}
           className="absolute inset-0 flex items-center justify-center"
           style={{ background: 'var(--s-base)' }}
         >
