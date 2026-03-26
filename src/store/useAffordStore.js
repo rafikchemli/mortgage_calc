@@ -56,7 +56,7 @@ const useAffordStore = create(
       hydrateFromShare: (values) => set({ ...values, fromShare: true }),
     }),
     {
-      name: 'house-afford-v3',
+      name: 'house-afford-v4',
       partialize: (state) => ({
         income1: state.income1,
         income2: state.income2,
