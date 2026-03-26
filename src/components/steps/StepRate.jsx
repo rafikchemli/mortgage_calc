@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { m } from 'framer-motion'
 import useAffordStore from '../../store/useAffordStore'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -17,18 +16,21 @@ export default function StepRate({ onNext, onBack }) {
 
   return (
     <div className="stagger-fade-up">
-      <p className="text-sm text-ink-faint mb-2">Step 4 of 4</p>
-      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
-        Mortgage terms
+      <p className="text-[10px] uppercase tracking-[0.12em] text-ink-faint mb-4 font-medium">Almost there</p>
+      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-1.5">
+        Pick your mortgage terms
       </h2>
+      <p className="text-[13px] text-ink-faint mb-10 leading-relaxed">
+        We've set today's typical rates. Adjust if you like.
+      </p>
 
-      {/* ── Amortization ── */}
-      <div className="mb-10">
-        <p className="text-[13px] text-ink-muted mb-3">Amortization</p>
+      {/* ── Payoff period (amortization) ── */}
+      <div className="mb-12">
+        <p className="text-[11px] uppercase tracking-[0.08em] text-ink-faint mb-3 font-medium">Payoff period</p>
         <div className="grid grid-cols-3 gap-2">
           {[
             { value: 20, hint: 'less interest' },
-            { value: 25, hint: 'standard' },
+            { value: 25, hint: 'most common' },
             { value: 30, hint: 'lower payment' },
           ].map(({ value, hint }) => {
             const active = amortizationYears === value
@@ -40,8 +42,8 @@ export default function StepRate({ onNext, onBack }) {
                   color: active ? 'var(--s-surface-1)' : 'var(--s-text-secondary)',
                   borderColor: active ? 'transparent' : 'var(--s-border)',
                 }}>
-                <span className="text-lg font-semibold block" style={{ fontFamily: 'var(--font-display)' }}>{value}</span>
-                <span className="text-[9px] block mt-0.5" style={{ opacity: active ? 0.7 : 0.4 }}>{hint}</span>
+                <span className="text-lg font-semibold block tabular-nums" style={{ fontFamily: 'var(--font-display)' }}>{value}</span>
+                <span className="text-[9px] block mt-0.5" style={{ opacity: active ? 0.7 : 0.35 }}>{hint}</span>
               </button>
             )
           })}
@@ -50,7 +52,7 @@ export default function StepRate({ onNext, onBack }) {
 
       {/* ── Interest rate — thermostat style ── */}
       <div className="mb-2">
-        <p className="text-[13px] text-ink-muted mb-4">Interest rate</p>
+        <p className="text-[11px] uppercase tracking-[0.08em] text-ink-faint mb-4 font-medium">Interest rate</p>
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={() => setInterestRate(Math.max(0.5, Math.round((interestRate - 0.1) * 10) / 10))}
@@ -94,14 +96,15 @@ export default function StepRate({ onNext, onBack }) {
             <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M12 5v14M5 12h14" /></svg>
           </button>
         </div>
+        <p className="text-[10px] text-ink-faint text-center mt-2">Based on today's 5-yr fixed rate</p>
       </div>
 
       {/* ── Navigation ── */}
-      <div className="flex gap-3 mt-8">
-        <button onClick={onBack} className="px-5 py-3 rounded-xl text-[14px] font-medium text-ink-faint transition-all active:scale-[0.98]">
+      <div className="flex items-center gap-3 mt-10">
+        <button onClick={onBack} className="px-3 py-2 text-[12px] font-medium text-ink-faint hover:text-ink-muted transition-colors active:scale-[0.97]">
           Back
         </button>
-        <button onClick={onNext} className="flex-1 py-3 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
+        <button onClick={onNext} className="flex-1 py-3.5 rounded-xl text-[14px] font-semibold tracking-wide transition-all active:scale-[0.98]"
           style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}>
           See what I can afford
         </button>

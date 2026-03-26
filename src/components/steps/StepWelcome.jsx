@@ -166,9 +166,9 @@ export default function StepWelcome({ onNext }) {
       <p
         className="text-[15px] text-ink-muted mt-4 leading-relaxed max-w-[22rem] mx-auto"
       >
-        A few questions about your finances.
-        <br className="hidden sm:block" />
-        {' '}A clear answer in 30 seconds.
+        Answer 4 quick questions.
+        <br />
+        Get a clear number for Montreal.
       </p>
 
       <div className="flex flex-wrap justify-center gap-2 mt-6">
@@ -183,13 +183,13 @@ export default function StepWelcome({ onNext }) {
             <circle cx="8" cy="8" r="6" />
             <path d="M8 4.5v4l2.5 1.5" strokeLinecap="round" />
           </svg>
-          30 seconds
+          4 quick questions
         </FeaturePill>
         <FeaturePill delay={0.1}>
           <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: 'var(--s-teal)' }}>
             <path d="M2 12l4-4 3 3 5-7" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          Quebec 2025 rates
+          Quebec 2026 rates
         </FeaturePill>
       </div>
 
@@ -200,7 +200,7 @@ export default function StepWelcome({ onNext }) {
         className="mt-10 w-full py-3.5 rounded-xl text-[15px] font-semibold tracking-wide transition-colors"
         style={{ background: 'var(--s-text-primary)', color: 'var(--s-surface-1)' }}
       >
-        Get started
+        See what you can afford
       </m.button>
 
       <p className="text-[11px] text-ink-faint mt-3">

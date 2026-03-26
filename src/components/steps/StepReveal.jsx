@@ -76,10 +76,9 @@ export default function StepReveal({ onNext, onBack }) {
     savingsCovered, savings, cashNeeded, downPaymentAmount,
   } = useComputedAfford()
 
-  const housingColor = housingPercent < 30 ? 'var(--s-teal)'
-    : housingPercent < 40 ? 'var(--s-gold)'
-    : housingPercent < 50 ? 'var(--s-copper)'
-    : 'var(--s-danger)'
+  const housingColor = housingPercent <= 28 ? 'var(--s-teal)'
+    : housingPercent <= 33 ? 'var(--s-gold)'
+    : 'var(--s-copper)'
 
   return (
     <div className="text-center">

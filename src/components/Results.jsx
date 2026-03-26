@@ -91,8 +91,8 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
     cmhc, welcomeTax, cashNeeded, savings, savingsGap, savingsCovered,
   } = computed
 
-  const housingColor = housingPercent < 30 ? 'var(--s-teal)' : housingPercent < 40 ? 'var(--s-gold)' : housingPercent < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
-  const colorFor = (pct) => pct < 30 ? 'var(--s-teal)' : pct < 40 ? 'var(--s-gold)' : pct < 50 ? 'var(--s-copper)' : 'var(--s-danger)'
+  const housingColor = housingPercent <= 28 ? 'var(--s-teal)' : housingPercent <= 33 ? 'var(--s-gold)' : 'var(--s-copper)'
+  const colorFor = (pct) => pct <= 28 ? 'var(--s-teal)' : pct <= 33 ? 'var(--s-gold)' : 'var(--s-copper)'
 
   const copiedTimerRef = useRef(null)
   const handleShare = useCallback(() => {
@@ -191,7 +191,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
                   </div>
                   <div className="text-right mt-1">
                     <p className="text-[14px] font-semibold tabular-nums" style={{ color: housingColor }}>{housingPercent}%</p>
-                    <p className="text-[10px] text-ink-faint">of take-home{housingPercent < 30 ? ' · Conservative' : housingPercent < 40 ? ' · Balanced' : housingPercent < 50 ? ' · Stretched' : ' · Aggressive'}</p>
+                    <p className="text-[10px] text-ink-faint">of take-home{housingPercent <= 28 ? ' · Comfortable' : housingPercent <= 33 ? ' · Balanced' : housingPercent <= 40 ? ' · Stretching' : ' · Tight'}</p>
                   </div>
                 </div>
 
@@ -388,7 +388,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
           {/* ═══════════ FOOTER ═══════════ */}
           <m.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-30px' }} variants={fadeUp} transition={snappy} className="pt-4 pb-6 border-t" style={{ borderColor: 'var(--s-border)' }}>
             <p className="text-[11px] text-ink-faint leading-relaxed">
-              Calculations use take-home pay (not gross income). Official <a href="https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/calculating-gds-tds" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">CMHC GDS/TDS ratios</a> use gross income and may differ. Tax rates: Quebec 2025. For illustration only — not financial advice.
+              Calculations use take-home pay (not gross income). Official <a href="https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/calculating-gds-tds" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">CMHC GDS/TDS ratios</a> use gross income and may differ. Tax rates: Quebec 2026. For illustration only — not financial advice.
             </p>
           </m.div>
 

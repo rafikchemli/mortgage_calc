@@ -25,7 +25,7 @@ const useAffordStore = create(
       budgetPercent2: 35,
 
       // Mortgage terms
-      housingBudgetPercent: 35,
+      housingBudgetPercent: 30,
       interestRate: 4.0,
       amortizationYears: 25,
       downPaymentPercent: 20,
@@ -56,7 +56,7 @@ const useAffordStore = create(
       hydrateFromShare: (values) => set({ ...values, fromShare: true }),
     }),
     {
-      name: 'house-afford-v4',
+      name: 'house-afford-v5',
       partialize: (state) => ({
         income1: state.income1,
         income2: state.income2,

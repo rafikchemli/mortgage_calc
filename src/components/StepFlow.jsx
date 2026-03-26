@@ -12,7 +12,7 @@ import PrivacyNotice from './layout/PrivacyNotice'
 import { hapticTap, hapticSuccess } from '../utils/haptics'
 import useAffordStore from '../store/useAffordStore'
 
-const STEPS = ['welcome', 'income', 'savings', 'budget', 'rate', 'reveal']
+const STEPS = ['welcome', 'savings', 'income', 'budget', 'rate', 'reveal']
 
 // No AnimatePresence — instant swap, CSS .step-enter handles the
 // single container fade-in on the compositor thread.
@@ -168,8 +168,8 @@ export default function StepFlow({ isDark, toggleDark }) {
       >
         <div className="w-full max-w-lg px-6">
           {step === 0 && <StepWelcome onNext={goNext} />}
-          {step === 1 && <StepIncome onNext={goNext} />}
-          {step === 2 && <StepSavings onNext={goNext} onBack={goBack} />}
+          {step === 1 && <StepSavings onNext={goNext} onBack={goBack} />}
+          {step === 2 && <StepIncome onNext={goNext} onBack={goBack} />}
           {step === 3 && <StepBudget onNext={goNext} onBack={goBack} />}
           {step === 4 && <StepRate onNext={goNext} onBack={goBack} />}
           {step === 5 && <StepReveal onNext={goNext} onBack={goBack} />}
@@ -178,7 +178,7 @@ export default function StepFlow({ isDark, toggleDark }) {
 
       {/* Navigation hint — only on input steps, not welcome or reveal */}
       {/* Privacy notice — only on welcome and income steps */}
-      {step <= 1 && !showResults && !showShared && <PrivacyNotice />}
+      {step <= 2 && !showResults && !showShared && <PrivacyNotice />}
 
       <m.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
