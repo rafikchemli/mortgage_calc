@@ -22,8 +22,34 @@ export default function StepRate({ onNext, onBack }) {
         Mortgage terms
       </h2>
 
-      {/* ── Interest rate — thermostat style ── */}
+      {/* ── Amortization ── */}
       <div className="mb-10">
+        <p className="text-[13px] text-ink-muted mb-3">Amortization</p>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { value: 20, hint: 'less interest' },
+            { value: 25, hint: 'standard' },
+            { value: 30, hint: 'lower payment' },
+          ].map(({ value, hint }) => {
+            const active = amortizationYears === value
+            return (
+              <button key={value} onClick={() => setAmortizationYears(value)}
+                className="py-4 rounded-xl text-center transition-all border active:scale-95"
+                style={{
+                  background: active ? 'var(--s-text-primary)' : 'transparent',
+                  color: active ? 'var(--s-surface-1)' : 'var(--s-text-secondary)',
+                  borderColor: active ? 'transparent' : 'var(--s-border)',
+                }}>
+                <span className="text-lg font-semibold block" style={{ fontFamily: 'var(--font-display)' }}>{value}</span>
+                <span className="text-[9px] block mt-0.5" style={{ opacity: active ? 0.7 : 0.4 }}>{hint}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* ── Interest rate — thermostat style ── */}
+      <div className="mb-2">
         <p className="text-[13px] text-ink-muted mb-4">Interest rate</p>
         <div className="flex items-center justify-center gap-4">
           <button
@@ -67,32 +93,6 @@ export default function StepRate({ onNext, onBack }) {
           >
             <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M12 5v14M5 12h14" /></svg>
           </button>
-        </div>
-      </div>
-
-      {/* ── Amortization ── */}
-      <div className="mb-2">
-        <p className="text-[13px] text-ink-muted mb-3">Amortization</p>
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            { value: 20, hint: 'less interest' },
-            { value: 25, hint: 'standard' },
-            { value: 30, hint: 'lower payment' },
-          ].map(({ value, hint }) => {
-            const active = amortizationYears === value
-            return (
-              <button key={value} onClick={() => setAmortizationYears(value)}
-                className="py-4 rounded-xl text-center transition-all border active:scale-95"
-                style={{
-                  background: active ? 'var(--s-text-primary)' : 'transparent',
-                  color: active ? 'var(--s-surface-1)' : 'var(--s-text-secondary)',
-                  borderColor: active ? 'transparent' : 'var(--s-border)',
-                }}>
-                <span className="text-lg font-semibold block" style={{ fontFamily: 'var(--font-display)' }}>{value}</span>
-                <span className="text-[9px] block mt-0.5" style={{ opacity: active ? 0.7 : 0.4 }}>{hint}</span>
-              </button>
-            )
-          })}
         </div>
       </div>
 
