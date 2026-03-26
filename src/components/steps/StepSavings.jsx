@@ -24,7 +24,7 @@ export default function StepSavings({ onNext, onBack }) {
 
   return (
     <div className="stagger-fade-up">
-      <p className="text-sm text-ink-faint mb-2">Step 2 of 3</p>
+      <p className="text-sm text-ink-faint mb-2">Step 2 of 4</p>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-3">
         How much have you saved?
       </h2>

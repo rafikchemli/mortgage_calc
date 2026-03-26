@@ -3,7 +3,8 @@ import { m } from 'framer-motion'
 import StepWelcome from './steps/StepWelcome'
 import StepIncome from './steps/StepIncome'
 import StepSavings from './steps/StepSavings'
-import StepMortgage from './steps/StepMortgage'
+import StepBudget from './steps/StepBudget'
+import StepRate from './steps/StepRate'
 import StepReveal from './steps/StepReveal'
 import StepShared from './steps/StepShared'
 import Results from './Results'
@@ -11,7 +12,7 @@ import PrivacyNotice from './layout/PrivacyNotice'
 import { hapticTap, hapticSuccess } from '../utils/haptics'
 import useAffordStore from '../store/useAffordStore'
 
-const STEPS = ['welcome', 'income', 'savings', 'mortgage', 'reveal']
+const STEPS = ['welcome', 'income', 'savings', 'budget', 'rate', 'reveal']
 
 // No AnimatePresence — instant swap, CSS .step-enter handles the
 // single container fade-in on the compositor thread.
@@ -169,8 +170,9 @@ export default function StepFlow({ isDark, toggleDark }) {
           {step === 0 && <StepWelcome onNext={goNext} />}
           {step === 1 && <StepIncome onNext={goNext} />}
           {step === 2 && <StepSavings onNext={goNext} onBack={goBack} />}
-          {step === 3 && <StepMortgage onNext={goNext} onBack={goBack} />}
-          {step === 4 && <StepReveal onNext={goNext} onBack={goBack} />}
+          {step === 3 && <StepBudget onNext={goNext} onBack={goBack} />}
+          {step === 4 && <StepRate onNext={goNext} onBack={goBack} />}
+          {step === 5 && <StepReveal onNext={goNext} onBack={goBack} />}
         </div>
       </div>
 
@@ -180,7 +182,7 @@ export default function StepFlow({ isDark, toggleDark }) {
 
       <m.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
-        animate={{ opacity: step > 0 && step < 4 ? 0.5 : 0 }}
+        animate={{ opacity: step > 0 && step < 5 ? 0.5 : 0 }}
         transition={{ duration: 0.3 }}
       >
         <span className="text-[11px] text-ink-faint tracking-wide">

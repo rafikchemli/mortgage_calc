@@ -86,7 +86,7 @@ export default function StepIncome({ onNext }) {
 
   return (
     <div className="stagger-fade-up">
-      <p className="text-sm text-ink-faint mb-2">Step 1 of 3</p>
+      <p className="text-sm text-ink-faint mb-2">Step 1 of 4</p>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mb-8">
         What do you earn?
       </h2>
