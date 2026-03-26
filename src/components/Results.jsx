@@ -123,7 +123,7 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
   const pctOfIncome2 = splitMode === 'per-person' ? budgetPercent2 : monthlyIncome2 > 0 ? Math.round((displayShare2 / monthlyIncome2) * 100) : 0
 
   return (
-    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="min-h-dvh" role="main">
+    <div className="min-h-dvh" role="main">
       {/* ── Header ── */}
       <div className="px-5 sm:px-8 py-4 sticky top-0 z-10 flex items-center justify-between" style={{ background: 'var(--s-base)' }}>
         <button onClick={onRestart} className="text-[13px] font-medium text-ink-faint hover:text-ink transition-colors">← Start over</button>
@@ -396,6 +396,6 @@ export default function Results({ onBack, onRestart, isDark, toggleDark }) {
       </div>
 
       <EditSheet open={showEdit} onClose={() => setShowEdit(false)} computed={computed} />
-    </m.div>
+    </div>
   )
 }
